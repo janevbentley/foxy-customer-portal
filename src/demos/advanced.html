@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+    <title>Advanced Portal Demo</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600&display=swap">
+
+    <script type="module" src="/build/foxy.esm.js"></script>
+    <script nomodule src="/build/foxy.js"></script>
+
+    <script src="https://vuejs.org/js/vue.js"></script>
+    <!-- PRODUCTION: <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script> -->
+  </head>
+
+  <body>
+    <style>
+      html {
+        --foxy-primary-color: #2968a5;
+        --foxy-primary-text-color: #2968a5;
+        --foxy-font-family: "Raleway", sans-serif;
+      }
+
+      .sdf-chip {
+        border: 1px solid var(--foxy-primary-color);
+        color: var(--foxy-primary-text-color);
+      }
+
+      .sdf-button {
+        background-color: var(--foxy-primary-color);
+        color: #fff;
+      }
+
+      .sdf-modal {
+        max-width: 320px;
+      }
+    </style>
+
+    <div id="customer-portal" class="container mx-auto sm:p-8">
+      <foxy-customer-portal
+        ref="portal"
+        locale="en"
+        endpoint="http://localhost:5000"
+        @update="e => this.customer = e.detail"
+      >
+        <div
+          v-if="customer.email && customer._embedded['fx:attributes'].length > 0"
+          class="flex overflow-auto pb-3 px-3"
+        >
+          <div
+            v-for="(attribute, index) in customer._embedded['fx:attributes']"
+            :key="index"
+            class="m-1 py-1 px-4 rounded sdf-chip whitespace-no-wrap"
+          >
+            {{ attribute.name }}: {{ attribute.value }}
+          </div>
+
+          <vaadin-button class="m-1 flex-shrink-0" @click="redeem">
+            Redeem 100 points
+          </vaadin-button>
+        </div>
+
+        <foxy-transactions slot="transactions" cols="5" locale="en">
+          <span slot="header-4">Tracking</span>
+          <div
+            v-for="(transaction, index) in customer._embedded['fx:transactions']"
+            :key="index"
+            :slot="'row-' + index + '-cell-4'"
+          >
+            <template v-if="transaction._embedded && transaction._embedded['fx:attributes']">
+              <template v-for="attribute in transaction._embedded['fx:attributes']">
+                <template v-if="attribute.name === 'Tracking'">
+                  <a v-if="(attribute.value+'').length === 12"
+                    :href="'https://www.fedex.com/fedextrack/?tracknumbers='+attribute.value">
+                    FedEx ({{ attribute.value }})
+                  </a>
+                  <a v-else-if="(attribute.value+'').length > 19 && (attribute.value+'').length < 23"
+                    :href="'https://tools.usps.com/go/TrackConfirmAction.action?tLabels='+attribute.value">
+                    USPS ({{ attribute.value }})
+                  </a>
+                  <a v-else :href="'https://www.google.com/search?q='+attribute.value">
+                    Tracking ({{ attribute.value }})
+                  </a>
+                </template>
+              </template>
+            </template>
+          </div>
+        </foxy-transactions>
+
+        <foxy-subscriptions slot="subscriptions" cols="5" locale="en">
+          <span slot="header-4">Status</span>
+          <div v-for="(subscription, index) in customer._embedded['fx:subscriptions']" :slot="'row-' + index + '-col-4'" :key="index">
+            <span v-if="subscription.is_active" class="text-green-500">Active</span>
+            <span v-else class="text-red-500">Inactive</span>
+          </div>
+        </foxy-subscriptions>
+      </foxy-customer-portal>
+
+      <div v-if="modal" class="fixed inset-0 z-20 flex items-center justify-center">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="relative rounded bg-white p-4 m-4 sdf-modal">
+          Success! Your points have been redeemed for a $10 coupon
+          ({{ coupon }}), which has been applied to your cart already.
+
+          <vaadin-button class="w-full mt-4" @click="modal = false">
+            Close
+          </vaadin-button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      Vue.config.ignoredElements = [/(foxy|vaadin)-\w*/];
+
+      new Vue({
+        el: "#customer-portal",
+        data: {
+          modal: false,
+          coupon: "",
+          customer: {
+            email: "",
+            _embedded: {
+              "fx:subscriptions": [],
+              "fx:transactions": [],
+              "fx:attributes": []
+            }
+          }
+        },
+        watch: {
+          customer: {
+            deep: true,
+            async handler(newValue) {
+              await customElements.whenDefined("foxy-customer-portal");
+              await this.$refs.portal.setState(newValue);
+            }
+          }
+        },
+        methods: {
+          redeem: function() {
+            // TODO: send a request here
+            this.modal = true;
+
+            // TODO: use a real coupon code from the response
+            this.coupon = (Math.random() * Math.pow(10, 10)).toFixed(0);
+
+            const loyalty = this.customer._embedded["fx:attributes"][0];
+            loyalty.value = String(parseInt(loyalty.value) - 100);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

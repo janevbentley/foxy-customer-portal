@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Navigation",
+  "type": "object",
+  "description": "Useful resource pointers.",
+  "additionalProperties": false,
+  "required": [
+    "self"
+  ],
+  "properties": {
+    "self": {
+      "$ref": "Link.json",
+      "description": "Link to this resource."
+    },
+    "first": {
+      "$ref": "Link.json",
+      "description": "Link to the first resource."
+    },
+    "prev": {
+      "$ref": "Link.json",
+      "description": "Link to the previous resource."
+    },
+    "next": {
+      "$ref": "Link.json",
+      "description": "Link to next resource."
+    },
+    "last": {
+      "$ref": "Link.json",
+      "description": "Link to last resource."
+    }
+  }
+}

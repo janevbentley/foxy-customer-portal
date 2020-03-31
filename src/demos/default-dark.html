@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+    <title>Default (dark)</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+
+    <script type="module" src="/build/foxy.esm.js"></script>
+    <script nomodule src="/build/foxy.js"></script>
+  </head>
+
+  <body>
+    <style>
+      html {
+        --foxy-base-color: hsl(214, 35%, 21%);
+        --foxy-tint-5pct: hsla(214, 65%, 85%, 0.06);
+        --foxy-tint-10pct: hsla(214, 60%, 80%, 0.14);
+        --foxy-tint-20pct: hsla(214, 64%, 82%, 0.23);
+        --foxy-tint-30pct: hsla(214, 69%, 84%, 0.32);
+        --foxy-tint-40pct: hsla(214, 73%, 86%, 0.41);
+        --foxy-tint-50pct: hsla(214, 78%, 88%, 0.5);
+        --foxy-tint-60pct: hsla(214, 82%, 90%, 0.6);
+        --foxy-tint-70pct: hsla(214, 87%, 92%, 0.7);
+        --foxy-tint-80pct: hsla(214, 91%, 94%, 0.8);
+        --foxy-tint-90pct: hsla(214, 96%, 96%, 0.9);
+        --foxy-tint: hsl(214, 100%, 98%);
+        --foxy-shade-5pct: hsla(214, 0%, 0%, 0.07);
+        --foxy-shade-10pct: hsla(214, 4%, 2%, 0.15);
+        --foxy-shade-20pct: hsla(214, 8%, 4%, 0.23);
+        --foxy-shade-30pct: hsla(214, 12%, 6%, 0.32);
+        --foxy-shade-40pct: hsla(214, 16%, 8%, 0.41);
+        --foxy-shade-50pct: hsla(214, 20%, 10%, 0.5);
+        --foxy-shade-60pct: hsla(214, 24%, 12%, 0.6);
+        --foxy-shade-70pct: hsla(214, 28%, 13%, 0.7);
+        --foxy-shade-80pct: hsla(214, 32%, 13%, 0.8);
+        --foxy-shade-90pct: hsla(214, 33%, 13%, 0.9);
+        --foxy-shade: hsl(214, 33%, 13%);
+        --foxy-contrast-5pct: var(--foxy-tint-5pct);
+        --foxy-contrast-10pct: var(--foxy-tint-10pct);
+        --foxy-contrast-20pct: var(--foxy-tint-20pct);
+        --foxy-contrast-30pct: var(--foxy-tint-30pct);
+        --foxy-contrast-40pct: var(--foxy-tint-40pct);
+        --foxy-contrast-50pct: var(--foxy-tint-50pct);
+        --foxy-contrast-60pct: var(--foxy-tint-60pct);
+        --foxy-contrast-70pct: var(--foxy-tint-70pct);
+        --foxy-contrast-80pct: var(--foxy-tint-80pct);
+        --foxy-contrast-90pct: var(--foxy-tint-90pct);
+        --foxy-contrast: var(--foxy-tint);
+        --foxy-header-text-color: var(--foxy-contrast);
+        --foxy-body-text-color: var(--foxy-contrast-90pct);
+        --foxy-secondary-text-color: var(--foxy-contrast-70pct);
+        --foxy-tertiary-text-color: var(--foxy-contrast-50pct);
+        --foxy-disabled-text-color: var(--foxy-contrast-30pct);
+        --foxy-primary-color: hsl(214, 86%, 55%);
+        --foxy-primary-color-50pct: hsla(214, 86%, 55%, 0.5);
+        --foxy-primary-color-10pct: hsla(214, 90%, 63%, 0.1);
+        --foxy-primary-text-color: hsl(214, 100%, 70%);
+        --foxy-primary-contrast-color: #FFF;
+        --foxy-error-color: hsl(3, 90%, 63%);
+        --foxy-error-color-50pct: hsla(3, 90%, 63%, 0.5);
+        --foxy-error-color-10pct: hsla(3, 90%, 63%, 0.1);
+        --foxy-error-text-color: hsl(3, 100%, 67%);
+        --foxy-success-color: hsl(145, 65%, 42%);
+        --foxy-success-color-50pct: hsla(145, 65%, 42%, 0.5);
+        --foxy-success-color-10pct: hsla(145, 65%, 42%, 0.1);
+        --foxy-success-text-color: hsl(145, 85%, 47%);
+
+        background: var(--foxy-shade);
+      }
+    </style>
+
+    <div class="container mx-auto sm:p-8">
+      <foxy-customer-portal endpoint="http://localhost:5000"></foxy-customer-portal>
+    </div>
+  </body>
+</html>

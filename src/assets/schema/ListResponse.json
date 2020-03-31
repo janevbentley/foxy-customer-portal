@@ -1,0 +1,38 @@
+{
+  "$id": "ListResponse",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "description": "A subset of the full results array returned by the server and matching the given query.",
+  "additionalProperties": false,
+  "required": [
+    "_links",
+    "total_items",
+    "returned_items",
+    "offset",
+    "limit"
+  ],
+  "properties": {
+    "_links": {
+      "$ref": "Navigation.json"
+    },
+    "total_items": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of items in the results set."
+    },
+    "returned_items": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of items in this response object."
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Expected maximum number of returned items."
+    },
+    "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The number of skipped items."
+    }
+  }
+}

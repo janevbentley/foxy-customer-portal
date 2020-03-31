@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "module": "CommonJS",
+    "target": "ES2017"
+  },
+  "include": [
+    "src/**/*.ts",
+    "types/jsx.d.ts",
+    "stencil.config.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

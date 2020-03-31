@@ -1,0 +1,56 @@
+/**
+ * This file contains additional TailwindCSS utilities and base styles.
+ * For Vaadin Lumo-specific utilities please refer to the `tailwind.config.js`.
+ */
+
+@tailwind base;
+
+[hidden] {
+  display: none !important;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  line-height: var(--foxy-line-height-m);
+}
+
+details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+a {
+  @apply text-primary;
+}
+
+a:hover {
+  @apply text-primary-50 underline;
+}
+
+@tailwind components;
+
+@tailwind utilities;
+
+@responsive {
+  .table-header-group {
+    display: table-row-group;
+  }
+
+  .table-row-group {
+    display: table-row-group;
+  }
+
+  .font-tnum {
+    font-feature-settings: "tnum" on;
+  }
+
+  .w-narrow {
+    width: 280px;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$id": "Timestamp",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "description": "Part of the resource containing dates of creation and modification.",
+  "properties": {
+    "date_created": {
+      "description": "Full creation date (ISO format).",
+      "type": "string",
+      "format": "date",
+      "faker": "date.past"
+    },
+    "date_modified": {
+      "description": "Full modification date (ISO format).",
+      "type": "string",
+      "format": "date",
+      "faker": "date.recent"
+    }
+  },
+  "required": [
+    "date_created",
+    "date_modified"
+  ],
+  "additionalProperties": false
+}

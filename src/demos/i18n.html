@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="bg-gray-200">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Internationalization (i18n) demo</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+
+  <script type="module" src="/build/foxy.esm.js"></script>
+  <script nomodule src="/build/foxy.js"></script>
+</head>
+
+<body class="container mx-auto sm:p-8">
+  <h1 class="text-2xl mb-2">
+    i18n and overrides demo
+  </h1>
+
+  <p class="text-lg text-gray-600 mb-8">
+    This demo shows how to override language strings per-component and set supported
+    locales explicitly using the address component as an example.
+  </p>
+
+  <article class="mb-8 bg-white rounded shadow">
+    <header class="text-xl pt-4 px-4 mb-4">Auto-detect (default)</header>
+
+    <p class="px-4 my-4">
+      By default, components will try to find the most suitable translation for
+      your browser. At the moment we support just 2: English (bundled) and Russian (lazy-loaded).
+      Depending on your preference, the component below should choose the most appropriate locale:
+    </p>
+
+    <figure class="px-4 my-4">
+      <figcaption class="text-gray-500 text-sm mb-2">Source</figcaption>
+      <code class="block rounded bg-gray-900 text-white p-4">
+        &lt;foxy-address endpoint="https://foxy-demo.foxycart.com"&gt;&lt;/foxy-address&gt;
+      </code>
+    </figure>
+
+    <figure class="my-4">
+      <figcaption class="text-gray-500 text-sm px-4">Output</figcaption>
+      <foxy-address endpoint="http://localhost:5000"></foxy-address>
+    </figure>
+  </article>
+
+  <article class="mb-8 bg-white rounded shadow" x-data="{ locale: 'en' }">
+    <header class="text-xl pt-4 px-4 mb-4">Switching languages</header>
+
+    <p class="px-4 my-4">
+      You can also specify the locale yourself using the <code>locale</code> attribute.
+      In case an unsupported language code is provided, the component will try to find
+      the closest match (e.g. it will use <code>en</code> for <code>en-US</code>) or
+      use the English translation file as a fallback.
+    </p>
+
+    <label class="px-4 my-4">
+      Enter locale:
+
+      <input
+        x-model="locale"
+        class="px-3 py-2 rounded bg-gray-100 ml-3 focus:outline-none focus:shadow-outline"
+        list="supported-locales"
+      >
+
+      <datalist id="supported-locales">
+        <option value="en">English (en)</option>
+        <option value="ru">Russian (ru)</option>
+      </datalist>
+    </label>
+
+    <figure class="px-4 my-4">
+      <figcaption class="text-gray-500 text-sm mb-2">Source</figcaption>
+      <code
+        class="block rounded bg-gray-900 text-white p-4"
+        x-text="`&lt;foxy-address endpoint=&quot;https://foxy-demo.foxycart.com&quot; locale=&quot;${locale}&quot;&gt;&lt;/foxy-address&gt;`"
+      ></code>
+    </figure>
+
+    <figure class="my-4">
+      <figcaption class="text-gray-500 text-sm px-4">Output</figcaption>
+      <foxy-address endpoint="http://localhost:5000" :locale="locale"></foxy-address>
+    </figure>
+  </article>
+
+  <script>
+    function getExampleOverride() {
+      return JSON.stringify({
+        en: {
+          address: "Location",
+          phone: "Telephone No."
+        }
+      }, null, 2);
+    }
+  </script>
+
+  <article class="mb-8 bg-white rounded shadow" x-data="{ locale: getExampleOverride() }">
+    <header class="text-xl pt-4 px-4 mb-4">Overriding individual messages</header>
+
+    <p class="px-4 my-4">
+      Finally, you can override language strings by setting the <code>locale</code> property.
+      You don't have to provide all of the translations – the component will load the missing
+      values from the language closest to the one you've provided or the default one (en) if it's not possible.
+    </p>
+
+    <label class="block px-4 my-4">
+      <span class="block text-gray-500 text-sm mb-2">Override (editable)</span>
+      <textarea
+        x-model="locale"
+        x-ref="demo3source"
+        @input="$refs.demo3.locale = eval('(' + $refs.demo3source.value + ')')"
+        class="font-mono block w-full rounded bg-gray-900 text-white p-4 h-32 focus:outline-none focus:shadow-outline"
+      ></textarea>
+    </label>
+
+    <figure class="px-4 my-4">
+      <figcaption class="text-gray-500 text-sm mb-2">Source</figcaption>
+      <code class="block rounded bg-gray-900 text-white p-4">
+        <pre x-text="'document.querySelector(\'foxy-address\').locale = ' + locale + ';'"></pre>
+      </code>
+    </figure>
+
+    <figure class="my-4">
+      <figcaption class="text-gray-500 text-sm px-4">Output</figcaption>
+      <foxy-address
+        x-ref="demo3"
+        endpoint="http://localhost:5000"
+        @ready="$refs.demo3.locale = eval('(' + locale + ')')"
+      ></foxy-address>
+    </figure>
+  </article>
+</body>
+
+</html>

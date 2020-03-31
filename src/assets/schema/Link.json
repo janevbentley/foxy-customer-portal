@@ -1,0 +1,27 @@
+{
+  "$id": "Link",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "description": "A named resource link of a particular type.",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A few words describing where this link points.",
+      "faker": "commerce.productName"
+    },
+    "href": {
+      "type": "string",
+      "description": "An absolute URL of the resource.",
+      "format": "uri"
+    },
+    "type": {
+      "type": "string",
+      "description": "Link type (optional, value depending on the context)."
+    }
+  },
+  "required": [
+    "title",
+    "href"
+  ],
+  "additionalProperties": false
+}

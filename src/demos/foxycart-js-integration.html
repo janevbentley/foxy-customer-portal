@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="bg-gray-200">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>foxycart.js integration</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+
+  <script src="https://cdn.foxycart.com/foxy-demo/loader.js" async defer></script>
+  <script type="module" src="/build/foxy.esm.js"></script>
+  <script nomodule src="/build/foxy.js"></script>
+</head>
+
+<body class="container mx-auto sm:p-8">
+  <foxy-customer-portal endpoint="https://foxy-demo.foxycart.com"></foxy-customer-portal>
+</body>
+
+</html>

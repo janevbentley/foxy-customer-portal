@@ -1,0 +1,94 @@
+{
+  "$id": "Address",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "description": "An address saved for a customer.",
+  "allOf": [
+    {
+      "$ref": "Timestamp.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "address_name": {
+          "description": "The name of this address. This is also the value used as the\nship to entry for a multiship item.",
+          "type": "string",
+          "examples": ["Default Shipping Address", "Default Billing Address"]
+        },
+        "first_name": {
+          "description": "The given name associated with this address.",
+          "type": "string",
+          "faker": "name.firstName"
+        },
+        "last_name": {
+          "description": "The surname associated with this address.",
+          "type": "string",
+          "faker": "name.lastName"
+        },
+        "company": {
+          "description": "The company associated with this address.",
+          "type": "string",
+          "faker": "company.companyName"
+        },
+        "address1": {
+          "description": "The first line of the street address.",
+          "type": "string",
+          "faker": "address.streetAddress"
+        },
+        "address2": {
+          "description": "The second line of the street address.",
+          "type": "string",
+          "faker": "address.secondaryAddress"
+        },
+        "city": {
+          "description": "The city of this address.",
+          "type": "string",
+          "faker": "address.city"
+        },
+        "region": {
+          "description": "The two character code for states in the United States.\nOther countries may call this a province. When a two character code isn't\navailable, use the full region name.",
+          "type": "string",
+          "faker": "address.stateAbbr"
+        },
+        "postal_code": {
+          "description": "The postal code of this address.",
+          "type": "string",
+          "faker": "address.zipCode"
+        },
+        "country": {
+          "description": "The country code of this address.",
+          "type": "string",
+          "faker": "address.country"
+        },
+        "phone": {
+          "description": "The phone of this address.",
+          "type": "string",
+          "faker": "phone.phoneNumber"
+        },
+        "is_default_billing": {
+          "description": "Specifies if this address is the default billing address for the customer.",
+          "type": "boolean"
+        },
+        "is_default_shipping": {
+          "description": "Specifies if this address is the default shipping address for the customer.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "address_name",
+        "first_name",
+        "last_name",
+        "company",
+        "address1",
+        "address2",
+        "city",
+        "region",
+        "postal_code",
+        "country",
+        "phone",
+        "is_default_billing",
+        "is_default_shipping"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

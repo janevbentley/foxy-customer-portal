@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "PaymentMethod",
+  "description": "One of the payment methods for a customer. Note that `cc_number` is not updatable via the customer portal.",
+  "allOf": [
+    {
+      "$ref": "Timestamp.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "save_cc": {
+          "description": "If the customer selected to save their payment information, this will be true. To clear out the payment information, set this to false.",
+          "type": "boolean"
+        },
+        "cc_type": {
+          "description": "The credit card or debit card type. This will be determined automatically once the payment card is saved.",
+          "type": "string",
+          "examples": ["credit", "debit"]
+        },
+        "cc_number_masked": {
+          "description": "A masked version of this payment card showing only the last 4 digits.",
+          "type": "string",
+          "faker": "finance.mask"
+        },
+        "cc_exp_month": {
+          "description": "The payment card expiration month in the MM format.",
+          "type": "string",
+          "pattern": "^(0[1-9])|(1[1-2])$"
+        },
+        "cc_exp_year": {
+          "description": "The payment card expiration year in the YYYY format.",
+          "type": "string",
+          "pattern": "^202[0-9]$"
+        }
+      },
+      "required": [
+        "save_cc",
+        "cc_type",
+        "cc_number_masked",
+        "cc_exp_month",
+        "cc_exp_year"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

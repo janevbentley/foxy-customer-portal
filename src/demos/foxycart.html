@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>FoxyCart theme</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.1.1/dist/css/bootstrap.css">
+
+  <script type="module" src="/build/foxy.esm.js"></script>
+  <script nomodule src="/build/foxy.js"></script>
+</head>
+
+<body>
+  <style>
+    /*
+      Here's some theme customization, from https://demo.vaadin.com/lumo-editor/
+      but replace the `--lumo` with `--foxy`
+    */
+    html {
+      --foxy-border-radius: 0.5em;
+      --foxy-shade-5pct: rgba(41, 41, 41, 0.05);
+      --foxy-shade-10pct: rgba(41, 41, 41, 0.1);
+      --foxy-shade-20pct: rgba(41, 41, 41, 0.2);
+      --foxy-shade-30pct: rgba(41, 41, 41, 0.3);
+      --foxy-shade-40pct: rgba(41, 41, 41, 0.4);
+      --foxy-shade-50pct: rgba(41, 41, 41, 0.5);
+      --foxy-shade-60pct: rgba(41, 41, 41, 0.6);
+      --foxy-shade-70pct: rgba(41, 41, 41, 0.7);
+      --foxy-shade-80pct: rgba(41, 41, 41, 0.8);
+      --foxy-shade-90pct: rgba(41, 41, 41, 0.9);
+      --foxy-shade: hsl(214, 0%, 16%);
+      --foxy-primary-text-color: rgb(83, 39, 94);
+      --foxy-primary-color-50pct: rgba(83, 39, 94, 0.5);
+      --foxy-primary-color-10pct: rgba(83, 39, 94, 0.1);
+      --foxy-primary-color: #53275E;
+      --foxy-body-text-color: hsl(214, 0%, 16%);
+      --foxy-secondary-text-color: hsl(214, 0%, 42%);
+      --foxy-tertiary-text-color: rgba(87, 87, 87, 0.5);
+      --foxy-disabled-text-color: rgba(173, 173, 173, 0.3);
+      --foxy-header-text-color: hsl(214, 0%, 16%);
+
+      background: var(--foxy-shade-5pct);
+    }
+  </style>
+
+  <div class="container mx-auto sm:p-8">
+    <foxy-customer-portal endpoint="https://foxy-demo.foxycart.com">
+      <foxy-sign-in slot="sign-in">
+        <h1>Demo Foxy.io Customer Portal</h1>
+        <p class="text-align-left">
+          Enter <code>hello@foxy.io</code> with password <code>asdfasdf</code> to try things out!
+          <br>
+          Or click the "pre-fill" button below, and view the source to see how we're adding custom elements into this
+          login functionality.
+        </p>
+        <p>
+          Alternately, go to <a href="https://foxy.io" target="_blank">Foxy.io</a>, add an example product or
+          subscription to your cart, complete your purchase (making sure not to checkout as a guest; ie. check the box
+          to save your account). Then come back here and login to see your purchase (and/or subscription).
+        </p>
+        <span slot="buttons-append">
+          <vaadin-button data-theme="secondary outlined" class="customerPortalLoginHelper w-narrow mb-s">Pre-Fill Demo
+            Values
+          </vaadin-button>
+        </span>
+      </foxy-sign-in>
+    </foxy-customer-portal>
+  </div>
+
+  <script>
+    // Custom elements can be selected just like normal DOM elements.
+    const foxyPortal = document.querySelector("foxy-customer-portal");
+    // IMPORTANT: Note that slotted content _does not exist_ inside the parent web component's shadow dom.
+    const foxySignIn = document.querySelector("foxy-sign-in");
+    // If we weren't overriding the `slot="sign-in"`, this would instead look like this:
+    // const foxySignIn = foxyPortal.shadowRoot.querySelector("foxy-sign-in");
+
+    foxyPortal.addEventListener("ready", function () {
+      // Note how we use the `.shadowRoot` properties to access the `foxySignIn` dom.
+      const emailInput = foxySignIn.shadowRoot.querySelector("vaadin-email-field");
+      const passwordInput = foxySignIn.shadowRoot.querySelector("vaadin-password-field");
+      const signInButton = foxySignIn.shadowRoot.querySelector("#foxy-sign-in-button");
+      const helperButtons = document.querySelectorAll(".customerPortalLoginHelper");
+      for (const button of helperButtons) {
+        button.addEventListener("click", helperButtonClickHandler);
+      }
+
+      function helperButtonClickHandler() {
+        emailInput.setProperties({ value: "hello@foxy.io" });
+        passwordInput.setProperties({ value: "asdfasdf" });
+        signInButton.focus();
+      }
+    });
+
+  </script>
+</body>
+
+</html>

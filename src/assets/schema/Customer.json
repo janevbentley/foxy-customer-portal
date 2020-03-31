@@ -1,0 +1,60 @@
+{
+  "$id": "Customer",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "description": "A customer is the person who completes a transaction. Whenever a transaction takes place, a customer must be involved. If using a guest_checkout, an anonymous customer will be created with each transaction.",
+  "allOf": [
+    {
+      "$ref": "Timestamp.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The FoxyCart customer id, useful for Single Sign On integrations.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_login_date": {
+          "description": "The date of the last time this customer authenticated with the FoxyCart checkout.",
+          "type": "string",
+          "format": "date",
+          "faker": "date.recent"
+        },
+        "first_name": {
+          "description": "The customer's given name.",
+          "type": "string",
+          "faker": "name.firstName"
+        },
+        "last_name": {
+          "description": "The customer's surname.",
+          "type": "string",
+          "faker": "name.lastName"
+        },
+        "email": {
+          "description": "The customer's email address. This is used as the login\nto the FoxyCart checkout for this customer.",
+          "type": "string",
+          "faker": "internet.email"
+        },
+        "tax_id": {
+          "description": "A tax identification number for this customer.",
+          "type": "string",
+          "pattern": "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+        },
+        "is_anonymous": {
+          "description": "If this customer checks out as a guest, this will be set to true.\nOnce it is set, it can not be changed.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "last_login_date",
+        "first_name",
+        "last_name",
+        "email",
+        "tax_id",
+        "is_anonymous"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

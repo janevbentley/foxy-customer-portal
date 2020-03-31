@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Subscription",
+  "description": "A subscription is a recurring transaction. If the subscription is integrated with a third party subscription system (such as PayPal Express), there may be limitiations on what can be modified such as the next_transaction_date and frequency.",
+  "allOf": [
+    {
+      "$ref": "Timestamp.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "_links": {
+          "description": "Useful resource pointers.",
+          "allOf": [
+            {
+              "$ref": "Navigation.json"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["fx:sub_token_url"],
+              "properties": {
+                "fx:sub_token_url": {
+                  "$ref": "./Link.json"
+                }
+              }
+            }
+          ]
+        },
+        "_embedded": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["template_config"],
+          "description": "Embedded content.",
+          "properties": {
+            "template_config": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "allow_next_date_modification",
+                "allow_frequency_modification"
+              ],
+              "description": "Various template settings to help inform the UI.",
+              "properties": {
+                "allow_next_date_modification": {
+                  "description": "Indicates whether or not a subscription's next date can be modified by the customer. Note that this is included per transaction, though the setting at this point is store-wide.",
+                  "type": "boolean",
+                  "examples": [true]
+                },
+                "allow_frequency_modification": {
+                  "description": "A list of allowed frequencies if frequency modification is enabled for this subscription or `false` otherwise. The list can be empty, in which case it should be treated as `false` value.",
+                  "oneOf": [
+                    {
+                      "const": false
+                    },
+                    {
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string",
+                        "examples": ["4d", ".5m", "6w", "3m", "2y"]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "start_date": {
+          "description": "The original date this subscription began or will begin if set in the future.",
+          "type": "string",
+          "format": "date",
+          "faker": "date.past"
+        },
+        "next_transaction_date": {
+          "description": "The date for when this subscription will run again.",
+          "type": "string",
+          "format": "date",
+          "faker": "date.future"
+        },
+        "end_date": {
+          "description": "If set, the date this subscription will end. The subscription will not run on this day.",
+          "type": ["string", "null"],
+          "format": "date",
+          "faker": "date.future"
+        },
+        "frequency": {
+          "description": "This determines how often this subscription will be processed. The format is a number followed by a date type such as d (day), w (week), m (month), or y (year). You can also use .5m for twice a month.",
+          "type": "string",
+          "pattern": "^\\.5m|([1-9][0-9]*[dwmy])$",
+          "examples": [".5m", "1y", "1m", "1w", "1d"]
+        },
+        "error_message": {
+          "description": "If the last run of this subscription encountered an error, that error message will be saved here. It will also note if a past due payment was made.",
+          "type": "string",
+          "faker": "lorem.sentence"
+        },
+        "past_due_amount": {
+          "description": "If a subscription payment is missed, this amount will be increased by that payment. The next time the subscription runs, it will be charged automatically, depending on your store's subscription settings.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 250
+        },
+        "first_failed_transaction_date": {
+          "description": "If this subscription failed to process due to an error such as expired payment card, this field will show the first date the subscription failed to process. If it processes successfully at the next attempt, this field will be cleared.",
+          "type": ["string", "null"],
+          "format": "date",
+          "faker": "date.recent"
+        },
+        "is_active": {
+          "description": "Determines whether or not this transaction is active or not. If you are using the subscription datafeed, it is best to set the end_date to tomorrow instead of settings this to inactive.",
+          "type": "boolean"
+        },
+        "third_party_id": {
+          "description": "If this subscription is using a third party subscription system such as PayPal Express, their identifier will be set here.",
+          "type": "string",
+          "faker": "random.uuid"
+        }
+      },
+      "required": [
+        "_links",
+        "_embedded",
+        "start_date",
+        "next_transaction_date",
+        "end_date",
+        "frequency",
+        "error_message",
+        "past_due_amount",
+        "first_failed_transaction_date",
+        "is_active"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

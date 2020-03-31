@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Transaction",
+  "description": "A transaction is a historical record of a cart that has been purchased by a customer. To create a transaction, you post to a cart. The only aspects of a transaction which can be modified are hide_transaction and data_is_fed.",
+  "allOf": [
+    {
+      "$ref": "Timestamp.json"
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_links",
+        "_embedded",
+        "id",
+        "display_id",
+        "is_test",
+        "hide_transaction",
+        "data_is_fed",
+        "transaction_date",
+        "locale_code",
+        "customer_first_name",
+        "customer_last_name",
+        "customer_tax_id",
+        "customer_email",
+        "customer_ip",
+        "ip_country",
+        "user_agent",
+        "total_item_price",
+        "total_tax",
+        "total_shipping",
+        "total_future_shipping",
+        "total_order",
+        "currency_code",
+        "currency_symbol",
+        "status"
+      ],
+      "properties": {
+        "_links": {
+          "description": "Useful resource pointers.",
+          "allOf": [
+            {
+              "$ref": "Navigation.json"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["fx:receipt"],
+              "properties": {
+                "fx:receipt": {
+                  "$ref": "./Link.json"
+                }
+              }
+            }
+          ]
+        },
+        "_embedded": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fx:attributes"
+          ],
+          "properties": {
+            "fx:attributes": {
+              "type": "array",
+              "items": {
+                "$ref": "./Attribute.json"
+              }
+            }
+          }
+        },
+        "id": {
+          "description": "The order number.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "display_id": {
+          "description": "The order number for display.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "is_test": {
+          "description": "True if this transaction was a test transaction and not run against a live payment gateway.",
+          "type": "boolean"
+        },
+        "hide_transaction": {
+          "description": "Set this to true to hide it in the FoxyCart admin.",
+          "type": "boolean"
+        },
+        "data_is_fed": {
+          "description": "If the webhook for this transaction has been successfully sent, this will be true. You can also modify this to meet your needs.",
+          "type": "boolean"
+        },
+        "transaction_date": {
+          "description": "The date of this transaction shown in the timezone of the store. The format used is ISO 8601 (or 'c' format string for PHP developers).",
+          "type": "string",
+          "format": "date",
+          "faker": "date.past"
+        },
+        "locale_code": {
+          "description": "The locale code of this transaction. This will be a copy of the store's local_code at the time of the transaction.",
+          "type": "string",
+          "examples": ["en_US"]
+        },
+        "customer_first_name": {
+          "description": "The customer's given name at the time of the transaction.",
+          "type": "string",
+          "faker": "name.firstName"
+        },
+        "customer_last_name": {
+          "description": "The customer's surname at the time of the transaction.",
+          "type": "string",
+          "faker": "name.lastName"
+        },
+        "customer_tax_id": {
+          "description": "If the customer provided a tax_id during checkout, it will be included here.",
+          "type": "string",
+          "pattern": "^[0-9]{3}-[0-9]{2}-[0-9]{4}$"
+        },
+        "customer_email": {
+          "description": "The customer's email address at the time of the transaction.",
+          "type": "string",
+          "faker": "internet.email"
+        },
+        "customer_ip": {
+          "description": "The customer's ip address at the time of the transaction.",
+          "type": "string",
+          "faker": "internet.ip"
+        },
+        "ip_country": {
+          "description": "The country of the customer's ip address.",
+          "type": "string",
+          "faker": "address.country"
+        },
+        "user_agent": {
+          "description": "User Agent string.",
+          "type": "string",
+          "faker": "internet.userAgent"
+        },
+        "total_item_price": {
+          "description": "Total amount of the items in this transaction.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 250
+        },
+        "total_tax": {
+          "description": "Total amount of the taxes for this transaction.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "total_shipping": {
+          "description": "Total amount of the shipping costs for this transaction.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "total_future_shipping": {
+          "description": "If this transaction has any shippable subscription items which will process in the future, this will be the total amount of shipping costs for those items.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 50
+        },
+        "total_order": {
+          "description": "Total amount of this transaction including all items, taxes, shipping costs and discounts.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 500
+        },
+        "currency_code": {
+          "description": "ISO 4217 currency code, uppercase.",
+          "type": "string",
+          "examples": ["USD", "RUB", "CHF", "EUR", "AUD"]
+        },
+        "currency_symbol": {
+          "description": "A text symbol representing the currency this transaction was made in.",
+          "type": "string",
+          "pattern": "^.$",
+          "faker": "finance.currencySymbol"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "",
+            "captured",
+            "approved",
+            "authorized",
+            "declined",
+            "pending",
+            "rejected"
+          ],
+          "description": "Used for transactions processed with a hosted payment gateway which can change the status of the transaction after it is originally posted. If the status is empty, a normal payment gateway was used and the transaction should be considered completed."
+        }
+      }
+    }
+  ]
+}

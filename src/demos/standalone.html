@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="bg-gray-200">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+    <title>Standalone Components</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+
+    <script type="module" src="/build/foxy.esm.js"></script>
+    <script nomodule src="/build/foxy.js"></script>
+  </head>
+
+  <body class="container mx-auto sm:p-8">
+    <h1 class="text-2xl mb-4">
+      Standalone components demo
+    </h1>
+
+    <p class="mb-8">
+      Components in this demo are independent and should not communicate changes
+      between each other. Please remember to either set the auth cookie manually or
+      refresh the page after logging in with the foxy-sign-in component.
+    </p>
+
+    <div class="bg-white mb-8">
+      <foxy-address endpoint="http://localhost:5000" type="default_shipping_address"></foxy-address>
+    </div>
+
+    <div class="bg-white mb-8">
+      <foxy-address endpoint="http://localhost:5000" type="default_billing_address"></foxy-address>
+    </div>
+
+    <div class="bg-white mb-8">
+      <foxy-profile endpoint="http://localhost:5000"></foxy-profile>
+    </div>
+
+    <div class="bg-white mb-8">
+      <foxy-sign-in endpoint="http://localhost:5000"></foxy-sign-in>
+    </div>
+
+    <div class="bg-white mb-8">
+      <foxy-transactions endpoint="http://localhost:5000"></foxy-transactions>
+    </div>
+
+    <div class="bg-white mb-8">
+      <foxy-subscriptions endpoint="http://localhost:5000"></foxy-subscriptions>
+    </div>
+  </body>
+</html>

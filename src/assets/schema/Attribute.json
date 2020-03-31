@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Attribute",
+  "description": "An additional named characteristic of the resource.",
+  "allOf": [
+    {
+      "$ref": "Timestamp.json"
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "visibility",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Attribute name.",
+          "faker": "commerce.productName"
+        },
+        "value": {
+          "type": "string",
+          "description": "Attribute value.",
+          "faker": "random.alphaNumeric"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["public", "private"],
+          "description": "Public availability of this attribute."
+        }
+      }
+    }
+  ]
+}
