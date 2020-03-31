@@ -36,7 +36,7 @@ export const ItemActions: FunctionalComponent<Props> = props => {
       <slot name={`row-${props.row}-actions-cancel`}>
         <LinkButton
           href={`${tokenURL}&sub_cancel=true`}
-          disabled={isDisabled}
+          disabled={!props.item.is_active}
           loaded={Boolean(props.i18n)}
           text={() => props.i18n.cancel}
           theme="error"
