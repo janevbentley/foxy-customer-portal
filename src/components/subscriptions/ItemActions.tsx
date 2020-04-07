@@ -1,6 +1,7 @@
 import { FunctionalComponent, h } from "@stencil/core";
 import { LinkButton } from "../LinkButton";
 import { Subscription } from "../../assets/types/Subscription";
+import { isCancelled } from "./utils";
 
 interface Props {
   row: number;
@@ -13,6 +14,7 @@ interface Props {
 
 export const ItemActions: FunctionalComponent<Props> = props => {
   const tokenURL = props.item._links["fx:sub_token_url"].href;
+  const disabled = isCancelled(props.item);
 
   return (
     <div class="flex flex-wrap justify-between -mx-s sm:flex-no-wrap sm:justify-start">
@@ -21,7 +23,7 @@ export const ItemActions: FunctionalComponent<Props> = props => {
       <slot name={`row-${props.row}-actions-update-billing`}>
         <LinkButton
           href={`${tokenURL}&cart=checkout&sub_restart=auto`}
-          disabled={!props.item.is_active}
+          disabled={disabled}
           loaded={Boolean(props.i18n)}
           text={() => props.i18n.update}
           icon="credit-card"
@@ -32,7 +34,7 @@ export const ItemActions: FunctionalComponent<Props> = props => {
       <slot name={`row-${props.row}-actions-cancel`}>
         <LinkButton
           href={`${tokenURL}&sub_cancel=true`}
-          disabled={!props.item.is_active}
+          disabled={disabled}
           loaded={Boolean(props.i18n)}
           text={() => props.i18n.cancel}
           theme="error"

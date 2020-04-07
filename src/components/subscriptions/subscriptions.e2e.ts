@@ -4,6 +4,7 @@ import { interceptAPIRequests } from "../../assets/utils/interceptAPIRequests";
 import { E2EElement } from "@stencil/core/dist/testing";
 import { Subscription } from "../../assets/types/Subscription";
 import { i18nProvider } from "./i18n";
+import { isCancelled } from "./utils";
 import { formatDate } from "./NextDatePicker";
 
 const tag = "foxy-subscriptions";
@@ -138,11 +139,13 @@ async function shouldDisplay(row: E2EElement, item: Subscription) {
     formatDate(new Date(item.next_transaction_date))
   );
 
-  expect(await updateLink.getProperty("href")).toBe(
-    `${item._links["fx:sub_token_url"].href.toLowerCase()}&cart=checkout&sub_restart=auto`
-  );
+  if (!isCancelled(item)) {
+    expect(await updateLink.getProperty("href")).toBe(
+      `${item._links["fx:sub_token_url"].href.toLowerCase()}&cart=checkout&sub_restart=auto`
+    );
 
-  expect(await cancelLink.getProperty("href")).toBe(
-    `${item._links["fx:sub_token_url"].href.toLowerCase()}&sub_cancel=true`
-  );
+    expect(await cancelLink.getProperty("href")).toBe(
+      `${item._links["fx:sub_token_url"].href.toLowerCase()}&sub_cancel=true`
+    );
+  }
 }
