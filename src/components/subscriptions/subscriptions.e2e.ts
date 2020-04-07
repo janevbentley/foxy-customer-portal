@@ -139,7 +139,7 @@ async function shouldDisplay(row: E2EElement, item: Subscription) {
   );
 
   expect(await updateLink.getProperty("href")).toBe(
-    `${item._links["fx:sub_token_url"].href.toLowerCase()}&cart=checkout`
+    `${item._links["fx:sub_token_url"].href.toLowerCase()}&cart=checkout&sub_restart=auto`
   );
 
   expect(await cancelLink.getProperty("href")).toBe(
