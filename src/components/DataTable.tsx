@@ -27,7 +27,7 @@ function createDataTable<T>(): FunctionalComponent<Props<T>> {
           <thead class="hidden sm:table-header-group">
             <tr>
               {new Array(props.cols).fill(0).map((_, i) => (
-                <th class="px-m text-s font-medium sm:h-l">
+                <th class="px-m text-s font-medium sm:h-l text-left">
                   <slot name={`header-${i}`}>
                     <Skeleton
                       loaded={Boolean(props.messages)}
@@ -92,11 +92,11 @@ function createDataTable<T>(): FunctionalComponent<Props<T>> {
         {props.isLoadingNext ? (
           <vaadin-progress-bar class="w-xl" indeterminate />
         ) : (
-          <Skeleton
-            loaded={Boolean(props.messages)}
-            text={() => props.messages.next}
-          />
-        )}
+            <Skeleton
+              loaded={Boolean(props.messages)}
+              text={() => props.messages.next}
+            />
+          )}
         <iron-icon icon="icons:chevron-right" slot="suffix" />
       </vaadin-button>
 
