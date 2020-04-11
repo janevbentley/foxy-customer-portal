@@ -1,5 +1,4 @@
-import { FunctionalComponent, h } from "@stencil/core";
-import { VNode } from "@stencil/core/dist/declarations";
+import { FunctionalComponent, h, VNode } from "@stencil/core";
 import { Transaction } from "../assets/types/Transaction";
 import { Subscription } from "../assets/types/Subscription";
 import { Skeleton } from "./Skeleton";

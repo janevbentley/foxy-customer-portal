@@ -1,7 +1,7 @@
 import { click } from "../../assets/utils/click";
 import { usePage } from "../../assets/utils/usePage";
 import { interceptAPIRequests } from "../../assets/utils/interceptAPIRequests";
-import { E2EElement } from "@stencil/core/dist/testing";
+import { E2EElement } from "@stencil/core/testing";
 import { Subscription } from "../../assets/types/Subscription";
 import { i18nProvider } from "./i18n";
 import { formatDate } from "./NextDatePicker";
@@ -121,7 +121,7 @@ describe("HTMLFoxySubscriptionsElement", () => {
 });
 
 async function shouldDisplay(row: E2EElement, item: Subscription) {
-  const i18n = i18nProvider.default;
+  const i18n = i18nProvider.en;
 
   const cells = await row.findAll("td");
   const freqPicker = await cells[1].find("[data-e2e=fld-freq]");
