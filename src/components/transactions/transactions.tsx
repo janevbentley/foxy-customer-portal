@@ -248,10 +248,10 @@ export class Transactions
           ),
           item => (
             <div class="font-tnum select-none text-xxl font-thin sm:font-normal sm:text-m">
-              {new Intl.NumberFormat(this.locale, {
+              {item.total_order.toLocaleString(this.locale, {
                 style: "currency",
                 currency: item.currency_code
-              }).format(item.total_order)}
+              })}
             </div>
           ),
           item => (
