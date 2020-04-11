@@ -159,9 +159,7 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           data-e2e="fld-email"
           class="w-narrow"
           required
-        >
-          <input slot="input" />
-        </vaadin-email-field>
+        />
 
         <slot name="email-append" />
 
@@ -176,9 +174,7 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           data-e2e="fld-password"
           class="w-narrow"
           required
-        >
-          <input slot="input" />
-        </vaadin-password-field>
+        />
 
         <slot name="password-append" />
 
@@ -211,11 +207,11 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           {this.status === Status.signingIn ? (
             <vaadin-progress-bar class="w-xl" indeterminate />
           ) : (
-            <Skeleton
-              loaded={this.i18n !== null}
-              text={() => this.i18n.submit}
-            />
-          )}
+              <Skeleton
+                loaded={this.i18n !== null}
+                text={() => this.i18n.submit}
+              />
+            )}
         </vaadin-button>
 
         <vaadin-button
@@ -232,11 +228,11 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           {this.status === Status.resettingPassword ? (
             <vaadin-progress-bar class="w-xl" indeterminate />
           ) : (
-            <Skeleton
-              loaded={this.i18n !== null}
-              text={() => this.i18n.resetPassword}
-            />
-          )}
+              <Skeleton
+                loaded={this.i18n !== null}
+                text={() => this.i18n.resetPassword}
+              />
+            )}
         </vaadin-button>
 
         <slot name="buttons-append" />
