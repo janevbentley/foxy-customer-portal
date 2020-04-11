@@ -1,3 +1,4 @@
+import "@webcomponents/webcomponentsjs";
 import "unfetch/polyfill";
 
 import "@polymer/iron-icon/iron-icon";

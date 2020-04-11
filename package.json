@@ -97,6 +97,7 @@
     "@vaadin/vaadin-select": "2.1.5",
     "@vaadin/vaadin-tabs": "3.0.4",
     "@vaadin/vaadin-text-field": "2.4.8",
+    "@webcomponents/webcomponentsjs": "^2.4.3",
     "deepmerge": "^4.2.2",
     "js-cookie": "^2.2.1",
     "unfetch": "^4.1.0"
