@@ -114,7 +114,7 @@ export class Transactions
       customer = await getCustomer(this.resolvedEndpoint, params);
     } catch (e) {
       console.error(e);
-      const localMessage = this.i18n?.error || this.i18nProvider.default.error;
+      const localMessage = this.i18n?.error || this.i18nProvider.en.error;
       this.error = e instanceof APIError ? e.message : localMessage;
       this.isErrorDismissable = this.state.id !== -1;
     }
@@ -179,7 +179,7 @@ export class Transactions
         console.error(e);
 
         const localMessage =
-          this.i18n?.error || this.i18nProvider.default.error;
+          this.i18n?.error || this.i18nProvider.en.error;
 
         this.error = e instanceof APIError ? e.message : localMessage;
         this.isErrorDismissable = true;

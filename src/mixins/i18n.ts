@@ -5,16 +5,15 @@ export type Override<T extends Partial<Record<string, any>>> = Partial<
 >;
 
 export type MessagesProvider<T = any> = {
-  en: () => Promise<T>;
+  en: T;
   ru: () => Promise<T>;
-  default: T;
 };
 
 export abstract class Mixin<T extends MessagesProvider> {
   i18n: Record<string, any> | null;
   i18nProvider: T;
-  locale: string | Override<T["default"]>;
-  onLocaleChange: (newValue: string | Override<T["default"]>) => void;
+  locale: string | Override<T["en"]>;
+  onLocaleChange: (newValue: string | Override<T["en"]>) => void;
   componentWillLoad: () => any;
 }
 
@@ -43,24 +42,24 @@ function findBestSupportedLang<T extends MessagesProvider>(
     if (part in this.i18nProvider) return part as keyof T;
   }
 
-  return "default";
+  return "en";
 }
 
 export const defaults = {
   locale<T extends MessagesProvider>(
     this: Mixin<T>
-  ): Override<T["default"]> | string {
+  ): Override<T["en"]> | string {
     return findBestSupportedLang.call(this, navigator.languages ?? []);
   }
 };
 
 export async function onLocaleChange<T extends MessagesProvider>(
   this: Mixin<T>,
-  newValue: Override<T["default"]> | string
+  newValue: Override<T["en"]> | string
 ) {
-  let lang = "default";
-  let base = this.i18nProvider.default;
-  let overrides = {} as Partial<T["default"]>;
+  let lang = "en";
+  let base = this.i18nProvider.en;
+  let overrides = {} as Partial<T["en"]>;
 
   if (typeof newValue === "string") {
     lang = findBestSupportedLang.call(this, [newValue]);
@@ -73,7 +72,7 @@ export async function onLocaleChange<T extends MessagesProvider>(
   }
 
   try {
-    if (lang !== "default") base = await this.i18nProvider[lang]();
+    if (lang !== "en") base = await this.i18nProvider[lang]();
   } catch (e) {
     console.error(e);
   }

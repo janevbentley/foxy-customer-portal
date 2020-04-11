@@ -91,7 +91,7 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
         this.status = Status.success;
         this.message =
           this.i18n === null
-            ? this.i18nProvider.default.resetPasswordSuccess
+            ? this.i18nProvider.en.resetPasswordSuccess
             : this.i18n.resetPasswordSuccess;
       } catch (e) {
         console.error(e);

@@ -73,9 +73,9 @@ export class PluginWarning
 
           message.style.fontSize = "var(--foxy-font-size-xs)";
           message.style.padding = "var(--foxy-space-xs) 0 var(--foxy-space-s)";
-          message.innerText = (this.i18n ?? this.i18nProvider.default).warning;
+          message.innerText = (this.i18n ?? this.i18nProvider.en).warning;
 
-          action.innerText = (this.i18n ?? this.i18nProvider.default).close;
+          action.innerText = (this.i18n ?? this.i18nProvider.en).close;
           action.setAttribute("theme", "small");
           action.addEventListener("click", () => this.close());
 
