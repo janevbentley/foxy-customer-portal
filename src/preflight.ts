@@ -1,5 +1,5 @@
-import "@webcomponents/webcomponentsjs";
 import "unfetch/polyfill";
+import "details-polyfill";
 
 import "@polymer/iron-icon/iron-icon";
 import "@polymer/iron-icons/iron-icons";
@@ -17,7 +17,6 @@ import "@vaadin/vaadin-button/theme/lumo/vaadin-button";
 import "@vaadin/vaadin-tabs/theme/lumo/vaadin-tabs";
 
 import { style as subscriptionsStyle } from "./components/subscriptions/style";
-import { isIE11 } from "./assets/utils/isIE11";
 
 /**
  * This is a globalScript: @see https://stenciljs.com/docs/config#globalscript
@@ -29,14 +28,5 @@ import { isIE11 } from "./assets/utils/isIE11";
  */
 export default () => {
   document.body.appendChild(document.createElement("foxy-plugin-warning"));
-
-  if (!isIE11()) {
-    /**
-     * Polymer's <dom-module> that Vaadin uses for custom styling
-     * causes affected elements to disappear in IE11 in our setup. Unfortunately, we
-     * couldn't find neither the cause of this issue nor the appropriate solution and
-     * therefore have decided to not apply the minor visual enhancements below in this browser.
-     */
-    document.head.insertAdjacentHTML("beforeend", subscriptionsStyle);
-  }
+  document.head.insertAdjacentHTML("beforeend", subscriptionsStyle);
 };

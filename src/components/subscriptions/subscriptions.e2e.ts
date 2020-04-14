@@ -1,7 +1,7 @@
 import { click } from "../../assets/utils/click";
 import { usePage } from "../../assets/utils/usePage";
 import { interceptAPIRequests } from "../../assets/utils/interceptAPIRequests";
-import { E2EElement } from "@stencil/core/testing";
+import { E2EElement } from "@stencil/core/dist/testing";
 import { Subscription } from "../../assets/types/Subscription";
 import { i18nProvider } from "./i18n";
 import { isCancelled } from "./utils";
@@ -122,7 +122,7 @@ describe("HTMLFoxySubscriptionsElement", () => {
 });
 
 async function shouldDisplay(row: E2EElement, item: Subscription) {
-  const i18n = i18nProvider.en;
+  const i18n = i18nProvider.default;
 
   const cells = await row.findAll("td");
   const freqPicker = await cells[1].find("[data-e2e=fld-freq]");
@@ -141,9 +141,7 @@ async function shouldDisplay(row: E2EElement, item: Subscription) {
 
   if (!isCancelled(item)) {
     expect(await updateLink.getProperty("href")).toBe(
-      `${item._links[
-        "fx:sub_token_url"
-      ].href.toLowerCase()}&cart=checkout&sub_restart=auto`
+      `${item._links["fx:sub_token_url"].href.toLowerCase()}&cart=checkout&sub_restart=auto`
     );
 
     expect(await cancelLink.getProperty("href")).toBe(

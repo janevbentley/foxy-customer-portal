@@ -13,15 +13,6 @@ export const config: Config = {
   testing: {
     browserArgs: ["--no-sandbox"]
   },
-  extras: {
-    /**
-     * The standard Shadow DOM shim included by Stencil
-     * doesn't seem to play well with the one in Vaadin components
-     * that use Polymer. Disabling and bundling @webcomponents/webcomponentsjs
-     * instead (see src/preflight.ts)
-     */
-    shadowDomShim: false
-  },
   plugins: [
     replace({
       lumo: process.env.VAADIN_THEME || "lumo",

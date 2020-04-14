@@ -1,4 +1,4 @@
-import { E2EPage, E2EElement } from "@stencil/core/testing";
+import { E2EPage, E2EElement } from "@stencil/core/dist/testing";
 
 export async function replaceText(
   page: E2EPage,

@@ -20,7 +20,8 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "types/jsx.d.ts"
+    "types/jsx.d.ts",
+    "stencil.config.ts"
   ],
   "exclude": [
     "node_modules"
