@@ -1,6 +1,7 @@
 import { FunctionalComponent, h } from "@stencil/core";
 import { Skeleton } from "../Skeleton";
 import { Subscription } from "../../assets/types/Subscription";
+import { isCancelled } from "./utils";
 
 interface Props {
   item: Subscription;
@@ -34,15 +35,10 @@ function renderItems({ item, i18n }: Props, root: HTMLElement) {
 export const FrequencyPicker: FunctionalComponent<Props> = props => {
   const config = props.item._embedded.template_config;
   const values = config.allow_frequency_modification;
-
-  const isReadonly =
-    !values ||
-    !props.item.is_active ||
-    values.length === 0 ||
-    props.i18n === null;
+  const readonly = !values || !values.length || !props.i18n || isCancelled(props.item);
 
   return (
-    <div class={{ "pb-s sm:pb-0": !isReadonly }}>
+    <div class={{ "pb-s sm:pb-0": !readonly }}>
       <div class="text-s text-contrast-50 sm:hidden">
         <Skeleton
           loaded={Boolean(props.i18n)}
@@ -53,7 +49,7 @@ export const FrequencyPicker: FunctionalComponent<Props> = props => {
         class="w-full"
         data-e2e="fld-freq"
         data-theme="foxy-subscriptions"
-        readonly={isReadonly}
+        readonly={readonly}
         value={props.item.frequency}
         renderer={root => renderItems(props, root)}
         onChange={event => props.onChange(event)}
