@@ -134,7 +134,7 @@ export class Address
       customer = await get(this.resolvedEndpoint, params);
     } catch (e) {
       console.error(e);
-      const localMessage = this.i18n?.error || this.i18nProvider.en.error;
+      const localMessage = this.i18n?.error || this.i18nProvider.default.error;
       this.error = e instanceof APIError ? e.message : localMessage;
       this.isErrorDismissable = this.state.id !== -1;
     }
@@ -184,7 +184,7 @@ export class Address
       });
     } catch (e) {
       console.error(e);
-      const localMessage = this.i18n?.error || this.i18nProvider.en.error;
+      const localMessage = this.i18n?.error || this.i18nProvider.default.error;
       this.error = e instanceof APIError ? e.message : localMessage;
     }
 
@@ -227,9 +227,9 @@ export class Address
 
     const blacklist =
       window.FC.json.config[
-      this.type === "default_billing_address"
-        ? "locations_billing"
-        : "locations_shipping"
+        this.type === "default_billing_address"
+          ? "locations_billing"
+          : "locations_shipping"
       ];
 
     for (const country in window.FC.json.config.locations) {

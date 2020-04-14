@@ -35,8 +35,7 @@ function renderItems({ item, i18n }: Props, root: HTMLElement) {
 export const FrequencyPicker: FunctionalComponent<Props> = props => {
   const config = props.item._embedded.template_config;
   const values = config.allow_frequency_modification;
-  const readonly =
-    !values || !values.length || !props.i18n || isCancelled(props.item);
+  const readonly = !values || !values.length || !props.i18n || isCancelled(props.item);
 
   return (
     <div class={{ "pb-s sm:pb-0": !readonly }}>

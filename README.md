@@ -108,18 +108,13 @@ _Hint:_ you can assign multiple elements to a single slot:
 
 ### Browser
 
-Modern (Chrome 60+, Safari 10.1+, Firefox 63+):
-
 ```html
 <script type="module" src="/path/to/package/dist/foxy/foxy.esm.js"></script>
-<foxy-customer-portal endpoint="https://your-api-endpoint.tld"></foxy-customer-portal>
-```
+<script nomodule src="/path/to/package/dist/foxy/foxy.js"></script>
 
-Legacy (Edge 16-18, IE11):
-
-```html
-<script src="/path/to/package/dist/foxy/foxy.js"></script>
-<foxy-customer-portal endpoint="https://your-api-endpoint.tld"></foxy-customer-portal>
+<foxy-customer-portal
+  endpoint="https://your-api-endpoint.tld"
+></foxy-customer-portal>
 ```
 
 If you aren't doing subscriptions or downloadables, you can override those elements by defining empty divs in their slots, like this:

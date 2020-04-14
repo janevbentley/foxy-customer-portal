@@ -1,4 +1,4 @@
-import { E2EPage } from "@stencil/core/testing";
+import { E2EPage } from "@stencil/core/dist/testing";
 import faker from "faker";
 import { PageEventObj } from "puppeteer";
 import { handlers } from "../handlers";
