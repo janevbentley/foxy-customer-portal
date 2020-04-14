@@ -1,6 +1,7 @@
 import { FunctionalComponent, h } from "@stencil/core";
 import { Subscription } from "../../assets/types/Subscription";
 import { Skeleton } from "../Skeleton";
+import { isCancelled } from "./utils";
 
 interface Props {
   item: Subscription;
@@ -14,8 +15,8 @@ export const StatusSummary: FunctionalComponent<Props> = props => (
     <div
       class={{
         "text-s mr-s": true,
-        "text-success": props.item.is_active,
-        "text-contrast-50": !props.item.is_active
+        "text-success": !isCancelled(props.item),
+        "text-contrast-50": isCancelled(props.item)
       }}
     >
       ●
