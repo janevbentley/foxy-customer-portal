@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+
+.separator {
+  height: 1px;
+  width: calc(100% - 72px);
+  margin-top: -1px;
+}
+
+.table-subheader {
+  margin-right: calc(-3px - 2.1em);
+  margin-top: calc(0px - 1em - 1.75rem);
+  padding-left: 3px;
+}
+
+@screen md {
+  .table-subheader {
+    margin-right: initial;
+    margin-top: initial;
+    padding-left: initial;
+  }
+}
+
+@tailwind utilities;
+
+.bg-unknown {
+  background: rgb(121, 124, 133)
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-amex {
+  background: #2557d6
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-diners {
+  background: #0079be
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-discover {
+  background: #4d4d4d
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-jcb {
+  background: #0e4c96
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-maestro {
+  background: #181818
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-mastercard {
+  background: #16366f
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-visa {
+  background: #0e4595
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+@responsive {
+  .iron-icon-14px {
+    --iron-icon-height: 14px;
+    --iron-icon-width: 14px;
+  }
+
+  .iron-icon-16px {
+    --iron-icon-height: 16px;
+    --iron-icon-width: 16px;
+  }
+
+  .iron-icon-18px {
+    --iron-icon-height: 18px;
+    --iron-icon-width: 18px;
+  }
+
+  .pt-64px {
+    padding-top: 64px;
+  }
+
+  .px-48px {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+  .pl-72px {
+    padding-left: 72px;
+  }
+
+  .-mx-48px {
+    margin-left: -48px;
+    margin-right: -48px;
+  }
+
+  .mb-6px {
+    margin-bottom: 6px;
+  }
+
+  .-top-64px {
+    top: -64px;
+  }
+
+  .-top-m {
+    top: calc(0 - var(--foxy-space-m, 1rem));
+  }
+
+  .h-40px {
+    height: 40px;
+  }
+
+  .h-64px {
+    height: 64px;
+  }
+
+  .h-80px {
+    height: 80px;
+  }
+
+  .w-72px {
+    width: 72px;
+  }
+
+  .w-240px {
+    width: 240px;
+  }
+
+  .w-320px {
+    width: 320px;
+  }
+
+  .scroll-px-20 {
+    scroll-padding-left: 20px;
+    scroll-padding-right: 20px;
+  }
+
+  .scroll-px-0 {
+    scroll-padding-left: 0;
+    scroll-padding-right: 0;
+  }
+
+  .snap-x-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+  .snap-end {
+    scroll-snap-align: end;
+  }
+
+  .snap-none {
+    scroll-snap-type: none;
+  }
+
+  .text-white {
+    color: white;
+  }
+
+  .fill-base {
+    fill: var(--foxy-base-color, #fff);
+  }
+}
+
+@tailwind screens;

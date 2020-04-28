@@ -3,6 +3,7 @@ import "details-polyfill";
 
 import "@polymer/iron-icon/iron-icon";
 import "@polymer/iron-icons/iron-icons";
+import "@polymer/iron-icons/editor-icons";
 
 import "@vaadin/vaadin-dialog/theme/lumo/vaadin-dialog";
 import "@vaadin/vaadin-select/theme/lumo/vaadin-select";

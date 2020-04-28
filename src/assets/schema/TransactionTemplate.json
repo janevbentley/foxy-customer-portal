@@ -1,0 +1,195 @@
+{
+  "$id": "TransactionTemplate",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "_embedded",
+    "language",
+    "locale_code",
+    "use_customer_shipping_address",
+    "billing_first_name",
+    "billing_last_name",
+    "billing_company",
+    "billing_address1",
+    "billing_address2",
+    "billing_city",
+    "billing_state",
+    "billing_postal_code",
+    "billing_country",
+    "billing_phone",
+    "customer_email",
+    "shipping_first_name",
+    "shipping_last_name",
+    "shipping_company",
+    "shipping_address1",
+    "shipping_address2",
+    "shipping_city",
+    "shipping_state",
+    "shipping_postal_code",
+    "shipping_country",
+    "shipping_phone",
+    "total_item_price",
+    "total_tax",
+    "total_shipping",
+    "total_future_shipping",
+    "total_order",
+    "date_created",
+    "date_modified",
+    "currency_code",
+    "currency_symbol"
+  ],
+  "properties": {
+    "_embedded": {
+      "type": "object",
+      "default": {},
+      "additionalProperties": false,
+      "required": ["fx:items"],
+      "properties": {
+        "fx:items": {
+          "type": "array",
+          "additionalItems": false,
+          "items": {
+            "$ref": "Item.json"
+          }
+        }
+      }
+    },
+    "language": {
+      "type": "string",
+      "examples": ["English"]
+    },
+    "locale_code": {
+      "type": "string",
+      "examples": ["en-US"]
+    },
+    "use_customer_shipping_address": {
+      "type": "boolean",
+      "default": false,
+      "examples": [true]
+    },
+    "billing_first_name": {
+      "type": "string",
+      "examples": ["FoxyCart"]
+    },
+    "billing_last_name": {
+      "type": "string",
+      "examples": ["LLC"]
+    },
+    "billing_company": {
+      "type": "string",
+      "examples": ["Foxy.io"]
+    },
+    "billing_address1": {
+      "type": "string",
+      "examples": ["PO Box 1505, #31921"]
+    },
+    "billing_address2": {
+      "type": "string",
+      "examples": ["Ste. #56961"]
+    },
+    "billing_city": {
+      "type": "string",
+      "examples": ["Austin"]
+    },
+    "billing_state": {
+      "type": "string",
+      "examples": ["Texas"]
+    },
+    "billing_postal_code": {
+      "type": "string",
+      "examples": ["46282"]
+    },
+    "billing_country": {
+      "type": "string",
+      "examples": ["US"]
+    },
+    "billing_phone": {
+      "type": "string",
+      "examples": ["855-FOXYCART"]
+    },
+    "customer_email": {
+      "type": "string",
+      "examples": ["hello@foxy.io"]
+    },
+    "shipping_first_name": {
+      "type": "string",
+      "examples": ["Fancypants"]
+    },
+    "shipping_last_name": {
+      "type": "string",
+      "examples": ["McGuillicutty"]
+    },
+    "shipping_company": {
+      "type": "string",
+      "examples": ["FoxyCart.com LLC"]
+    },
+    "shipping_address1": {
+      "type": "string",
+      "examples": ["PO Box 1505, #31921"]
+    },
+    "shipping_address2": {
+      "type": "string",
+      "examples": ["Ste. #56961"]
+    },
+    "shipping_city": {
+      "type": "string",
+      "examples": ["Austin"]
+    },
+    "shipping_state": {
+      "type": "string",
+      "examples": ["TX"]
+    },
+    "shipping_postal_code": {
+      "type": "string",
+      "examples": ["46282"]
+    },
+    "shipping_country": {
+      "type": "string",
+      "examples": ["US"]
+    },
+    "shipping_phone": {
+      "type": "string",
+      "examples": ["855-FOXYCART"]
+    },
+    "total_item_price": {
+      "type": "integer",
+      "examples": [25]
+    },
+    "total_tax": {
+      "type": "integer",
+      "examples": [0]
+    },
+    "total_shipping": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "total_future_shipping": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "total_order": {
+      "type": "integer",
+      "examples": [25]
+    },
+    "date_created": {
+      "type": "null",
+      "default": null,
+      "examples": [null]
+    },
+    "date_modified": {
+      "type": "string",
+      "examples": ["2020-02-24T17:13:35-08:00"]
+    },
+    "currency_code": {
+      "type": "string",
+      "examples": ["USD"]
+    },
+    "currency_symbol": {
+      "type": "string",
+      "examples": ["$"]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "$id": "Item",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "price",
+    "quantity",
+    "quantity_min",
+    "quantity_max",
+    "weight",
+    "code",
+    "parent_code",
+    "discount_name",
+    "discount_type",
+    "discount_details",
+    "subscription_frequency",
+    "subscription_start_date",
+    "subscription_next_transaction_date",
+    "subscription_end_date",
+    "is_future_line_item",
+    "shipto",
+    "url",
+    "image",
+    "length",
+    "width",
+    "height",
+    "expires",
+    "date_created",
+    "date_modified"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "faker": "commerce.productName"
+    },
+    "price": {
+      "type": "integer",
+      "default": 0,
+      "examples": [25]
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": 1,
+      "examples": [1, 2, 3, 4]
+    },
+    "quantity_min": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "quantity_max": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "weight": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "code": {
+      "type": "string",
+      "default": "",
+      "examples": ["subscription_product"]
+    },
+    "parent_code": {
+      "type": "string",
+      "default": "",
+      "examples": [""]
+    },
+    "discount_name": {
+      "type": "string",
+      "default": "",
+      "examples": [""]
+    },
+    "discount_type": {
+      "type": "string",
+      "default": "",
+      "examples": [""]
+    },
+    "discount_details": {
+      "type": "string",
+      "default": "",
+      "examples": [""]
+    },
+    "subscription_frequency": {
+      "type": "string",
+      "default": "",
+      "examples": ["1d"]
+    },
+    "subscription_start_date": {
+      "type": "string",
+      "default": "",
+      "examples": ["2020-02-02T00:00:00-08:00"]
+    },
+    "subscription_next_transaction_date": {
+      "type": "string",
+      "default": "",
+      "examples": ["2020-04-27T00:00:00-07:00"]
+    },
+    "subscription_end_date": {
+      "type": "null",
+      "default": null,
+      "examples": [null]
+    },
+    "is_future_line_item": {
+      "type": "boolean",
+      "default": false,
+      "examples": [false]
+    },
+    "shipto": {
+      "type": "string",
+      "default": "",
+      "examples": [""]
+    },
+    "url": {
+      "type": "string",
+      "default": "",
+      "examples": [""]
+    },
+    "image": {
+      "type": "string",
+      "default": "",
+      "faker": "image.food"
+    },
+    "length": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "width": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "height": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "expires": {
+      "type": "integer",
+      "default": 0,
+      "examples": [0]
+    },
+    "date_created": {
+      "type": "null",
+      "default": null,
+      "examples": [null]
+    },
+    "date_modified": {
+      "type": "string",
+      "default": "",
+      "examples": ["2020-02-21T07:36:36-08:00"]
+    }
+  }
+}
