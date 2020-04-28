@@ -13,7 +13,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  line-height: var(--foxy-line-height-m);
 }
 
 details > summary {
@@ -23,14 +22,6 @@ details > summary {
 
 details > summary::-webkit-details-marker {
   display: none;
-}
-
-a {
-  @apply text-primary;
-}
-
-a:hover {
-  @apply text-primary-50 underline;
 }
 
 @tailwind components;
