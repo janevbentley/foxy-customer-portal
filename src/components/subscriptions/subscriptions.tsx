@@ -1,44 +1,19 @@
-import {
-  Component,
-  Element,
-  Prop,
-  State,
-  Method,
-  Event,
-  Watch,
-  h,
-  EventEmitter
-} from "@stencil/core";
+import { Component, Element, Prop, State, Method } from "@stencil/core";
+import { Event, Watch, EventEmitter, h } from "@stencil/core";
 
-import {
-  FullGetResponse,
-  GetRequest,
-  GetResponse,
-  get as getCustomer
-} from "../../api";
-
-import {
-  get as getSubscriptions,
-  patch as updateSubscription
-} from "../../api/subscriptions";
+import { FullGetResponse, GetRequest, GetResponse } from "../../api";
+import { get as getSubscriptions } from "../../api/subscriptions";
+import { get as getCustomer } from "../../api";
 
 import * as vaadin from "../../mixins/vaadin";
 import * as store from "../../mixins/store";
 import * as i18n from "../../mixins/i18n";
-import { i18nProvider } from "./i18n";
 
 import { getParentPortal } from "../../assets/utils/getParentPortal";
 import { Subscription } from "../../assets/types/Subscription";
-import { SubscriptionDataTable } from "../DataTable";
-import { Messages } from "./types";
-import { ErrorOverlay } from "../ErrorOverlay";
 import { APIError } from "../../api/utils";
-import { FrequencyPicker } from "./FrequencyPicker";
-import { ToastPopup } from "./ToastPopup";
-import { ConfirmDialog } from "./ConfirmDialog";
-import { NextDatePicker, formatDate } from "./NextDatePicker";
-import { StatusSummary } from "./StatusSummary";
-import { ItemActions } from "./ItemActions";
+import { ErrorOverlay } from "../ErrorOverlay";
+import { i18nProvider } from "./i18n";
 
 @Component({
   tag: "foxy-subscriptions",
@@ -48,12 +23,10 @@ import { ItemActions } from "./ItemActions";
 export class Subscriptions
   implements vaadin.Mixin, store.Mixin, i18n.Mixin<typeof i18nProvider> {
   private readonly limit = 4;
-  private confirm: VaadinDialog;
-  private toast: VaadinNotification;
 
   @State() state = store.defaults.state.call(this) as FullGetResponse;
   @State() i18nProvider = i18nProvider;
-  @State() i18n: Messages | null = null;
+  @State() i18n = i18nProvider.default;
 
   @State() error = "";
   @State() isErrorDismissable = false;
@@ -80,9 +53,6 @@ export class Subscriptions
   onLocaleChange(newValue: string) {
     i18n.onLocaleChange.call(this, newValue);
   }
-
-  /** The number of columns in the table (affects the number of slots). */
-  @Prop() cols = 4;
 
   /**
    * Emitted after the component makes changes to the
@@ -222,118 +192,62 @@ export class Subscriptions
     return portal === null ? path : portal.endpoint + path;
   }
 
-  private handleNextDateChange(item: Subscription, event: Event) {
-    const picker = event.target as HTMLInputElement;
-    const oldDate = formatDate(new Date(item.next_transaction_date));
-
-    if (picker.value !== oldDate) {
-      const [year, month, day] = picker.value.split("-").map(v => parseInt(v));
-      const newDate = new Date(year, month - 1, day);
-
-      this.activeItem = { ...item };
-      this.activeItem.next_transaction_date = newDate.toISOString();
-      this.confirmText = this.i18n.confirmText(this.activeItem, item);
-      this.confirm.opened = true;
-
-      setTimeout(() => (picker.value = oldDate));
-    }
+  private get subscriptions() {
+    return this.state._embedded["fx:subscriptions"];
   }
 
-  private handleFrequencyChange(item: Subscription, event: Event) {
-    const select = event.target as HTMLInputElement;
-
-    if (select.value !== item.frequency) {
-      this.activeItem = { ...item };
-      this.activeItem.frequency = select.value;
-      this.confirmText = this.i18n.confirmText(this.activeItem, item);
-      this.confirm.opened = true;
-
-      setTimeout(() => (select.value = item.frequency));
-    }
-  }
-
-  private async handleConfirmOK() {
-    const subscription = this.state._embedded["fx:subscriptions"].find(item => {
-      return item._links.self.href === this.activeItem._links.self.href;
-    });
-
-    const { next_transaction_date: newNextDate } = this.activeItem;
-    const { frequency: newFrequency } = this.activeItem;
-
-    const { next_transaction_date: oldNextDate } = subscription;
-    const { frequency: oldFrequency } = subscription;
-
-    const hasNewNextDate = newNextDate !== oldNextDate;
-    const hasNewFrequency = newFrequency !== oldFrequency;
-
-    subscription.next_transaction_date = newNextDate;
-    subscription.frequency = newFrequency;
-
-    try {
-      await updateSubscription(this.activeItem._links.self.href, {
-        ...(hasNewNextDate ? { next_transaction_date: newNextDate } : {}),
-        ...(hasNewFrequency ? { frequency: newFrequency } : {})
-      });
-
-      this.update.emit(this.state);
-      this.toastTheme = "success";
-      this.toastText = this.i18n.updateSuccess;
-    } catch (e) {
-      console.error(e);
-
-      subscription.next_transaction_date = oldNextDate;
-      subscription.frequency = oldFrequency;
-
-      this.toastTheme = "error";
-      const localMessage = this.i18n?.error || this.i18nProvider.default.error;
-      this.error = e instanceof APIError ? e.message : localMessage;
-    }
-
-    this.toast.open();
+  private get displayedSubscriptions() {
+    return this.subscriptions.slice(this.start, this.start + this.limit);
   }
 
   render() {
     return (
-      <SubscriptionDataTable
-        cols={this.cols}
-        start={this.start}
-        limit={this.limit}
-        items={this.state._embedded["fx:subscriptions"]}
-        hasMore={this.hasMore}
-        messages={this.i18n}
-        isLoadingNext={this.isLoadingNext}
-        navigate={this.navigate.bind(this)}
-        headers={[
-          () => this.i18n.duration,
-          () => this.i18n.frequency,
-          () => this.i18n.picker,
-          () => this.i18n.actions
-        ]}
-        cells={[
-          item => <StatusSummary item={item} i18n={this.i18n} />,
-          item => (
-            <FrequencyPicker
-              item={item}
-              i18n={this.i18n}
-              onChange={event => this.handleFrequencyChange(item, event)}
-            />
-          ),
-          item => (
-            <NextDatePicker
-              item={item}
-              i18n={this.i18n}
-              onChange={(e, v) => this.handleNextDateChange(e, v)}
-            />
-          ),
-          item => (
-            <ItemActions
-              row={this.state._embedded["fx:subscriptions"].indexOf(item)}
-              i18n={this.i18n}
-              item={item}
-            />
-          )
-        ]}
-      >
+      <div class="flex flex-wrap justify-between">
+        {this.displayedSubscriptions.map((value, index) => [
+          <div
+            class={{
+              "w-full bg-contrast-10 h-1px ml-64px md:ml-72px": true,
+              "h-1px": index !== 0
+            }}
+          />,
+          <div class="w-full bg-base min-h-64px md:min-h-72px">
+            <slot name={index.toString()}>
+              <foxy-subscription
+                endpoint={this.endpoint}
+                locale={this.locale}
+                link={value._links.self.href}
+              />
+            </slot>
+          </div>
+        ])}
+
+        <vaadin-button
+          class="m-m"
+          disabled={this.start === 0 || this.isLoadingNext}
+          onClick={() => this.navigate("back")}
+        >
+          <iron-icon icon="icons:chevron-left" slot="prefix" />
+          {this.i18n.previous}
+        </vaadin-button>
+
+        <vaadin-button
+          disabled={
+            this.start + this.limit > this.subscriptions.length ||
+            this.isLoadingNext ||
+            this.hasMore === false
+          }
+          class="m-m"
+          data-theme={this.isLoadingNext ? "tertiary" : "secondary"}
+          onClick={() => this.navigate("forward")}
+        >
+          {this.isLoadingNext ? (
+            <vaadin-progress-bar class="w-xl" indeterminate />
+          ) : (
+            this.i18n.next
+          )}
+          <iron-icon icon="icons:chevron-right" slot="suffix" />
+        </vaadin-button>
+
         <div hidden={this.error.length === 0}>
           <ErrorOverlay
             text={this.error}
@@ -341,21 +255,7 @@ export class Subscriptions
             onAction={() => (this.error = "")}
           />
         </div>
-
-        <ToastPopup
-          ref={el => (this.toast = el)}
-          theme={this.toastTheme}
-          text={this.toastText}
-          i18n={this.i18n}
-        />
-
-        <ConfirmDialog
-          ref={el => (this.confirm = el)}
-          text={this.confirmText}
-          i18n={this.i18n}
-          onOK={() => this.handleConfirmOK()}
-        />
-      </SubscriptionDataTable>
+      </div>
     );
   }
 }

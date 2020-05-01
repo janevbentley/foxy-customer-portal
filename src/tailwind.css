@@ -29,6 +29,26 @@ details > summary::-webkit-details-marker {
 @tailwind utilities;
 
 @responsive {
+  .min-h-64px {
+    min-height: 64px;
+  }
+  
+  .min-h-72px {
+    min-height: 72px;
+  }
+  
+  .h-1px {
+    height: 1px;
+  }
+  
+  .ml-64px {
+    margin-left: 64px;
+  }
+  
+  .ml-72px {
+    margin-left: 72px;
+  }
+
   .table-header-group {
     display: table-row-group;
   }

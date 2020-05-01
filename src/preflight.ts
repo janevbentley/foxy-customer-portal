@@ -17,8 +17,6 @@ import "@vaadin/vaadin-date-picker/theme/lumo/vaadin-date-picker";
 import "@vaadin/vaadin-button/theme/lumo/vaadin-button";
 import "@vaadin/vaadin-tabs/theme/lumo/vaadin-tabs";
 
-import { style as subscriptionsStyle } from "./components/subscriptions/style";
-
 /**
  * This is a globalScript: @see https://stenciljs.com/docs/config#globalscript
  *
@@ -29,5 +27,4 @@ import { style as subscriptionsStyle } from "./components/subscriptions/style";
  */
 export default () => {
   document.body.appendChild(document.createElement("foxy-plugin-warning"));
-  document.head.insertAdjacentHTML("beforeend", subscriptionsStyle);
 };

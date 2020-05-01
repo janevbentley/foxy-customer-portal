@@ -46,7 +46,7 @@ Type: `Promise<any>`
 
 
 
-### `setState(value: Partial<GetResponse<{ zoom: Record<"subscriptions" | "transactions" | "default_billing_address" | "default_shipping_address" | "default_payment_method", true>; sso: true; }>>) => Promise<void>`
+### `setState(value: Partial<GetResponse<{ zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>; sso: true; }>>) => Promise<void>`
 
 Sets customer object.
 
@@ -63,9 +63,14 @@ Type: `Promise<void>`
 
  - [foxy-customer-portal](../customer-portal)
 
+### Depends on
+
+- [foxy-subscription](../subscription)
+
 ### Graph
 ```mermaid
 graph TD;
+  foxy-subscriptions --> foxy-subscription
   foxy-customer-portal --> foxy-subscriptions
   style foxy-subscriptions fill:#f9f,stroke:#333,stroke-width:4px
 ```
