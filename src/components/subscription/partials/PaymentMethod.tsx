@@ -55,7 +55,7 @@ export const PaymentMethod: FunctionalComponent<Props> = ({
       <div
         class={`${
           cover[getSystem(paymentMethod)]
-        } h-80px mx-m rounded-t-m shadow-xl pointer-events-auto`}
+        } h-80px mx-m rounded-t-m shadow-m pointer-events-auto`}
       >
         <div class="h-40px pt-s flex items-end justify-between">
           <p class="text-white ml-m text-s font-tnum leading-none">
