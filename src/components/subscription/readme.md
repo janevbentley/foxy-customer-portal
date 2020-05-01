@@ -66,7 +66,7 @@ Type: `Promise<void>`
 
 
 
-### `setState(value: Partial<GetResponse<{ zoom: Record<"subscriptions" | "transactions" | "default_billing_address" | "default_shipping_address" | "default_payment_method", true>; sso: true; }>>) => Promise<void>`
+### `setState(value: Partial<GetResponse<{ zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>; sso: true; }>>) => Promise<void>`
 
 Sets customer object.
 
@@ -76,6 +76,19 @@ Type: `Promise<void>`
 
 
 
+
+## Dependencies
+
+### Used by
+
+ - [foxy-subscriptions](../subscriptions)
+
+### Graph
+```mermaid
+graph TD;
+  foxy-subscriptions --> foxy-subscription
+  style foxy-subscription fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

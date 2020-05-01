@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                                                       | Type     | Default                           |
-| ---------- | ---------- | ----------------------------------------------------------------- | -------- | --------------------------------- |
-| `cols`     | `cols`     | The number of columns in the table (affects the number of slots). | `number` | `4`                               |
-| `endpoint` | `endpoint` | Foxy Customer Portal API endpoint.                                | `string` | `""`                              |
-| `locale`   | `locale`   | The language to display element content in.                       | `any`    | `i18n.defaults.locale.call(this)` |
+| Property   | Attribute  | Description                                 | Type     | Default                           |
+| ---------- | ---------- | ------------------------------------------- | -------- | --------------------------------- |
+| `endpoint` | `endpoint` | Foxy Customer Portal API endpoint.          | `string` | `""`                              |
+| `locale`   | `locale`   | The language to display element content in. | `any`    | `i18n.defaults.locale.call(this)` |
 
 
 ## Events
