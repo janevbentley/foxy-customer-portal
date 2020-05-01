@@ -5,6 +5,13 @@ import { FullGetResponse } from "../api";
 import { getParentPortal } from "../assets/utils/getParentPortal";
 import { customer } from "../assets/defaults";
 
+type StateConsumer =
+  | HTMLFoxyAddressElement
+  | HTMLFoxyProfileElement
+  | HTMLFoxySubscriptionElement
+  | HTMLFoxySubscriptionsElement
+  | HTMLFoxyTransactionsElement;
+
 export interface Mixin {
   root: HTMLElement;
   state: FullGetResponse;
@@ -38,6 +45,21 @@ export async function setState(this: Mixin, value: Partial<FullGetResponse>) {
   this.state = deepmerge(this.state, value, {
     arrayMerge: (_, source) => source
   });
+
+  const selector = [
+    "foxy-address",
+    "foxy-profile",
+    "foxy-transactions",
+    "foxy-subscription",
+    "foxy-subscriptions"
+  ].join();
+
+  const consumers = [
+    ...Array.from(this.root.shadowRoot.querySelectorAll(selector)),
+    ...Array.from(this.root.querySelectorAll(selector))
+  ] as StateConsumer[];
+
+  await Promise.all(consumers.map(c => c.setState(value)));
 }
 
 export async function componentDidLoad(this: Mixin) {
@@ -46,6 +68,6 @@ export async function componentDidLoad(this: Mixin) {
   if (portal === null || portal === this.root) {
     await this.getState(true);
   } else {
-    await portal.setState(await portal.getState());
+    await this.setState(await portal.getState());
   }
 }
