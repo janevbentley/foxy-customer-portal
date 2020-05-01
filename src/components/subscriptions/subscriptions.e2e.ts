@@ -3,9 +3,6 @@ import { usePage } from "../../assets/utils/usePage";
 import { interceptAPIRequests } from "../../assets/utils/interceptAPIRequests";
 import { E2EElement } from "@stencil/core/dist/testing";
 import { Subscription } from "../../assets/types/Subscription";
-import { i18nProvider } from "./i18n";
-import { isCancelled } from "./utils";
-import { formatDate } from "./NextDatePicker";
 
 const tag = "foxy-subscriptions";
 
@@ -31,8 +28,8 @@ describe("HTMLFoxySubscriptionsElement", () => {
           await page.setContent(templates[templateIndex]);
           await page.waitForChanges();
 
-          const tbody = await page.find(`${tag} >>> tbody`);
-          expect(tbody).toEqualText("");
+          const elements = await page.findAll(`${tag} >>> foxy-subscription`);
+          expect(elements.length).toEqual(0);
         });
       });
     });
@@ -45,13 +42,14 @@ describe("HTMLFoxySubscriptionsElement", () => {
         await page.setContent(`<${tag} endpoint="${url}"></${tag}>`);
         await page.waitForChanges();
 
-        const rows = await page.findAll(`${tag} >>> tbody tr`);
+        const parent = await page.find(tag);
+        const elements = await page.findAll(`${tag} >>> foxy-subscription`);
 
-        expect(rows.length).toBeGreaterThan(0);
-        expect(rows.length).toBeLessThanOrEqual(db.subscriptions.length);
+        expect(elements.length).toBeGreaterThan(0);
+        expect(elements.length).toBeLessThanOrEqual(db.subscriptions.length);
 
-        for (let i = 0; i < rows.length; ++i) {
-          await shouldDisplay(rows[i], db.subscriptions[i]);
+        for (let i = 0; i < elements.length; ++i) {
+          await shouldDisplay(elements[i], parent, db.subscriptions[i]);
         }
       });
     });
@@ -62,90 +60,47 @@ describe("HTMLFoxySubscriptionsElement", () => {
         await page.setContent(`<${tag} endpoint="${url}"></${tag}>`);
         await page.waitForChanges();
 
-        let rows = await page.findAll(`${tag} >>> tbody tr`);
-        let offset = rows.length;
-        await click(page, `${tag} >>> [data-e2e=btn-next]`);
+        const parent = await page.find(tag);
+        let elements = await page.findAll(`${tag} >>> foxy-subscription`);
+        let offset = elements.length;
 
-        for (let i = 0; i < rows.length; ++i) {
-          await shouldDisplay(rows[i], db.subscriptions[offset + i]);
+        await click(page, `${tag} >>> [data-e2e=btn-next]`);
+        await page.waitForChanges();
+
+        for (let i = 0; i < elements.length; ++i) {
+          const child = elements[i];
+          await shouldDisplay(child, parent, db.subscriptions[offset + i]);
         }
 
         await click(page, `${tag} >>> [data-e2e=btn-prev]`);
-        offset -= rows.length;
-        rows = await page.findAll(`${tag} >>> tbody tr`);
-
-        for (let i = 0; i < rows.length; ++i) {
-          await shouldDisplay(rows[i], db.subscriptions[offset + i]);
-        }
-      });
-    });
-
-    it("allows changing next transaction date", async () => {
-      await interceptAPIRequests(async ({ db, url, page, signIn }) => {
-        await signIn();
-        await page.setContent(`<${tag} endpoint="${url}"></${tag}>`);
         await page.waitForChanges();
 
-        const picker = await page.find(`${tag} >>> [data-e2e=fld-date]`);
-        const value: string = await picker.getProperty("value");
-        const [year, month, day] = value.split("-").map(v => parseInt(v));
+        offset -= elements.length;
+        elements = await page.findAll(`${tag} >>> foxy-subscription`);
 
-        const newDate = new Date(year, month - 1, day);
-        newDate.setDate(newDate.getDate() + 7);
-        const newValue = formatDate(newDate);
-
-        await page.evaluate(
-          (tag, newValue) => {
-            const root = document.querySelector(tag);
-            const picker = root.shadowRoot.querySelector("[data-e2e=fld-date]");
-            picker.value = newValue;
-            picker.dispatchEvent(new Event("change"));
-          },
-          tag,
-          newValue
-        );
-
-        await page.waitForSelector("[data-e2e=btn-ok]");
-        await page.waitFor(1000);
-        await click(page, "[data-e2e=btn-ok]");
-        await page.waitFor(1000);
-
-        const updatedItem = db.subscriptions.find(
-          v => v.next_transaction_date === newDate.toISOString()
-        );
-
-        expect(await picker.getProperty("value")).toBe(newValue);
-        expect(updatedItem).not.toBeUndefined();
+        for (let i = 0; i < elements.length; ++i) {
+          const child = elements[i];
+          await shouldDisplay(child, parent, db.subscriptions[offset + i]);
+        }
       });
     });
   });
 });
 
-async function shouldDisplay(row: E2EElement, item: Subscription) {
-  const i18n = i18nProvider.default;
-
-  const cells = await row.findAll("td");
-  const freqPicker = await cells[1].find("[data-e2e=fld-freq]");
-  const datePicker = await cells[2].find("[data-e2e=fld-date]");
-  const updateLink = await cells[3].find("[data-e2e=lnk-update]");
-  const cancelLink = await cells[3].find("[data-e2e=lnk-cancel]");
-
-  const status = cells[0].textContent;
-  expect(status.includes(i18n.statusDescription(item))).toBe(true);
-
-  expect(await freqPicker.getProperty("value")).toEqual(item.frequency);
-
-  expect(await datePicker.getProperty("value")).toBe(
-    formatDate(new Date(item.next_transaction_date))
+async function shouldDisplay(
+  child: E2EElement,
+  parent: E2EElement,
+  subscription: Subscription
+) {
+  expect(await child.getProperty("link")).toEqual(
+    subscription._links.self.href
   );
 
-  if (!isCancelled(item)) {
-    expect(await updateLink.getProperty("href")).toBe(
-      `${item._links["fx:sub_token_url"].href.toLowerCase()}&cart=checkout&sub_restart=auto`
-    );
+  expect(await child.getProperty("locale")).toEqual(
+    await parent.getProperty("locale")
+  );
 
-    expect(await cancelLink.getProperty("href")).toBe(
-      `${item._links["fx:sub_token_url"].href.toLowerCase()}&sub_cancel=true`
-    );
-  }
+  expect(await child.getProperty("endpoint")).toEqual(
+    await parent.getProperty("endpoint")
+  );
 }

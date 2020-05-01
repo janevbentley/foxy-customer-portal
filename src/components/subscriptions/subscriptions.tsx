@@ -223,6 +223,7 @@ export class Subscriptions
 
         <vaadin-button
           class="m-m"
+          data-e2e="btn-prev"
           disabled={this.start === 0 || this.isLoadingNext}
           onClick={() => this.navigate("back")}
         >
@@ -237,6 +238,7 @@ export class Subscriptions
             this.hasMore === false
           }
           class="m-m"
+          data-e2e="btn-next"
           data-theme={this.isLoadingNext ? "tertiary" : "secondary"}
           onClick={() => this.navigate("forward")}
         >
