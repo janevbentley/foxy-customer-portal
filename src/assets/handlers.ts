@@ -33,7 +33,7 @@ class Handler {
     private needsAuth: boolean,
     private callback: (db: DB, request: Request) => Promise<Response>
   ) {
-    this.path = new Path(`/s/customer${pathTemplate}`);
+    this.path = new Path(pathTemplate);
     this.method = method.toUpperCase();
   }
 
@@ -99,7 +99,7 @@ export const handlers = [
   new Handler("GET", "/transactions?limit&offset", true, async (db, req) => {
     return createListResponse("fx:transactions", req, db.transactions);
   }),
-  new Handler("GET", "?zoom&sso", true, async (db, req) => {
+  new Handler("GET", "/?zoom&sso", true, async (db, req) => {
     const zoom = req.params.zoom || "";
     const body = clone(db.customer);
 
@@ -183,7 +183,7 @@ export const handlers = [
       }
     };
   }),
-  new Handler("PATCH", "", true, async (db, request) => {
+  new Handler("PATCH", "/", true, async (db, request) => {
     const { body } = request;
     const response = clone(db.customer);
 
