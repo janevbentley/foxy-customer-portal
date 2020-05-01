@@ -168,3 +168,5 @@ details > summary::-webkit-details-marker {
     fill: var(--foxy-base-color, #fff);
   }
 }
+
+@tailwind screens;

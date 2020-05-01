@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-
 .separator {
   height: 1px;
   width: calc(100% - 72px);
@@ -20,8 +17,6 @@
     padding-left: initial;
   }
 }
-
-@tailwind utilities;
 
 .bg-unknown {
   background: rgb(121, 124, 133)
@@ -94,5 +89,3 @@
       rgba(255, 255, 255, 0.05) 4px
     );
 }
-
-@tailwind screens;
