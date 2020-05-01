@@ -1,4 +1,4 @@
-import { newE2EPage, E2EPage } from "@stencil/core/dist/testing";
+import { newE2EPage, E2EPage } from "@stencil/core/testing";
 
 type Handler<T> = (context: T) => Promise<any>;
 
