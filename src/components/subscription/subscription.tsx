@@ -151,14 +151,14 @@ export class Subscription implements Mixins {
   @Method()
   async setNextTransactionDate(newValue: string | Date) {
     const normalizedNewValue = new Date(newValue).toISOString();
-    const oldValue = this._subcription.next_transaction_date;
+    const oldValue = this._subscription.next_transaction_date;
 
     if (normalizedNewValue !== oldValue) {
-      this._subcription.next_transaction_date = normalizedNewValue;
+      this._subscription.next_transaction_date = normalizedNewValue;
       this.busy = true;
 
       try {
-        await updateSubscription(this._subcription._links.self.href, {
+        await updateSubscription(this._subscription._links.self.href, {
           next_transaction_date: normalizedNewValue
         });
 
@@ -168,7 +168,7 @@ export class Subscription implements Mixins {
       } catch (e) {
         console.error(e);
 
-        this._subcription.next_transaction_date = oldValue;
+        this._subscription.next_transaction_date = oldValue;
         this._nextDateErrorAlert.open();
       } finally {
         this.busy = false;
@@ -181,14 +181,14 @@ export class Subscription implements Mixins {
   /** Sets frequency. */
   @Method()
   async setFrequency(newValue: string) {
-    const oldValue = this._subcription.frequency;
+    const oldValue = this._subscription.frequency;
 
     if (newValue !== oldValue) {
-      this._subcription.frequency = newValue;
+      this._subscription.frequency = newValue;
       this.busy = true;
 
       try {
-        await updateSubscription(this._subcription._links.self.href, {
+        await updateSubscription(this._subscription._links.self.href, {
           frequency: newValue
         });
 
@@ -198,7 +198,7 @@ export class Subscription implements Mixins {
       } catch (e) {
         console.error(e);
 
-        this._subcription.frequency = oldValue;
+        this._subscription.frequency = oldValue;
         this._frequencyErrorAlert.open();
       } finally {
         this.busy = false;
@@ -208,7 +208,7 @@ export class Subscription implements Mixins {
     this.newFrequency = undefined;
   }
 
-  private get _subcription() {
+  private get _subscription() {
     const subscriptions = this.state?._embedded["fx:subscriptions"];
     if (!Boolean(subscriptions)) return;
     if (this.link === "") return subscriptions[0];
@@ -216,11 +216,11 @@ export class Subscription implements Mixins {
   }
 
   private get _template() {
-    return this._subcription._embedded["fx:transaction_template"];
+    return this._subscription._embedded["fx:transaction_template"];
   }
 
   private get _frequencies() {
-    const config = this._subcription?._embedded.template_config;
+    const config = this._subscription?._embedded.template_config;
     const value = config.allow_frequency_modification;
     return value && value.length > 0 ? value : [];
   }
@@ -234,7 +234,7 @@ export class Subscription implements Mixins {
   }
 
   private get _isNextDateEditable() {
-    return this._subcription?._embedded.template_config
+    return this._subscription?._embedded.template_config
       .allow_next_date_modification;
   }
 
@@ -270,10 +270,10 @@ export class Subscription implements Mixins {
         <Summary
           i18n={this.i18n}
           open={this.open}
-          subscription={this._subcription}
+          subscription={this._subscription}
         />
 
-        {this._subcription && [
+        {this._subscription && [
           <div class="separator hidden bg-contrast-10 ml-auto md:block" />,
 
           <slot />,
@@ -282,7 +282,7 @@ export class Subscription implements Mixins {
             <PaymentMethod
               i18n={this.i18n}
               paymentMethod={this.state._embedded["fx:default_payment_method"]}
-              subscription={this._subcription}
+              subscription={this._subscription}
             />
           </div>,
 
@@ -290,16 +290,16 @@ export class Subscription implements Mixins {
             <div class="px-m relative -mt-s md:hidden">
               <BillingDetails
                 i18n={this.i18n}
-                subscription={this._subcription}
+                subscription={this._subscription}
               />
             </div>
 
             <div class="w-full md:pr-m md:pb-m md:pt-s">
               <Transactions
                 i18n={this.i18n}
-                items={this._subcription._embedded["fx:transactions"]}
+                items={this._subscription._embedded["fx:transactions"]}
                 template={this._template}
-                subscription={this._subcription}
+                subscription={this._subscription}
                 onObserverRoot={this._observeTransactionsRoot.bind(this)}
                 onObserverTarget={e => this._observer.observe(e)}
               />
@@ -312,7 +312,7 @@ export class Subscription implements Mixins {
               <div class="hidden md:block md:m-m" aria-hidden="true">
                 <BillingDetails
                   i18n={this.i18n}
-                  subscription={this._subcription}
+                  subscription={this._subscription}
                 />
               </div>
 
@@ -330,9 +330,9 @@ export class Subscription implements Mixins {
                     errorRef={e => (this._nextDateErrorAlert = e)}
                     successRef={e => (this._nextDateSuccessAlert = e)}
                     confirmRef={e => (this._nextDateConfirm = e)}
-                    disabled={!this._subcription.is_active || this.busy}
+                    disabled={!this._subscription.is_active || this.busy}
                     newValue={this.newNextDate}
-                    value={this._subcription.next_transaction_date}
+                    value={this._subscription.next_transaction_date}
                     i18n={this.i18n}
                     onChange={e => this.setNextTransactionDate(e)}
                     onChangeRequest={e => {
@@ -347,10 +347,10 @@ export class Subscription implements Mixins {
                     errorRef={e => (this._frequencyErrorAlert = e)}
                     successRef={e => (this._frequencySuccessAlert = e)}
                     confirmRef={e => (this._frequencyConfirm = e)}
-                    disabled={!this._subcription.is_active || this.busy}
+                    disabled={!this._subscription.is_active || this.busy}
                     options={this._frequencies}
                     newValue={this.newFrequency}
-                    value={this._subcription.frequency}
+                    value={this._subscription.frequency}
                     i18n={this.i18n}
                     onChange={v => this.setFrequency(v)}
                     onChangeRequest={v => {
@@ -363,10 +363,10 @@ export class Subscription implements Mixins {
                 <slot name="actions" />
               </div>
 
-              {this._isNextDateEditable && this._subcription.is_active && (
+              {this._isNextDateEditable && this._subscription.is_active && (
                 <div class="px-m pb-m pt-m -mt-xs text-right">
                   <Link
-                    href={getCancelUrl(this._subcription)}
+                    href={getCancelUrl(this._subscription)}
                     text={this.i18n.cancelSubscription}
                   />
                 </div>
