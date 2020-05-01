@@ -194,12 +194,12 @@ export class Subscription implements Mixins {
 
         await this.setState({ ...this.state });
         this.update.emit(this.state);
-        this._frequencySuccessAlert.open();
+        this._frequencySuccessAlert?.open();
       } catch (e) {
         console.error(e);
 
         this._subscription.frequency = oldValue;
-        this._frequencyErrorAlert.open();
+        this._frequencyErrorAlert?.open();
       } finally {
         this.busy = false;
       }
