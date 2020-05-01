@@ -276,6 +276,8 @@ export class Subscription implements Mixins {
         {this._subcription && [
           <div class="separator hidden bg-contrast-10 ml-auto md:block" />,
 
+          <slot />,
+
           <div class="z-10 h-80px md:absolute md:w-320px md:top-0 md:right-0">
             <PaymentMethod
               i18n={this.i18n}
@@ -357,6 +359,8 @@ export class Subscription implements Mixins {
                     }}
                   />
                 )}
+
+                <slot name="actions" />
               </div>
 
               {this._isNextDateEditable && this._subcription.is_active && (
