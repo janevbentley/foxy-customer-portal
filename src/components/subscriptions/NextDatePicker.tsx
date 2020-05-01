@@ -22,7 +22,8 @@ export function formatDate(date: Date) {
 
 export const NextDatePicker: FunctionalComponent<Props> = props => {
   const cancelled = isCancelled(props.item);
-  const disabled = !props.item._embedded.template_config.allow_next_date_modification;
+  const disabled = !props.item._embedded.template_config
+    .allow_next_date_modification;
   const readonly = disabled || cancelled;
 
   return (

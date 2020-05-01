@@ -159,7 +159,7 @@ export class CustomerPortal
           transactions: true
         }
       });
-    } catch (e) {}
+    } catch (e) { }
 
     return customer;
   }
@@ -280,44 +280,46 @@ export class CustomerPortal
           </slot>
         </section>
 
-        <section
-          hidden={!this.isSignedIn || this.tabIndex !== 0}
-          class="grid grid-cols-1 gap-s sm:gap-m"
-        >
-          <slot name="subscriptions-container">
-            <Details
-              open={this.areSubscriptionsOpen}
-              summary={() => this.i18n.subscriptions}
-              loaded={this.i18n && this.state.id !== -1}
-              onToggle={v => (this.areSubscriptionsOpen = v)}
-            >
-              <slot name="subscriptions">
-                <foxy-subscriptions
-                  locale={this.locale}
-                  endpoint={this.endpoint}
-                />
-              </slot>
-            </Details>
-          </slot>
+        <section hidden={!this.isSignedIn || this.tabIndex !== 0}>
+          <div class="mb-s sm:mb-m">
+            <slot name="subscriptions-container">
+              <Details
+                open={this.areSubscriptionsOpen}
+                summary={() => this.i18n.subscriptions}
+                loaded={this.i18n && this.state.id !== -1}
+                onToggle={v => (this.areSubscriptionsOpen = v)}
+              >
+                <slot name="subscriptions">
+                  <foxy-subscriptions
+                    locale={this.locale}
+                    endpoint={this.endpoint}
+                  />
+                </slot>
+              </Details>
+            </slot>
+          </div>
 
-          <slot name="transactions-container">
-            <Details
-              open={this.areTransactionsOpen}
-              summary={() => this.i18n.transactions}
-              loaded={this.i18n && this.state.id !== -1}
-              onToggle={v => (this.areTransactionsOpen = v)}
-            >
-              <slot name="transactions">
-                <foxy-transactions
-                  locale={this.locale}
-                  endpoint={this.endpoint}
-                />
-              </slot>
-            </Details>
-          </slot>
+          <div class="mb-s sm:mb-m">
+            <slot name="transactions-container">
+              <Details
+                open={this.areTransactionsOpen}
+                summary={() => this.i18n.transactions}
+                loaded={this.i18n && this.state.id !== -1}
+                onToggle={v => (this.areTransactionsOpen = v)}
+              >
+                <slot name="transactions">
+                  <foxy-transactions
+                    locale={this.locale}
+                    endpoint={this.endpoint}
+                  />
+                </slot>
+              </Details>
+            </slot>
+          </div>
 
-          <slot name="downloadables-container">
-            {/* <Details
+          <div class="mb-s sm:mb-m">
+            <slot name="downloadables-container">
+              {/* <Details
               open={this.areDownloadsOpen}
               summary={() => this.i18n.downloads}
               loaded={this.i18n && this.state.id !== -1}
@@ -332,7 +334,8 @@ export class CustomerPortal
                 </div>
               </slot>
             </Details> */}
-          </slot>
+            </slot>
+          </div>
         </section>
 
         <section
