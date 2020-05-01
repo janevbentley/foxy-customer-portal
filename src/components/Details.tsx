@@ -11,7 +11,7 @@ interface Props {
 export const Details: FunctionalComponent<Props> = (props, children) => (
   <details
     open={props.open}
-    class="bg-base sm:rounded-m sm:shadow-xs"
+    class="bg-base sm:rounded-t-l sm:rounded-b-l sm:shadow-xs"
     {...{
       onToggle: (e: Event) => {
         const details = e.target as HTMLDetailsElement;
@@ -21,12 +21,11 @@ export const Details: FunctionalComponent<Props> = (props, children) => (
   >
     <summary
       class={{
-        "transition duration-150 ease-in-out hover:bg-contrast-10 focus:outline-none focus:shadow-outline": true,
-        "sm:rounded-t-m": props.open,
-        "sm:rounded-m": !props.open
+        "z-10 relative text-body transition duration-150 ease-in-out hover:bg-contrast-5 focus:outline-none focus:shadow-outline sm:rounded-t-l": true,
+        "sm:rounded-b-l": !props.open
       }}
     >
-      <div class="text-body text-xl select-none flex justify-between items-center px-m h-xl">
+      <div class="text-xl select-none flex justify-between items-center px-m h-xl">
         <div class="flex-1 truncate mr-m">
           <Skeleton loaded={props.loaded} text={props.summary} />
         </div>
@@ -40,6 +39,8 @@ export const Details: FunctionalComponent<Props> = (props, children) => (
       </div>
     </summary>
 
-    {...children}
+    <div class="z-0 relative">
+      {...children}
+    </div>
   </details>
 );
