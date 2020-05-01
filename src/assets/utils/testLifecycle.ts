@@ -4,6 +4,7 @@ import { CustomerPortal } from "../../components/customer-portal/customer-portal
 import { Profile } from "../../components/profile/profile";
 import { SignIn } from "../../components/sign-in/sign-in";
 import { Subscriptions } from "../../components/subscriptions/subscriptions";
+import { Subscription } from "../../components/subscription/subscription";
 import { Transactions } from "../../components/transactions/transactions";
 
 const components = [
@@ -12,6 +13,7 @@ const components = [
   Profile,
   SignIn,
   Subscriptions,
+  Subscription,
   Transactions
 ];
 
