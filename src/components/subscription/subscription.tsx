@@ -164,12 +164,12 @@ export class Subscription implements Mixins {
 
         await this.setState({ ...this.state });
         this.update.emit(this.state);
-        this._nextDateSuccessAlert.open();
+        this._nextDateSuccessAlert?.open();
       } catch (e) {
         console.error(e);
 
         this._subscription.next_transaction_date = oldValue;
-        this._nextDateErrorAlert.open();
+        this._nextDateErrorAlert?.open();
       } finally {
         this.busy = false;
       }
