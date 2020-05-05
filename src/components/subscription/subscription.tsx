@@ -28,7 +28,7 @@ type Mixins = vaadin.Mixin & store.Mixin & i18n.Mixin<typeof i18nProvider>;
 
 @Component({
   tag: "foxy-subscription",
-  styleUrls: ["../../tailwind.css", "./style.css"],
+  styleUrl: "../../tailwind.css",
   assetsDir: "assets",
   shadow: true
 })

@@ -26,7 +26,99 @@ details > summary::-webkit-details-marker {
 
 @tailwind components;
 
+.separator {
+  height: 1px;
+  width: calc(100% - 72px);
+  margin-top: -1px;
+}
+
+.table-subheader {
+  margin-right: calc(-3px - 2.1em);
+  margin-top: calc(0px - 1em - 1.75rem);
+  padding-left: 3px;
+}
+
+@screen md {
+  .table-subheader {
+    margin-right: initial;
+    margin-top: initial;
+    padding-left: initial;
+  }
+}
+
 @tailwind utilities;
+
+.bg-unknown {
+  background: rgb(121, 124, 133)
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-amex {
+  background: #2557d6
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-diners {
+  background: #0079be
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-discover {
+  background: #4d4d4d
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-jcb {
+  background: #0e4c96
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-maestro {
+  background: #181818
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-mastercard {
+  background: #16366f
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
+
+.bg-visa {
+  background: #0e4595
+    repeating-radial-gradient(
+      circle at -100% 500%,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.05) 4px
+    );
+}
 
 @responsive {
   .min-h-64px {
