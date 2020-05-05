@@ -22,8 +22,8 @@ import { handlers } from "./assets/handlers";
         const { status, body } = await handler.run(db, {
           body: request.body,
           headers: request.headers,
-          method,
-          url
+          url: relativeURL,
+          method
         });
 
         response.code(status);
