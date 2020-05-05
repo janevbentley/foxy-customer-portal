@@ -1,4 +1,4 @@
-import { newSpecPage, SpecPage } from "@stencil/core/dist/testing";
+import { newSpecPage, SpecPage } from "@stencil/core/testing";
 import { Address } from "../../components/address/address";
 import { CustomerPortal } from "../../components/customer-portal/customer-portal";
 import { Profile } from "../../components/profile/profile";

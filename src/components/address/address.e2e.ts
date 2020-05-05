@@ -1,4 +1,4 @@
-import { E2EPage } from "@stencil/core/dist/testing";
+import { E2EPage } from "@stencil/core/testing";
 import faker from "faker";
 import jsf from "json-schema-faker";
 import path from "path";
@@ -42,7 +42,7 @@ describe("HTMLFoxyAddressElement", () => {
         await interceptAPIRequests(async ({ page, signIn }) => {
           await signIn();
           await page.setContent(templates[templateIndex]);
-          await page.waitForChanges();
+          await page.waitForEvent("ready");
 
           const error = await page.find("foxy-address >>> [data-e2e=error]");
           expect(error).not.toBeNull();

@@ -46,7 +46,7 @@
     "@stencil/eslint-plugin": "^0.2.1",
     "@stencil/postcss": "^1.0.1",
     "@types/faker": "^4.1.9",
-    "@types/jest": "24.0.25",
+    "@types/jest": "24.9.1",
     "@types/js-cookie": "^2.2.4",
     "@types/node": "^13.7.4",
     "@types/puppeteer": "1.20.3",
@@ -84,7 +84,7 @@
   "license": "MIT",
   "dependencies": {
     "@polymer/iron-icons": "^3.0.1",
-    "@stencil/core": "^1.8.9",
+    "@stencil/core": "file:patch/stencil-core-1.12.7.tgz",
     "@vaadin/vaadin-button": "^2.2.2",
     "@vaadin/vaadin-combo-box": "^5.0.10",
     "@vaadin/vaadin-date-picker": "^4.0.7",

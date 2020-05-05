@@ -1,7 +1,7 @@
 import { testLifecycle } from "../../assets/utils/testLifecycle";
 import { testStore } from "../../assets/utils/testStore";
 import { testI18N } from "../../assets/utils/testI18N";
-import { newSpecPage, SpecPage } from "@stencil/core/dist/testing";
+import { newSpecPage, SpecPage } from "@stencil/core/testing";
 import { Subscription } from "./subscription";
 import { mockFetch } from "../../assets/utils/mockFetch";
 
