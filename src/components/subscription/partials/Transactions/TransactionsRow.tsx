@@ -24,7 +24,10 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
   const status = failed ? "failed" : active ? "active" : "cancelled";
 
   return (
-    <tr class="w-240px snap-start relative border border-contrast-10 rounded-m px-s py-xs inline-flex align-top flex-wrap m-xs md:w-auto md:snap-none md:table-row md:border-none md:p-0">
+    <tr
+      class="w-240px snap-start relative border border-contrast-10 rounded-m px-s py-xs inline-flex align-top flex-wrap m-xs md:w-auto md:snap-none md:table-row md:border-none md:p-0"
+      data-e2e="transaction"
+    >
       <td class="sr-only p-0 md:w-72px md:not-sr-only md:text-center">
         <div class="sr-only">{props.i18n[status]}</div>
         <div

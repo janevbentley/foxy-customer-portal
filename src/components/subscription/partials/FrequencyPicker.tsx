@@ -19,6 +19,7 @@ interface Props {
 export const FrequencyPicker: FunctionalComponent<Props> = (props: Props) => (
   <div>
     <vaadin-select
+      data-e2e="fld-freq"
       class="w-full"
       label={props.i18n.selectFrequency}
       value={props.value}

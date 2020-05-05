@@ -19,6 +19,7 @@ interface Props {
 export const NextDatePicker: FunctionalComponent<Props> = (props: Props) => (
   <div>
     <vaadin-date-picker
+      data-e2e="fld-date"
       class="w-full"
       label={props.i18n.selectNextDate}
       min={props.disabled ? undefined : formatDate(new Date())}

@@ -61,7 +61,7 @@ export const PaymentMethod: FunctionalComponent<Props> = ({
           <p class="text-white ml-m text-s font-tnum leading-none">
             <span class="sr-only">{i18n.ccNumber}&nbsp;</span>
             <span aria-hidden="true">••••&nbsp;</span>
-            <span>{getLast4Digits(paymentMethod)}</span>
+            <span data-e2e="cc-number">{getLast4Digits(paymentMethod)}</span>
           </p>
 
           <img
@@ -75,6 +75,7 @@ export const PaymentMethod: FunctionalComponent<Props> = ({
 
       <div class="absolute bottom-0 inset-x-0">
         <a
+          data-e2e="cc-link"
           href={getUpdateUrl(subscription)}
           aria-label={i18n.ccEdit}
           target="_blank"

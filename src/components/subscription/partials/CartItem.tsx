@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CartItem: FunctionalComponent<Props> = props => (
-  <figure class="flex items-center px-s">
+  <figure class="flex items-center px-s" data-e2e="product">
     <div class="relative h-l w-l m-s rounded-m bg-contrast-10 overflow-hidden">
       {props.item.image && (
         <img
