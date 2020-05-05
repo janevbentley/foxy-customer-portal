@@ -26,7 +26,7 @@ export class Subscriptions
 
   @State() state = store.defaults.state.call(this) as FullGetResponse;
   @State() i18nProvider = i18nProvider;
-  @State() i18n = i18nProvider.default;
+  @State() i18n = i18nProvider.en;
 
   @State() error = "";
   @State() isErrorDismissable = false;
@@ -102,7 +102,7 @@ export class Subscriptions
       customer = await getCustomer(this.resolvedEndpoint, params);
     } catch (e) {
       console.error(e);
-      const localMessage = this.i18n?.error || this.i18nProvider.default.error;
+      const localMessage = this.i18n?.error || this.i18nProvider.en.error;
       this.error = e instanceof APIError ? e.message : localMessage;
       this.isErrorDismissable = this.state.id !== -1;
     }
@@ -168,9 +168,7 @@ export class Subscriptions
       } catch (e) {
         console.error(e);
 
-        const localMessage =
-          this.i18n?.error || this.i18nProvider.default.error;
-
+        const localMessage = this.i18n?.error || this.i18nProvider.en.error;
         this.error = e instanceof APIError ? e.message : localMessage;
         this.isErrorDismissable = true;
       }

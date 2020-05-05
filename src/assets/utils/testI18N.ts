@@ -29,8 +29,8 @@ export function testI18N(tag: string) {
       expect(page.rootInstance).toHaveProperty("locale");
     });
 
-    it("uses default locale when language info is unavailable", async () => {
-      expect(page.rootInstance.locale).toBe("default");
+    it("uses en locale when language info is unavailable", async () => {
+      expect(page.rootInstance.locale).toBe("en");
     });
   });
 }

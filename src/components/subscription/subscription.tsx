@@ -51,7 +51,7 @@ export class Subscription implements Mixins {
 
   @State() state = store.defaults.state.call(this) as FullGetResponse;
   @State() i18nProvider = i18nProvider;
-  @State() i18n = i18nProvider.default;
+  @State() i18n = i18nProvider.en;
 
   @State() error = "";
   @State() isErrorDismissable = false;
