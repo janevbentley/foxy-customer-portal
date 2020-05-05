@@ -51,7 +51,7 @@ export const PaymentMethod: FunctionalComponent<Props> = ({
     class="h-80px pointer-events-none md:h-64px"
     aria-region={i18n.ccRegion}
   >
-    <div class="relative overflow-y-hidden pt-64px -top-64px md:px-48px md:-mx-48px md:pt-m md:-top-m">
+    <div class="relative overflow-y-hidden pt-64px -top-64px md:px-48px md:-mx-48px md:pt-m md:top-0">
       <div
         class={`${
           cover[getSystem(paymentMethod)]

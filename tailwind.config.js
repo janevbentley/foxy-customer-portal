@@ -83,7 +83,8 @@ const spacingMap = {
   s: cssVar("space-s", "0.5rem"),
   m: cssVar("space-m", "1rem"),
   l: cssVar("space-l", "1.5rem"),
-  xl: cssVar("space-xl", "2.5rem")
+  xl: cssVar("space-xl", "2.5rem"),
+  default: cssVar("space-m", "1rem")
 };
 
 const textColorMap = Object.assign({}, colorsMap, {

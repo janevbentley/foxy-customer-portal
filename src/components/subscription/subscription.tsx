@@ -33,7 +33,7 @@ type Mixins = vaadin.Mixin & store.Mixin & i18n.Mixin<typeof i18nProvider>;
   shadow: true
 })
 export class Subscription implements Mixins {
-  private _observer: IntersectionObserver;
+  private _observer?: IntersectionObserver;
 
   private _nextDateConfirm: VaadinDialog;
   private _nextDateErrorAlert: VaadinNotification;
@@ -239,8 +239,9 @@ export class Subscription implements Mixins {
   }
 
   private _observeTransactionsRoot(root: HTMLElement) {
-    if (Boolean(this._observer)) this._observer.disconnect();
+    if (!Boolean(window.IntersectionObserver)) return;
 
+    this._observer?.disconnect();
     this._observer = new IntersectionObserver(
       ([{ isIntersecting, boundingClientRect }]) => {
         const value = isIntersecting ? "0" : `-${boundingClientRect.height}px`;
@@ -301,7 +302,7 @@ export class Subscription implements Mixins {
                 template={this._template}
                 subscription={this._subscription}
                 onObserverRoot={this._observeTransactionsRoot.bind(this)}
-                onObserverTarget={e => this._observer.observe(e)}
+                onObserverTarget={e => this._observer?.observe(e)}
               />
             </div>
 

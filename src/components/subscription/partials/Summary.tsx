@@ -9,13 +9,13 @@ interface Props {
   subscription?: Subscription;
 }
 
-function getIconClass(hidden: boolean, overlay = true) {
-  return {
-    "transform scale-1 transition duration-300": true,
-    "absolute inset-0 m-xs md:m-s": overlay,
-    "opacity-0 scale-0": hidden
-  };
-}
+const iconMap = {
+  open: "expand-less",
+  active: "done",
+  failed: "error-outline",
+  loading: "",
+  cancelled: "done_all"
+} as const;
 
 function getStatus(open: boolean, subscription?: Subscription) {
   if (open) return "open";
@@ -53,7 +53,7 @@ export const Summary: FunctionalComponent<Props> = ({
           <div class="rounded-full overflow-hidden bg-base shadow-outline-base">
             <div
               class={{
-                "relative transition duration-150 flex items-center justify-center p-xs md:p-s": true,
+                "relative flex items-center justify-center p-xs md:p-s": true,
                 "text-success bg-success-10": status === "active",
                 "text-error bg-error-10": status === "failed",
                 "text-body bg-contrast-5": !["active", "failed"].includes(
@@ -62,41 +62,16 @@ export const Summary: FunctionalComponent<Props> = ({
               }}
             >
               <iron-icon
-                icon="expand-less"
-                class={getIconClass(status !== "open", false)}
-              />
-
-              <iron-icon
-                icon="done"
-                class={getIconClass(status !== "active")}
-              />
-
-              <iron-icon
-                icon="done-all"
-                class={getIconClass(status !== "cancelled")}
-              />
-
-              <iron-icon
-                icon="error-outline"
-                class={getIconClass(status !== "failed")}
+                class={{ "opacity-0": status === "loading" }}
+                icon={iconMap[status]}
               />
             </div>
           </div>
         </div>
 
         <div class="px-s flex-1 min-w-0">
-          <div
-            class={{
-              "min-w-0 transform transition duration-300": true,
-              "translate-y-s": open
-            }}
-          >
-            <p
-              class={{
-                "leading-xs text-body text-m truncate font-medium origin-top-left transform transition duration-300 md:text-l": true,
-                "md:scale-125": open
-              }}
-            >
+          <div class="min-w-0">
+            <p class="leading-xs text-body text-m truncate font-medium origin-top-left md:text-l">
               <Skeleton
                 loaded={Boolean(subscription)}
                 text={() => getTitle(i18n, subscription)}
@@ -105,11 +80,10 @@ export const Summary: FunctionalComponent<Props> = ({
 
             <p
               class={{
-                "transition duration-300 leading-xs text-xs truncate md:text-m": true,
+                "leading-xs text-xs truncate md:text-m": true,
                 "text-tertiary": open || status === "cancelled",
                 "text-success": status === "active",
-                "text-error": status === "failed",
-                "opacity-0": open
+                "text-error": status === "failed"
               }}
             >
               <Skeleton
@@ -120,12 +94,7 @@ export const Summary: FunctionalComponent<Props> = ({
           </div>
         </div>
 
-        <p
-          class={{
-            "transition duration-300 transform flex-1 text-right hidden text-body text-xl px-s md:block": true,
-            "opacity-0 translate-x-xs": open
-          }}
-        >
+        <p class="flex-1 text-right hidden text-body text-xl px-s md:block">
           <Skeleton
             loaded={Boolean(subscription)}
             text={() => getPrice(i18n, subscription)}

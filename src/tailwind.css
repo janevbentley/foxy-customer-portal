@@ -158,16 +158,22 @@ details > summary::-webkit-details-marker {
   }
 
   .iron-icon-14px {
+    height: 14px;
+    width: 14px;
     --iron-icon-height: 14px;
     --iron-icon-width: 14px;
   }
 
   .iron-icon-16px {
+    height: 16px;
+    width: 16px;
     --iron-icon-height: 16px;
     --iron-icon-width: 16px;
   }
 
   .iron-icon-18px {
+    height: 18px;
+    width: 18px;
     --iron-icon-height: 18px;
     --iron-icon-width: 18px;
   }
@@ -199,7 +205,7 @@ details > summary::-webkit-details-marker {
   }
 
   .-top-m {
-    top: calc(0 - var(--foxy-space-m, 1rem));
+    top: calc(0px - var(--foxy-space-m, 1rem));
   }
 
   .h-40px {
@@ -232,8 +238,8 @@ details > summary::-webkit-details-marker {
   }
 
   .scroll-px-0 {
-    scroll-padding-left: 0;
-    scroll-padding-right: 0;
+    scroll-padding-left: 0px;
+    scroll-padding-right: 0px;
   }
 
   .snap-x-mandatory {
