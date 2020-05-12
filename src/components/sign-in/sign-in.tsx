@@ -104,8 +104,8 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
     }
   }
 
-  private async handleSubmit(event: Event) {
-    event.preventDefault();
+  private async handleSubmit(event?: Event) {
+    event?.preventDefault();
 
     this.status = Status.signingIn;
     this.message = "";
@@ -125,7 +125,7 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
     }
   }
 
-  private requestSubmit(e: Event) {
+  private requestSubmit(e?: Event) {
     if (this.formElement.reportValidity()) {
       this.handleSubmit(e);
     }
@@ -159,6 +159,9 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           data-e2e="fld-email"
           class="w-narrow"
           required
+          onKeyPress={(e: KeyboardEvent) =>
+            e.key === "Enter" && this.requestSubmit()
+          }
         />
 
         <slot name="email-append" />
@@ -174,6 +177,9 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           data-e2e="fld-password"
           class="w-narrow"
           required
+          onKeyPress={(e: KeyboardEvent) =>
+            e.key === "Enter" && this.requestSubmit()
+          }
         />
 
         <slot name="password-append" />
@@ -207,11 +213,11 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           {this.status === Status.signingIn ? (
             <vaadin-progress-bar class="w-xl" indeterminate />
           ) : (
-              <Skeleton
-                loaded={this.i18n !== null}
-                text={() => this.i18n.submit}
-              />
-            )}
+            <Skeleton
+              loaded={this.i18n !== null}
+              text={() => this.i18n.submit}
+            />
+          )}
         </vaadin-button>
 
         <vaadin-button
@@ -228,11 +234,11 @@ export class SignIn implements vaadin.Mixin, i18n.Mixin<typeof i18nProvider> {
           {this.status === Status.resettingPassword ? (
             <vaadin-progress-bar class="w-xl" indeterminate />
           ) : (
-              <Skeleton
-                loaded={this.i18n !== null}
-                text={() => this.i18n.resetPassword}
-              />
-            )}
+            <Skeleton
+              loaded={this.i18n !== null}
+              text={() => this.i18n.resetPassword}
+            />
+          )}
         </vaadin-button>
 
         <slot name="buttons-append" />
