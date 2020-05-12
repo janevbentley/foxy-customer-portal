@@ -302,7 +302,7 @@ export class Subscription implements Mixins {
                 template={this._template}
                 subscription={this._subscription}
                 onObserverRoot={this._observeTransactionsRoot.bind(this)}
-                onObserverTarget={e => this._observer?.observe(e)}
+                onObserverTarget={e => e && this._observer?.observe(e)}
               />
             </div>
 
