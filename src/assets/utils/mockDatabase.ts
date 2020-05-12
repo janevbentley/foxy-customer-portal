@@ -77,6 +77,15 @@ export async function mockDatabase(url = "https://foxy.local/s/customer/") {
   shippingAddress.is_default_shipping = true;
 
   subscriptions.sort(sortByDate).forEach((item, index, array) => {
+    item._embedded["fx:transactions"] = item._embedded["fx:transactions"].sort(
+      (a: Transaction, b: Transaction) => {
+        return (
+          new Date(b.transaction_date).getTime() -
+          new Date(a.transaction_date).getTime()
+        );
+      }
+    );
+
     item.is_active = index <= (array.length / 3) * 2;
 
     const href = `${url}subscriptions/${faker.random.uuid()}`;
@@ -91,9 +100,30 @@ export async function mockDatabase(url = "https://foxy.local/s/customer/") {
 
     if (index <= array.length / 3) {
       item.end_date = null;
-    } else if (index <= array.length / 2) {
-    } else {
+    } else if (index > array.length / 2) {
+      const endDate = new Date(item.end_date);
+
+      if (endDate.getTime() > Date.now()) {
+        endDate.setFullYear(new Date().getFullYear() - 1);
+        item.end_date = endDate.toISOString();
+      }
+
       item.next_transaction_date = item.end_date;
+    }
+
+    if (index === 0) {
+      const failedDate = new Date(
+        item._embedded["fx:transactions"][0].transaction_date
+      );
+
+      failedDate.setMonth(failedDate.getMonth() + 1);
+      item.first_failed_transaction_date = failedDate.toISOString();
+      item.is_active = true;
+    } else {
+      item.first_failed_transaction_date = null;
+      item.is_active = true;
+      item.past_due_amount = 0;
+      item.error_message = "";
     }
   });
 
