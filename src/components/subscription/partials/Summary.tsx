@@ -14,7 +14,7 @@ const iconMap = {
   active: "done",
   failed: "error-outline",
   loading: "",
-  cancelled: "done_all"
+  cancelled: "done-all"
 } as const;
 
 function getStatus(open: boolean, subscription?: Subscription) {
