@@ -1,4 +1,4 @@
-import { FunctionalComponent, h, VNode } from "@stencil/core";
+import { FunctionalComponent, VNode, h } from "@stencil/core";
 import { Transaction } from "../assets/types/Transaction";
 import { Subscription } from "../assets/types/Subscription";
 import { Skeleton } from "./Skeleton";
@@ -92,11 +92,11 @@ function createDataTable<T>(): FunctionalComponent<Props<T>> {
         {props.isLoadingNext ? (
           <vaadin-progress-bar class="w-xl" indeterminate />
         ) : (
-            <Skeleton
-              loaded={Boolean(props.messages)}
-              text={() => props.messages.next}
-            />
-          )}
+          <Skeleton
+            loaded={Boolean(props.messages)}
+            text={() => props.messages.next}
+          />
+        )}
         <iron-icon icon="icons:chevron-right" slot="suffix" />
       </vaadin-button>
 

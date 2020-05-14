@@ -2,7 +2,7 @@ import { testLifecycle } from "../../assets/utils/testLifecycle";
 import { testStore } from "../../assets/utils/testStore";
 import { testI18N } from "../../assets/utils/testI18N";
 import { mockFetch } from "../../assets/utils/mockFetch";
-import { newSpecPage, SpecPage } from "@stencil/core/dist/testing";
+import { newSpecPage, SpecPage } from "@stencil/core/testing";
 import { Address } from "./address";
 import { mockDatabase } from "../../assets/utils/mockDatabase";
 

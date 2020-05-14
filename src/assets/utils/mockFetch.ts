@@ -24,6 +24,8 @@ export async function mockFetch(endpoint = "/") {
           json: () => Promise.resolve(body),
           status
         };
+      } else {
+        throw new Error(`No handler found for ${method} ${url}`);
       }
     } else {
       return fetch(url, params);

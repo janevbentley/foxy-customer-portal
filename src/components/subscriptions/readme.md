@@ -1,17 +1,54 @@
 # foxy-subscriptions
 
+## Upgrade from 1.0.0-beta.3 to 1.0.0-beta-4
 
+Since `cols` property is no longer supported and the component uses `foxy-subscription` internally since `1.0.0-beta.4`, you may need to make some changes to your code depending on how customized your setup is:
+
+1. Remove the `cols` attribute;
+2. Remove all additional table headers (elements with slot names like `header-${columnIndex}`);
+3. Change your slot attribute values from `row-${rowIndex}-col-${columnIndex}` to just `${rowIndex}`;
+4. Use `foxy-subscription` element with the appropriate `link` property value to customize individual subscriptions.
+
+### Before
+
+```html
+<foxy-subscriptions cols="5">
+  <span slot="header-4">Additional actions</span>
+
+  <button
+    v-for="(subscription, index) in customer._embedded['fx:subscriptions']"
+    :slot="'row-' + index + '-col-4'"
+    :key="index"
+  >
+    Do something
+  </button>
+</foxy-subscriptions>
+```
+
+### After
+
+```html
+<foxy-subscriptions>
+  <foxy-subscription
+    v-for="(subscription, index) in customer._embedded['fx:subscriptions']"
+    :link="subscription._links.self.href"
+    :slot="index"
+    :key="index"
+  >
+    <button slot="actions">Do something</button>
+  </foxy-subscription>
+</foxy-subscriptions>
+```
 
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property   | Attribute  | Description                                                       | Type     | Default                           |
-| ---------- | ---------- | ----------------------------------------------------------------- | -------- | --------------------------------- |
-| `cols`     | `cols`     | The number of columns in the table (affects the number of slots). | `number` | `4`                               |
-| `endpoint` | `endpoint` | Foxy Customer Portal API endpoint.                                | `string` | `""`                              |
-| `locale`   | `locale`   | The language to display element content in.                       | `any`    | `i18n.defaults.locale.call(this)` |
+| Property   | Attribute  | Description                                 | Type     | Default                           |
+| ---------- | ---------- | ------------------------------------------- | -------- | --------------------------------- |
+| `endpoint` | `endpoint` | Foxy Customer Portal API endpoint.          | `string` | `""`                              |
+| `locale`   | `locale`   | The language to display element content in. | `any`    | `i18n.defaults.locale.call(this)` |
 
 
 ## Events
@@ -46,7 +83,7 @@ Type: `Promise<any>`
 
 
 
-### `setState(value: Partial<GetResponse<{ zoom: Record<"subscriptions" | "transactions" | "default_billing_address" | "default_shipping_address" | "default_payment_method", true>; sso: true; }>>) => Promise<void>`
+### `setState(value: Partial<GetResponse<{ zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>; sso: true; }>>) => Promise<void>`
 
 Sets customer object.
 
@@ -63,9 +100,14 @@ Type: `Promise<void>`
 
  - [foxy-customer-portal](../customer-portal)
 
+### Depends on
+
+- [foxy-subscription](../subscription)
+
 ### Graph
 ```mermaid
 graph TD;
+  foxy-subscriptions --> foxy-subscription
   foxy-customer-portal --> foxy-subscriptions
   style foxy-subscriptions fill:#f9f,stroke:#333,stroke-width:4px
 ```

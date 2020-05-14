@@ -14,14 +14,16 @@ import { handlers } from "./assets/handlers";
     const { url, method } = request.raw;
 
     if (url.startsWith("/s/customer")) {
-      const handler = handlers.find(h => h.test(method, url));
+      let relativeURL = url.replace(`/s/customer`, "");
+      if (!relativeURL.startsWith("/")) relativeURL = `/${relativeURL}`;
+      const handler = handlers.find(h => h.test(method, relativeURL));
 
       if (handler !== undefined) {
         const { status, body } = await handler.run(db, {
           body: request.body,
           headers: request.headers,
-          method,
-          url
+          url: relativeURL,
+          method
         });
 
         response.code(status);

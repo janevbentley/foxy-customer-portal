@@ -15,14 +15,18 @@ type MockAPIContext = {
 };
 
 export async function interceptAPIRequests(cb: Handler<MockAPIContext>) {
-  const url = "https://foxy.local";
-  const db = await mockDatabase(`${url}/s/customer/`);
+  const origin = "https://foxy.local";
+  const db = await mockDatabase(`${origin}/s/customer/`);
 
   const handleRequest = async (request: PageEventObj["request"]) => {
     if (request.isNavigationRequest() || Boolean(request.response())) return;
-    if (request.url().startsWith(url)) {
-      const relativeURL = request.url().replace(url, "");
+
+    if (request.url().startsWith(origin)) {
+      let relativeURL = request.url().replace(`${origin}/s/customer`, "");
+      if (!relativeURL.startsWith("/")) relativeURL = `/${relativeURL}`;
+
       const handler = handlers.find(h => h.test(request.method(), relativeURL));
+
       if (Boolean(handler)) {
         const { status, body } = await handler.run(db, {
           headers: request.headers(),
@@ -30,13 +34,24 @@ export async function interceptAPIRequests(cb: Handler<MockAPIContext>) {
           url: relativeURL,
           method: request.method()
         });
+
         return request.respond({
           contentType: "application/json",
           body: JSON.stringify(body),
           status
         });
+      } else {
+        return request.respond({
+          contentType: "application/json",
+          status: 500,
+          body: JSON.stringify({
+            code: 500,
+            message: `No handler found for ${request.url()}`
+          })
+        });
       }
     }
+
     await request.continue();
   };
 
@@ -51,7 +66,7 @@ export async function interceptAPIRequests(cb: Handler<MockAPIContext>) {
 
     page.on("request", handleRequest);
     await page.setRequestInterception(true);
-    await cb({ db, url, page, signIn });
+    await cb({ db, url: origin, page, signIn });
 
     page.off("request", handleRequest);
     await page.setRequestInterception(false);

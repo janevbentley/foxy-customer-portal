@@ -1,5 +1,5 @@
 import faker from "faker";
-import { E2EPage } from "@stencil/core/dist/testing";
+import { E2EPage } from "@stencil/core/testing";
 import { click } from "../../assets/utils/click";
 import { replaceText } from "../../assets/utils/replaceText";
 import { usePage } from "../../assets/utils/usePage";
@@ -34,7 +34,7 @@ describe("HTMLFoxyProfileElement", () => {
         await interceptAPIRequests(async ({ page, signIn }) => {
           await signIn();
           await page.setContent(templates[templateIndex]);
-          await page.waitForChanges();
+          await page.waitForEvent("ready");
 
           const error = await page.find("foxy-profile >>> [data-e2e=error]");
           expect(error).not.toBeNull();

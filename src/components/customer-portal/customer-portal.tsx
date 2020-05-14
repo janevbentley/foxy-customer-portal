@@ -23,7 +23,7 @@ import {
 
 import { FullGetResponse, get as getCustomer } from "../../api";
 import { Details } from "../Details";
-import { Messages, StateConsumer } from "./types";
+import { Messages } from "./types";
 import { Skeleton } from "../Skeleton";
 
 const paths = ["activity", "account"] as const;
@@ -174,20 +174,6 @@ export class CustomerPortal
   @Method()
   async setState(value: Partial<FullGetResponse>) {
     store.setState.call(this, value);
-
-    const selector = [
-      "foxy-address",
-      "foxy-profile",
-      "foxy-transactions",
-      "foxy-subscriptions"
-    ].join();
-
-    const consumers = [
-      ...Array.from(this.root.shadowRoot.querySelectorAll(selector)),
-      ...Array.from(this.root.querySelectorAll(selector))
-    ] as StateConsumer[];
-
-    await Promise.all(consumers.map(c => c.setState(value)));
   }
 
   private initRouter() {

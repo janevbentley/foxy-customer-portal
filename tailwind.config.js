@@ -83,7 +83,8 @@ const spacingMap = {
   s: cssVar("space-s", "0.5rem"),
   m: cssVar("space-m", "1rem"),
   l: cssVar("space-l", "1.5rem"),
-  xl: cssVar("space-xl", "2.5rem")
+  xl: cssVar("space-xl", "2.5rem"),
+  default: cssVar("space-m", "1rem")
 };
 
 const textColorMap = Object.assign({}, colorsMap, {
@@ -99,9 +100,10 @@ const textColorMap = Object.assign({}, colorsMap, {
 
 const borderRadiusMap = {
   s: cssVar("border-radius-s", "0.25em"),
-  m: cssVar("border-radius-m", "0.25em"),
-  l: cssVar("border-radius-l", "0.5em"),
-  default: cssVar("border-radius-m", "0.25em")
+  m: cssVar("border-radius-m", "0.5em"),
+  l: cssVar("border-radius-l", "0.75em"),
+  full: "100%",
+  default: cssVar("border-radius-m", "0.5em")
 };
 
 const boxShadowMap = {
@@ -113,7 +115,8 @@ const boxShadowMap = {
   l: cssVar("box-shadow-l", "0 12px 16px 1px rgba(0, 0, 0, 0.14), 0 4px 22px 3px rgba(0, 0, 0, 0.12), 0 6px 7px -4px rgba(0, 0, 0, 0.4)"),
   xl: cssVar("box-shadow-xl", "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.4)"),
   xxl: cssVar("box-shadow-xxl", "0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.4)"),
-  outline: `0 0 0 2px ${cssVar("primary-color-50pct", "hsla(214, 90%, 52%, 0.5)")};`
+  outline: `0 0 0 2px ${cssVar("primary-color-50pct", "hsla(214, 90%, 52%, 0.5)")};`,
+  "outline-base": `0 0 0 2px ${cssVar("base-color", "#fff")};`
 };
 
 const fontFamilyMap = {
@@ -134,6 +137,7 @@ const fontSizeMap = {
 };
 
 const lineHeightMap = {
+  none: "1",
   xs: cssVar("line-height-xs", "1.25"),
   s: cssVar("line-height-s", "1.375"),
   m: cssVar("line-height-m", "1.625")
@@ -148,6 +152,14 @@ const sizeMap = {
 };
 
 module.exports = {
+  variants: [
+    "responsive",
+    "group-hover",
+    "group-focus",
+    "hover",
+    "focus",
+    "disabled"
+  ],
   theme: {
     colors: colorsMap,
     spacing: spacingMap,

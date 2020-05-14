@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Standalone subscription</title>
+  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+  <script type="module" src="/build/foxy.esm.js"></script>
+</head>
+
+<body class="p-2">
+  <style>
+    html {
+      background: var(--foxy-shade-10pct);
+    }
+  </style>
+
+  <div class="m-4 rounded-lg shadow-lg overflow-hidden">
+    <foxy-subscription endpoint="http://localhost:5000"></foxy-subscription>
+  </div>
+</body>
+
+</html>

@@ -7,7 +7,11 @@ type PageContext = {
 };
 
 export async function usePage(cb: Handler<PageContext>) {
-  const page = await newE2EPage({ url: "/index.e2e.html" });
+  const page = await newE2EPage({
+    url: "/index.e2e.html",
+    incognito: true
+  });
+
   await cb({ page });
   await page.close();
 }

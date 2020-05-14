@@ -30,7 +30,11 @@
         "_embedded": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["template_config"],
+          "required": [
+            "template_config",
+            "fx:transaction_template",
+            "fx:transactions"
+          ],
           "description": "Embedded content.",
           "properties": {
             "template_config": {
@@ -51,7 +55,7 @@
                   "description": "A list of allowed frequencies if frequency modification is enabled for this subscription or `false` otherwise. The list can be empty, in which case it should be treated as `false` value.",
                   "oneOf": [
                     {
-                      "const": false
+                      "enum": [false]
                     },
                     {
                       "uniqueItems": true,
@@ -63,6 +67,15 @@
                   ]
                 }
               }
+            },
+            "fx:transactions": {
+              "additionalItems": false,
+              "items": {
+                "$ref": "Transaction.json"
+              }
+            },
+            "fx:transaction_template": {
+              "$ref": "TransactionTemplate.json"
             }
           }
         },

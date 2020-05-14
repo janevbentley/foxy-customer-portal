@@ -5,12 +5,16 @@ interface Props {
   text: () => string;
 }
 
-export const Skeleton: FunctionalComponent<Props> = props =>
-  props.loaded ? (
-    props.text()
-  ) : (
-    <div class="relative" data-e2e="skeleton">
-      <div class="bg-contrast-5 rounded my-xs absolute inset-0" />
-      &nbsp;
-    </div>
-  );
+export const Skeleton: FunctionalComponent<Props> = props => (
+  <div class="relative" aria-busy={!props.loaded} role="alert">
+    {props.loaded
+      ? props.text()
+      : [
+          <div
+            class="bg-contrast-5 rounded my-xs absolute inset-0"
+            data-e2e="skeleton"
+          />,
+          <span>&nbsp;</span>
+        ]}
+  </div>
+);

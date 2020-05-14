@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from "@stencil/core";
 
 interface Props {
   ref: (el: VaadinDialog) => any;
-  i18n: Record<"confirmOK" | "confirmCancel", string> | null;
+  i18n: Record<"ok" | "cancel", string> | null;
   text: string;
   onOK: () => any;
 }
@@ -22,7 +22,7 @@ export const ConfirmDialog: FunctionalComponent<Props> = props => (
 
         div.setAttribute("style", "margin-bottom: 1em");
 
-        okButton.textContent = props.i18n.confirmOK;
+        okButton.textContent = props.i18n.ok;
         okButton.setAttribute("theme", "primary");
         okButton.setAttribute("data-e2e", "btn-ok");
         okButton.setAttribute("style", "margin-right: 1em");
@@ -31,7 +31,7 @@ export const ConfirmDialog: FunctionalComponent<Props> = props => (
           props.onOK();
         });
 
-        cancelButton.textContent = props.i18n.confirmCancel;
+        cancelButton.textContent = props.i18n.cancel;
         cancelButton.addEventListener("click", () => {
           dialog.opened = false;
         });

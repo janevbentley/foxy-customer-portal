@@ -31,16 +31,16 @@ export const config: Config = {
     nodePolyfills(),
     postcss({
       plugins: [
-        autoprefixer({ cascade: false }),
         tailwindcss("./tailwind.config.js"),
         ...(process.env.NODE_ENV === "production"
           ? [
-              cssnano,
               purgecss({
                 content: ["./src/**/*.*"],
                 defaultExtractor: content =>
                   content.match(/[A-Za-z0-9-_:/]+/g) || []
-              })
+              }),
+              autoprefixer({ cascade: false }),
+              cssnano
             ]
           : [])
       ]

@@ -7,7 +7,7 @@ interface Props {
   ref: (el: VaadinNotification) => any;
 }
 
-export const ToastPopup: FunctionalComponent<Props> = props => (
+export const Notification: FunctionalComponent<Props> = props => (
   <vaadin-notification
     ref={props.ref}
     data-theme={props.theme}

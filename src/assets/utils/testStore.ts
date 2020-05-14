@@ -5,6 +5,7 @@ import { Profile } from "../../components/profile/profile";
 import { SignIn } from "../../components/sign-in/sign-in";
 import { Subscriptions } from "../../components/subscriptions/subscriptions";
 import { Transactions } from "../../components/transactions/transactions";
+import { Subscription } from "../../components/subscription/subscription";
 import { mockDatabase } from "./mockDatabase";
 import { handlers } from "../handlers";
 import { customer } from "../defaults";
@@ -16,6 +17,7 @@ const components = [
   Profile,
   SignIn,
   Subscriptions,
+  Subscription,
   Transactions
 ];
 

@@ -57,9 +57,7 @@
         "_embedded": {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "fx:attributes"
-          ],
+          "required": ["fx:attributes"],
           "properties": {
             "fx:attributes": {
               "type": "array",
@@ -165,18 +163,18 @@
           "description": "Total amount of this transaction including all items, taxes, shipping costs and discounts.",
           "type": "number",
           "minimum": 0,
-          "maximum": 500
+          "maximum": 500,
+          "examples": [25]
         },
         "currency_code": {
           "description": "ISO 4217 currency code, uppercase.",
           "type": "string",
-          "examples": ["USD", "RUB", "CHF", "EUR", "AUD"]
+          "examples": ["USD"]
         },
         "currency_symbol": {
           "description": "A text symbol representing the currency this transaction was made in.",
           "type": "string",
-          "pattern": "^.$",
-          "faker": "finance.currencySymbol"
+          "examples": ["$"]
         },
         "status": {
           "type": "string",

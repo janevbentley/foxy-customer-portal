@@ -1,7 +1,7 @@
 import { click } from "../../assets/utils/click";
 import { usePage } from "../../assets/utils/usePage";
 import { interceptAPIRequests } from "../../assets/utils/interceptAPIRequests";
-import { E2EElement } from "@stencil/core/dist/testing";
+import { E2EElement } from "@stencil/core/testing";
 import { Transaction } from "../../assets/types/Transaction";
 
 const tag = "foxy-transactions";

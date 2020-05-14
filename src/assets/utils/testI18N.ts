@@ -5,6 +5,7 @@ import { Profile } from "../../components/profile/profile";
 import { SignIn } from "../../components/sign-in/sign-in";
 import { Subscriptions } from "../../components/subscriptions/subscriptions";
 import { Transactions } from "../../components/transactions/transactions";
+import { Subscription } from "../../components/subscription/subscription";
 
 const components = [
   Address,
@@ -12,6 +13,7 @@ const components = [
   Profile,
   SignIn,
   Subscriptions,
+  Subscription,
   Transactions
 ];
 
@@ -27,8 +29,8 @@ export function testI18N(tag: string) {
       expect(page.rootInstance).toHaveProperty("locale");
     });
 
-    it("uses default locale when language info is unavailable", async () => {
-      expect(page.rootInstance.locale).toBe("default");
+    it("uses en locale when language info is unavailable", async () => {
+      expect(page.rootInstance.locale).toBe("en");
     });
   });
 }
