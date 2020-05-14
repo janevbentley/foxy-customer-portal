@@ -11,6 +11,7 @@ describe("HTMLFoxySubscriptionsElement", () => {
     `<${tag}></${tag}>`,
     `<${tag} cols="6"></${tag}>`,
     `<${tag} locale="ru"></${tag}>`,
+    `<${tag} locale="fr"></${tag}>`,
     `<${tag} endpoint="http://i.dont.exist.local"></${tag}>`
   ];
 

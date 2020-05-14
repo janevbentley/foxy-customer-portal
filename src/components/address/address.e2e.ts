@@ -13,6 +13,7 @@ describe("HTMLFoxyAddressElement", () => {
   const templates = [
     "<foxy-address></foxy-address>",
     '<foxy-address locale="ru"></foxy-address>',
+    '<foxy-address locale="fr"></foxy-address>',
     '<foxy-address type="default_shipping_address"></foxy-address>',
     '<foxy-address endpoint="http://i.dont.exist.local"></foxy-address>'
   ];
