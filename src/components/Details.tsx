@@ -12,11 +12,9 @@ export const Details: FunctionalComponent<Props> = (props, children) => (
   <details
     open={props.open}
     class="bg-base sm:rounded-t-l sm:rounded-b-l sm:shadow-xs"
-    {...{
-      onToggle: (e: Event) => {
-        const details = e.target as HTMLDetailsElement;
-        props.onToggle && props.onToggle(details.open);
-      }
+    onToggle={(e: Event) => {
+      const details = e.target as HTMLDetailsElement;
+      props.onToggle && props.onToggle(details.open);
     }}
   >
     <summary
@@ -39,8 +37,6 @@ export const Details: FunctionalComponent<Props> = (props, children) => (
       </div>
     </summary>
 
-    <div class="z-0 relative">
-      {...children}
-    </div>
+    <div class="z-0 relative">{...children}</div>
   </details>
 );
