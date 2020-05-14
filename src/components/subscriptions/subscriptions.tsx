@@ -204,7 +204,7 @@ export class Subscriptions
         {this.displayedSubscriptions.map((value, index) => [
           <div
             class={{
-              "w-full bg-contrast-10 ml-64px md:ml-72px": true,
+              "w-full bg-contrast-10": true,
               "h-1px": index !== 0
             }}
           />,
