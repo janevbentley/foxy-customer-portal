@@ -1,6 +1,6 @@
 {
   "name": "@foxy.io/customer-portal",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "A collection of web components created for displaying customer portal info.",
   "main": "dist/lumo/index.js",
   "module": "dist/lumo/index.mjs",
