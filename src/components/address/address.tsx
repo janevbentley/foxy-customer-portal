@@ -105,11 +105,11 @@ export class Address
 
   async componentWillLoad() {
     i18n.componentWillLoad.call(this);
-    this.loadLocations();
   }
 
   async componentDidLoad() {
     await store.componentDidLoad.call(this);
+    this.loadLocations();
     this.ready.emit();
   }
 
@@ -219,17 +219,22 @@ export class Address
 
   private loadLocations() {
     if (!("FC" in window) || !("json" in window.FC)) {
+      const originalCallback = window.FC?.onLoad;
+
       window.FC = window.FC || {};
-      const callback = window.FC.onLoad || (() => {});
-      window.FC.onLoad = () => callback() && this.loadLocations();
+      window.FC.onLoad = () => {
+        if (Boolean(originalCallback)) originalCallback();
+        this.loadLocations();
+      };
+
       return;
     }
 
     const blacklist =
       window.FC.json.config[
-      this.type === "default_billing_address"
-        ? "locations_billing"
-        : "locations_shipping"
+        this.type === "default_billing_address"
+          ? "locations_billing"
+          : "locations_shipping"
       ];
 
     for (const country in window.FC.json.config.locations) {
@@ -250,6 +255,11 @@ export class Address
         });
       }
     }
+
+    // trigger re-render
+
+    this.countries = [...this.countries];
+    this.regions = { ...this.regions };
   }
 
   private toggle() {
