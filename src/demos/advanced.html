@@ -88,11 +88,13 @@
           </div>
         </foxy-transactions>
 
-        <foxy-subscriptions slot="subscriptions" cols="5" locale="en">
-          <span slot="header-4">Status</span>
-          <div v-for="(subscription, index) in customer._embedded['fx:subscriptions']" :slot="'row-' + index + '-col-4'" :key="index">
-            <span v-if="subscription.is_active" class="text-green-500">Active</span>
-            <span v-else class="text-red-500">Inactive</span>
+      <foxy-subscriptions slot="subscriptions">
+        <div v-for="(subscription, index) in customer._embedded['fx:subscriptions']" :slot="index" :key="index">
+          <foxy-subscription>
+            <div slot="action-cancel" class="text-secondary text-s">
+              Please <a href="/contact" class="hover:underline">contact us</a> to cancel
+            </div>
+          </foxy-subscription>
           </div>
         </foxy-subscriptions>
       </foxy-customer-portal>
