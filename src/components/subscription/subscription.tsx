@@ -369,6 +369,8 @@ export class Subscription implements Mixins {
                   <Link
                     href={getCancelUrl(this._subscription)}
                     text={this.i18n.cancelSubscription}
+                    size="s"
+                    color="secondary"
                   />
                 </div>
               )}
