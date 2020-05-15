@@ -8,6 +8,7 @@ import { replaceText } from "../../assets/utils/replaceText";
 import { usePage } from "../../assets/utils/usePage";
 import { interceptAPIRequests } from "../../assets/utils/interceptAPIRequests";
 import { Address } from "../../assets/types/Address";
+import { FC } from "./mocks/fc";
 
 describe("HTMLFoxyAddressElement", () => {
   const templates = [
@@ -156,6 +157,69 @@ describe("HTMLFoxyAddressElement", () => {
 
         await shouldRenderAddress(page, newAddress);
         shouldMatch(db.shippingAddress, newAddress);
+      });
+    });
+  });
+
+  describe("authorized: loads data from window.FC", () => {
+    it("loads immediately when it's available", async () => {
+      await interceptAPIRequests(async ({ signIn, page, url, db }) => {
+        const html = `
+          <script>window.FC = JSON.parse(\`${JSON.stringify(FC)}\`)</script>
+          <foxy-address endpoint="${url}"></foxy-address>
+        `;
+
+        db.billingAddress.country = "US";
+        db.billingAddress.region = "TX";
+
+        await signIn();
+        await page.setContent(html);
+        await page.waitForChanges();
+        await click(page, "foxy-address >>> [data-e2e=toggle]");
+
+        const country = await page.find("foxy-address >>> [data-e2e=country]");
+        const region = await page.find("foxy-address >>> [data-e2e=region]");
+
+        expect(await country.getProperty("items")).toEqual([
+          { value: "US", label: "United States" }
+        ]);
+
+        expect(await region.getProperty("items")).toEqual([
+          { value: "TX", label: "Texas" }
+        ]);
+      });
+    });
+
+    it("loads whenever it becomes available later if not present immediately", async () => {
+      await interceptAPIRequests(async ({ signIn, page, url, db }) => {
+        const html = `<foxy-address endpoint="${url}"></foxy-address>`;
+
+        db.billingAddress.country = "US";
+        db.billingAddress.region = "TX";
+
+        await signIn();
+        await page.setContent(html);
+        await page.waitForChanges();
+
+        await page.waitFor(3000);
+        await page.evaluate((fcMock: any) => {
+          const onLoad = window.FC?.onLoad;
+          window.FC = fcMock;
+          if (Boolean(onLoad)) onLoad();
+        }, FC);
+
+        await click(page, "foxy-address >>> [data-e2e=toggle]");
+
+        const country = await page.find("foxy-address >>> [data-e2e=country]");
+        const region = await page.find("foxy-address >>> [data-e2e=region]");
+
+        expect(await country.getProperty("items")).toEqual([
+          { value: "US", label: "United States" }
+        ]);
+
+        expect(await region.getProperty("items")).toEqual([
+          { value: "TX", label: "Texas" }
+        ]);
       });
     });
   });
