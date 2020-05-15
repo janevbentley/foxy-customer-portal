@@ -14,11 +14,33 @@
     html {
       background: var(--foxy-shade-10pct);
     }
+
+    .text-s {
+      font-size: var(--foxy-font-size-s);
+    }
+
+    .text-secondary {
+      color: var(--foxy-secondary-text-color);
+    }
   </style>
 
-  <div class="m-4 rounded-lg shadow-lg overflow-hidden">
-    <foxy-subscription endpoint="http://localhost:5000"></foxy-subscription>
-  </div>
+  <figure class="m-4">
+    <figcaption class="mb-2">Default</figcaption>
+    <div class="rounded-lg shadow-lg overflow-hidden">
+      <foxy-subscription endpoint="http://localhost:5000"></foxy-subscription>
+    </div>
+  </figure>
+
+  <figure class="m-4">
+    <figcaption class="mb-2">With custom cancel action</figcaption>
+    <div class="rounded-lg shadow-lg overflow-hidden">
+      <foxy-subscription endpoint="http://localhost:5000">
+        <div slot="action-cancel" class="text-secondary text-s">
+          Please <a href="/contact" class="hover:underline">contact us</a> to cancel
+        </div>
+      </foxy-subscription>
+    </div>
+  </figure>
 </body>
 
 </html>
