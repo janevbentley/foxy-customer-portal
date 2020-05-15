@@ -17,7 +17,7 @@
   "scripts": {
     "commit": "git cz",
     "json2ts": "run-for-every-file --src \"./src/assets/schema/\" --file \"*.json\" --run \"json2ts {{src-file}} ./src/assets/types/{{file-name}}.ts --cwd ./src/assets/schema/\"",
-    "postinstall": "node postinstall.js && npm run build",
+    "postinstall": "node postinstall.js",
     "start:server": "ts-node -P tsconfig.server.json src/server.ts",
     "start:material": "VAADIN_THEME=material stencil build --dev --watch --serve",
     "start:lumo": "VAADIN_THEME=lumo stencil build --dev --watch --serve",
