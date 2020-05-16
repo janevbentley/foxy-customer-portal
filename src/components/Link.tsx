@@ -4,6 +4,8 @@ interface Props {
   title?: string;
   href?: string;
   text?: string;
+  size?: "m" | "s";
+  color?: "secondary" | "body";
 }
 
 export const Link: FunctionalComponent<Props> = props => (
@@ -13,7 +15,11 @@ export const Link: FunctionalComponent<Props> = props => (
     target="_blank"
     rel="nofollow noreferrer noopener"
     class={{
-      "px-xs -mx-xs inline-block text-body rounded-m leading-s font-medium text-m hover:no-underline focus:outline-none": true,
+      "text-s": props.size === "s",
+      "text-m": !Boolean(props.size) || props.size === "m",
+      "text-body": !Boolean(props.color) || props.color === "body",
+      "text-secondary": props.color === "secondary",
+      "px-xs -mx-xs inline-block rounded-m leading-s font-medium hover:no-underline focus:outline-none": true,
       "transition duration-150 hover:text-primary focus:shadow-outline": Boolean(
         props?.href
       )

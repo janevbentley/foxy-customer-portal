@@ -364,12 +364,16 @@ export class Subscription implements Mixins {
                 <slot name="actions" />
               </div>
 
-              {this._isNextDateEditable && this._subscription.is_active && (
+              {this._subscription.is_active && (
                 <div class="px-m pb-m pt-m -mt-xs text-right">
-                  <Link
-                    href={getCancelUrl(this._subscription)}
-                    text={this.i18n.cancelSubscription}
-                  />
+                  <slot name="action-cancel">
+                    <Link
+                      href={getCancelUrl(this._subscription)}
+                      text={this.i18n.cancelSubscription}
+                      size="s"
+                      color="secondary"
+                    />
+                  </slot>
                 </div>
               )}
             </div>
