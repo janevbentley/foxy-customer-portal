@@ -16,7 +16,7 @@ export const CartItem: FunctionalComponent<Props> = props => (
         <img
           src={props.item.image}
           alt={props.i18n.productImageAlt}
-          class="absolute inset-0 w-full h-full"
+          class="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
       )}
