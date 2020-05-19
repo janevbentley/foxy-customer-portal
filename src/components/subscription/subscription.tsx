@@ -225,6 +225,15 @@ export class Subscription implements Mixins {
     return value && value.length > 0 ? value : [];
   }
 
+  private get _transactions() {
+    return this._subscription._embedded["fx:transactions"].sort((a, b) => {
+      return (
+        new Date(b.transaction_date).getTime() -
+        new Date(a.transaction_date).getTime()
+      );
+    });
+  }
+
   private get _resolvedEndpoint() {
     let path = "/s/customer";
     if (this.endpoint.length > 0) return this.endpoint + path;
@@ -298,7 +307,7 @@ export class Subscription implements Mixins {
             <div class="w-full md:pr-m md:pb-m md:pt-s">
               <Transactions
                 i18n={this.i18n}
-                items={this._subscription._embedded["fx:transactions"]}
+                items={this._transactions}
                 template={this._template}
                 subscription={this._subscription}
                 onObserverRoot={this._observeTransactionsRoot.bind(this)}
