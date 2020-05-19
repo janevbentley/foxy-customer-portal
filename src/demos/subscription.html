@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>Standalone subscription</title>
   <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
   <script type="module" src="/build/foxy.esm.js"></script>
 </head>
 
@@ -38,6 +39,33 @@
         <div slot="action-cancel" class="text-secondary text-s">
           Please <a href="/contact" class="hover:underline">contact us</a> to cancel
         </div>
+      </foxy-subscription>
+    </div>
+  </figure>
+
+  <figure class="m-4" x-data="{ transactions: [] }">
+    <figcaption class="mb-2">With customized transactions display (AlpineJS)</figcaption>
+    <div class="rounded-lg shadow-lg overflow-hidden">
+      <foxy-subscription
+        endpoint="http://localhost:5000"
+        transaction-slots="test1,test2"
+        x-ref="demo3"
+        @update="transactions = $event.detail._embedded['fx:subscriptions'][0]._embedded['fx:transactions']"
+      >
+        <div slot="transactions-test1">Test 1</div>
+        <div slot="transactions-test2">Test 2</div>
+
+        <template x-for="transaction in transactions" :key="transaction.id">
+          <div :slot="'transaction-' + transaction.id + '-test1'">
+            <vaadin-button class="w-full">Test 1</vaadin-button>
+          </div>
+        </template>
+
+        <template x-for="transaction in transactions" :key="transaction.id">
+          <div :slot="'transaction-' + transaction.id + '-test2'">
+            <div class="whitespace-no-wrap text-green-500">Test 2</div>
+          </div>
+        </template>
       </foxy-subscription>
     </div>
   </figure>

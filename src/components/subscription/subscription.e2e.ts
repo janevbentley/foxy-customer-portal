@@ -141,9 +141,17 @@ describe("HTMLFoxySubscriptionElement", () => {
 
     it("displays a list of transactions", async () => {
       await interceptAPIRequests(async ({ db, url, page, signIn }) => {
-        const subscription = db.subscriptions[0];
-        const transactions = subscription._embedded["fx:transactions"];
         const content = `<${tag} locale="en" endpoint="${url}"></${tag}>`;
+        const subscription = db.subscriptions[0];
+
+        const transactions = subscription._embedded["fx:transactions"].sort(
+          (a, b) => {
+            return (
+              new Date(b.transaction_date).getTime() -
+              new Date(a.transaction_date).getTime()
+            );
+          }
+        );
 
         activateSubscription(subscription);
 

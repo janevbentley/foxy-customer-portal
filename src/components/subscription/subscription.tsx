@@ -33,8 +33,6 @@ type Mixins = vaadin.Mixin & store.Mixin & i18n.Mixin<typeof i18nProvider>;
   shadow: true
 })
 export class Subscription implements Mixins {
-  private _observer?: IntersectionObserver;
-
   private _nextDateConfirm: VaadinDialog;
   private _nextDateErrorAlert: VaadinNotification;
   private _nextDateSuccessAlert: VaadinNotification;
@@ -45,7 +43,6 @@ export class Subscription implements Mixins {
 
   @Element() readonly root: HTMLFoxySubscriptionElement;
 
-  @State() mobilePanelTranslateY = "0";
   @State() newNextDate?: string;
   @State() newFrequency?: string;
 
@@ -64,6 +61,16 @@ export class Subscription implements Mixins {
 
   /** Foxy Customer Portal API endpoint. */
   @Prop() endpoint = "";
+
+  /**
+   * List of additional slots to generate for each transaction
+   * in the transactions display. Each entry will create a table cell slot
+   * named `transaction-${id}-${entry}` and a corresponding table header
+   * slot named `transactions-${entry}`. Accepts array of strings (`["foo", "bar"]`)
+   * or a serialized list of values separated by a comma (`"foo,bar"`).
+   * Items order is respected.
+   */
+  @Prop() transactionSlots = [] as string | string[];
 
   /** The language to display element content in. */
   @Prop() locale = i18n.defaults.locale.call(this);
@@ -225,6 +232,23 @@ export class Subscription implements Mixins {
     return value && value.length > 0 ? value : [];
   }
 
+  private get _transactions() {
+    return this._subscription._embedded["fx:transactions"].sort((a, b) => {
+      return (
+        new Date(b.transaction_date).getTime() -
+        new Date(a.transaction_date).getTime()
+      );
+    });
+  }
+
+  private get _normalizedTransactionSlots() {
+    if (typeof this.transactionSlots === "string") {
+      return this.transactionSlots.split(",");
+    } else {
+      return this.transactionSlots;
+    }
+  }
+
   private get _resolvedEndpoint() {
     let path = "/s/customer";
     if (this.endpoint.length > 0) return this.endpoint + path;
@@ -236,22 +260,6 @@ export class Subscription implements Mixins {
   private get _isNextDateEditable() {
     return this._subscription?._embedded.template_config
       .allow_next_date_modification;
-  }
-
-  private _observeTransactionsRoot(root: HTMLElement) {
-    if (!Boolean(window.IntersectionObserver)) return;
-
-    this._observer?.disconnect();
-    this._observer = new IntersectionObserver(
-      ([{ isIntersecting, boundingClientRect }]) => {
-        const value = isIntersecting ? "0" : `-${boundingClientRect.height}px`;
-        this.mobilePanelTranslateY = value;
-      },
-      {
-        threshold: 0.25,
-        root
-      }
-    );
   }
 
   render() {
@@ -288,28 +296,24 @@ export class Subscription implements Mixins {
           </div>,
 
           <div class="md:flex">
-            <div class="px-m relative -mt-s md:hidden">
+            <div class="px-m relative -mt-s flex-shrink-0 md:hidden">
               <BillingDetails
                 i18n={this.i18n}
                 subscription={this._subscription}
               />
             </div>
 
-            <div class="w-full md:pr-m md:pb-m md:pt-s">
+            <div class="w-full flex-shrink md:overflow-auto md:py-s">
               <Transactions
                 i18n={this.i18n}
-                items={this._subscription._embedded["fx:transactions"]}
+                items={this._transactions}
+                slots={this._normalizedTransactionSlots}
                 template={this._template}
                 subscription={this._subscription}
-                onObserverRoot={this._observeTransactionsRoot.bind(this)}
-                onObserverTarget={e => e && this._observer?.observe(e)}
               />
             </div>
 
-            <div
-              class="z-0 bg-base transition transform duration-300 flex-shrink-0 md:transition-none md:transform-none md:pt-l md:w-320px"
-              style={{ "--transform-translate-y": this.mobilePanelTranslateY }}
-            >
+            <div class="flex-shrink-0 md:pt-l md:w-320px">
               <div class="hidden md:block md:m-m" aria-hidden="true">
                 <BillingDetails
                   i18n={this.i18n}

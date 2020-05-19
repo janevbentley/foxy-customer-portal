@@ -8,11 +8,10 @@ import { TransactionsRow } from "./TransactionsRow";
 import { TransactionsSubheader } from "./TransactionsSubheader";
 
 interface Props {
-  onObserverTarget: (target: HTMLElement) => any;
-  onObserverRoot: (root: HTMLElement) => any;
   subscription: Subscription;
   template: TransactionTemplate;
   items: Transaction[];
+  slots: string[];
   i18n: Messages;
 }
 
@@ -38,13 +37,16 @@ export const Transactions: FunctionalComponent<Props> = props => {
           <th scope="col">{props.i18n.timestamp}</th>
           <th scope="col">{props.i18n.id}</th>
           <th scope="col">{props.i18n.links}</th>
+
+          {props.slots.map(name => (
+            <th scope="col">
+              <slot name={`transactions-${name}`} />
+            </th>
+          ))}
         </tr>
       </thead>
 
-      <tbody
-        class="snap-x-mandatory scroll-px-20 block whitespace-no-wrap p-m pt-xl -mx-xs -mt-s overflow-x-auto overflow-y-hidden md:p-0 md:table-row-group md:whitespace-normal md:overflow-auto md:snap-none md:scroll-px-0"
-        ref={props.onObserverRoot}
-      >
+      <tbody class="snap-x-mandatory scroll-px-20 block whitespace-no-wrap p-m pt-xl -mx-xs -mt-s overflow-x-auto overflow-y-hidden md:p-0 md:table-row-group md:whitespace-normal md:overflow-auto md:snap-none md:scroll-px-0">
         {firstFailedDate && [
           <TransactionsSubheader
             i18n={props.i18n}
@@ -56,6 +58,7 @@ export const Transactions: FunctionalComponent<Props> = props => {
           <TransactionsRow
             {...props}
             transaction={{
+              id: 0,
               display_id: 0,
               transaction_date: firstFailedDate,
               currency_code: props.template.currency_code,
@@ -94,7 +97,11 @@ export const Transactions: FunctionalComponent<Props> = props => {
             {props.i18n.links}
           </th>
 
-          <td class="p-0" colSpan={5} headers="foxy-actions-header">
+          <td
+            class="p-0 md:pr-m"
+            colSpan={5 + props.slots.length}
+            headers="foxy-actions-header"
+          >
             <vaadin-button
               class="mx-xs w-full md:mx-0 md:my-m"
               data-theme="contrast"

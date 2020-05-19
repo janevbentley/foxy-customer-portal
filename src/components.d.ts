@@ -162,6 +162,10 @@ export namespace Components {
             zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
             sso: true;
         }>>) => Promise<void>;
+        /**
+          * List of additional slots to generate for each transaction in the transactions display. Each entry will create a table cell slot named `transaction-${id}-${entry}` and a corresponding table header slot named `transactions-${entry}`. Accepts array of strings (`["foo", "bar"]`) or a serialized list of values separated by a comma (`"foo,bar"`). Items order is respected.
+         */
+        "transactionSlots": string | string[];
     }
     interface FoxySubscriptions {
         /**
@@ -398,6 +402,10 @@ declare namespace LocalJSX {
           * Emitted after the component makes changes to the state, containing the changed data in its payload.
          */
         "onUpdate"?: (event: CustomEvent<FullGetResponse>) => void;
+        /**
+          * List of additional slots to generate for each transaction in the transactions display. Each entry will create a table cell slot named `transaction-${id}-${entry}` and a corresponding table header slot named `transactions-${entry}`. Accepts array of strings (`["foo", "bar"]`) or a serialized list of values separated by a comma (`"foo,bar"`). Items order is respected.
+         */
+        "transactionSlots"?: string | string[];
     }
     interface FoxySubscriptions {
         /**
