@@ -5,13 +5,15 @@ import { Messages } from "../../types";
 import { Link } from "../../../Link";
 import { TransactionsError } from "./TransactionsError";
 
+type PartialTransaction = Pick<
+  Transaction,
+  "transaction_date" | "display_id" | "currency_code" | "total_order" | "id"
+> & { _links?: Transaction["_links"] };
+
 interface Props {
-  onObserverTarget: (v: HTMLElement) => any;
   subscription: Subscription;
-  transaction: Pick<
-    Transaction,
-    "transaction_date" | "display_id" | "currency_code" | "total_order"
-  > & { _links?: Transaction["_links"] };
+  transaction: PartialTransaction;
+  slots: string[];
   i18n: Messages;
 }
 
@@ -53,9 +55,10 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
       </td>
 
       <td
-        class={`whitespace-no-wrap p-0 text-left order-2 leading-xs block md:pr-m md:table-cell md:align-middle ${
-          failed ? "w-full md:w-auto" : ""
-        }`}
+        class={{
+          "whitespace-no-wrap p-0 text-left order-2 leading-xs block md:pr-m md:table-cell md:align-middle": true,
+          "w-full md:w-auto": failed
+        }}
       >
         <time
           dateTime={new Date().toISOString()}
@@ -71,19 +74,19 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
         )}
       </td>
 
-      <td class="whitespace-no-wrapp-0 order-3 font-tnum leading-xs text-tertiary block md:pr-m md:table-cell md:text-center md:align-middle">
+      <td class="whitespace-no-wrap p-0 order-3 font-tnum leading-xs text-tertiary block md:pr-m md:table-cell md:align-middle">
         {!failed && `#${props.transaction.display_id}`}
       </td>
 
       <td
-        class={`${
-          failed
-            ? "order-last w-full"
-            : "order-1 w-1/2 text-right md:table-cell md:align-middle"
-        } block p-0 whitespace-no-wrap md:pr-m  md:w-auto`}
+        class={{
+          "order-5 w-full": failed,
+          "order-1 w-1/2 text-right md:table-cell md:align-middle": !failed,
+          "block p-0 whitespace-no-wrap md:pr-m md:w-auto": true
+        }}
       >
         {failed ? (
-          <div ref={v => failed && props.onObserverTarget(v)} class="md:hidden">
+          <div class="md:hidden">
             <TransactionsError {...props} />
           </div>
         ) : (
@@ -93,6 +96,12 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
           />
         )}
       </td>
+
+      {props.slots.map(name => (
+        <td class="p-0 block order-last w-full md:pr-m md:w-auto md:table-cell md:align-middle">
+          <slot name={`transaction-${props.transaction.id}-${name}`} />
+        </td>
+      ))}
     </tr>
   );
 };
