@@ -28,7 +28,7 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
       class="w-240px snap-start relative border border-contrast-10 rounded-m px-s py-xs inline-flex align-top flex-wrap m-xs md:w-auto md:snap-none md:table-row md:border-none md:p-0"
       data-e2e="transaction"
     >
-      <td class="sr-only p-0 md:w-72px md:not-sr-only md:text-center">
+      <td class="sr-only p-0 whitespace-no-wrap md:w-72px md:min-w-72px md:not-sr-only md:text-center">
         <div class="sr-only">{props.i18n[status]}</div>
         <div
           class={{
@@ -45,7 +45,7 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
         </div>
       </td>
 
-      <td class="text-left order-1 text-body leading-xs text-xxl font-tnum font-medium w-1/2 p-0 block md:table-cell md:text-m md:w-auto md:align-middle">
+      <td class="whitespace-no-wrap text-left order-1 text-body leading-xs text-xxl font-tnum font-medium w-1/2 p-0 block md:pr-m md:table-cell md:text-m md:w-auto md:align-middle">
         {props.i18n.price(
           props.transaction.total_order,
           props.transaction.currency_code
@@ -53,7 +53,7 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
       </td>
 
       <td
-        class={`p-0 text-left order-2 leading-xs block md:table-cell md:align-middle ${
+        class={`whitespace-no-wrap p-0 text-left order-2 leading-xs block md:pr-m md:table-cell md:align-middle ${
           failed ? "w-full md:w-auto" : ""
         }`}
       >
@@ -71,7 +71,7 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
         )}
       </td>
 
-      <td class="p-0 order-3 font-tnum leading-xs text-tertiary block md:table-cell md:text-center md:align-middle">
+      <td class="whitespace-no-wrapp-0 order-3 font-tnum leading-xs text-tertiary block md:pr-m md:table-cell md:text-center md:align-middle">
         {!failed && `#${props.transaction.display_id}`}
       </td>
 
@@ -80,7 +80,7 @@ export const TransactionsRow: FunctionalComponent<Props> = props => {
           failed
             ? "order-last w-full"
             : "order-1 w-1/2 text-right md:table-cell md:align-middle"
-        } block p-0 md:w-auto`}
+        } block p-0 whitespace-no-wrap md:pr-m  md:w-auto`}
       >
         {failed ? (
           <div ref={v => failed && props.onObserverTarget(v)} class="md:hidden">

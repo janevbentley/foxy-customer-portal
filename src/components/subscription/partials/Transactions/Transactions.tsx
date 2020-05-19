@@ -94,7 +94,7 @@ export const Transactions: FunctionalComponent<Props> = props => {
             {props.i18n.links}
           </th>
 
-          <td class="p-0" colSpan={5} headers="foxy-actions-header">
+          <td class="p-0 md:pr-m" colSpan={5} headers="foxy-actions-header">
             <vaadin-button
               class="mx-xs w-full md:mx-0 md:my-m"
               data-theme="contrast"

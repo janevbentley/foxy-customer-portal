@@ -129,6 +129,10 @@ details > summary::-webkit-details-marker {
     min-height: 72px;
   }
 
+  .min-w-72px {
+    min-width: 72px;
+  }
+
   .h-1px {
     height: 1px;
   }

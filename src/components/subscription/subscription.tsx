@@ -297,14 +297,14 @@ export class Subscription implements Mixins {
           </div>,
 
           <div class="md:flex">
-            <div class="px-m relative -mt-s md:hidden">
+            <div class="px-m relative -mt-s flex-shrink-0 md:hidden">
               <BillingDetails
                 i18n={this.i18n}
                 subscription={this._subscription}
               />
             </div>
 
-            <div class="w-full md:pr-m md:pb-m md:pt-s">
+            <div class="w-full flex-shrink md:overflow-auto md:py-s">
               <Transactions
                 i18n={this.i18n}
                 items={this._transactions}
