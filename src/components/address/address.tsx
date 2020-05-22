@@ -42,9 +42,9 @@ const fields: Partial<EditableAddress> = {
   last_name: "family-name",
   company: "organization",
   phone: "tel",
-  address1: "street-address address-line-1",
-  address2: "street-address address-line-2",
-  city: "address-level-2",
+  address1: "address-line1",
+  address2: "address-line2",
+  city: "address-level2",
   postal_code: "postal-code"
 };
 
