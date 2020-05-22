@@ -340,7 +340,7 @@ export class Profile
             </h3>,
 
             <div class="flex justify-between items-center mb-s">
-              <figure class="flex items-center">
+              <figure class="flex items-center" data-e2e="cc-number">
                 <img
                   src={this.ccLogo}
                   alt={this.i18n.ccLogoAlt(this.paymentMethod)}
@@ -358,6 +358,7 @@ export class Profile
 
               <vaadin-button
                 class="m-0"
+                data-e2e="btn-remove-cc"
                 data-theme="error small"
                 disabled={this.isSaving}
                 onClick={() => (this.removeCcDialog.opened = true)}
@@ -414,7 +415,7 @@ export class Profile
             />
           </h3>
 
-          <div class="truncate">
+          <div class="truncate" data-e2e="lbl-cc-info">
             <Skeleton
               loaded={this.isContentAvailable}
               text={() => this.i18n.ccDescription(this.paymentMethod)}
