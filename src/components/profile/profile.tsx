@@ -113,7 +113,10 @@ export class Profile
    */
   @Method()
   async getRemoteState() {
-    const params: GetRequest = {};
+    const params: GetRequest = {
+      zoom: { default_payment_method: true }
+    };
+
     let customer: GetResponse<typeof params> | null = null;
 
     try {
