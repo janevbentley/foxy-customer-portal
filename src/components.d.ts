@@ -109,6 +109,10 @@ export namespace Components {
          */
         "locale": any;
         /**
+          * Removes the default payment method if present.
+         */
+        "removeDefaultPaymentMethod": () => Promise<void>;
+        /**
           * Sets customer object (the state).
          */
         "setState": (value: Partial<GetResponse<{
