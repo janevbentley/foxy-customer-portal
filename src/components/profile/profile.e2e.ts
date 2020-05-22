@@ -108,7 +108,7 @@ describe("HTMLFoxyProfileElement", () => {
 
         await page.waitForSelector("[data-e2e=btn-ok]");
         await page.$eval("[data-e2e=btn-ok]", v => (v as any).click());
-        await page.waitForEvent("update");
+        await page.waitFor(1000);
 
         expect(
           await page.find("foxy-profile >>> [data-e2e=cc-number]")
