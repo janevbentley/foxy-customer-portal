@@ -43,6 +43,8 @@ export class Subscription implements Mixins {
 
   @Element() readonly root: HTMLFoxySubscriptionElement;
 
+  @State() mobilePanelTranslateY = "0";
+  @State() newNextDateInvalid = false;
   @State() newNextDate?: string;
   @State() newFrequency?: string;
 
@@ -330,23 +332,6 @@ export class Subscription implements Mixins {
               ))}
 
               <div class="px-m">
-                {this._isNextDateEditable && (
-                  <NextDatePicker
-                    errorRef={e => (this._nextDateErrorAlert = e)}
-                    successRef={e => (this._nextDateSuccessAlert = e)}
-                    confirmRef={e => (this._nextDateConfirm = e)}
-                    disabled={!this._subscription.is_active || this.busy}
-                    newValue={this.newNextDate}
-                    value={this._subscription.next_transaction_date}
-                    i18n={this.i18n}
-                    onChange={e => this.setNextTransactionDate(e)}
-                    onChangeRequest={e => {
-                      this.newNextDate = e;
-                      this._nextDateConfirm.opened = true;
-                    }}
-                  />
-                )}
-
                 {this._frequencies.length > 1 && (
                   <FrequencyPicker
                     errorRef={e => (this._frequencyErrorAlert = e)}
@@ -361,6 +346,26 @@ export class Subscription implements Mixins {
                     onChangeRequest={v => {
                       this.newFrequency = v;
                       this._frequencyConfirm.opened = true;
+                    }}
+                  />
+                )}
+
+                {this._isNextDateEditable && (
+                  <NextDatePicker
+                    subscription={this._subscription}
+                    errorRef={e => (this._nextDateErrorAlert = e)}
+                    successRef={e => (this._nextDateSuccessAlert = e)}
+                    confirmRef={e => (this._nextDateConfirm = e)}
+                    disabled={!this._subscription.is_active || this.busy}
+                    newValue={this.newNextDate}
+                    value={this._subscription.next_transaction_date}
+                    i18n={this.i18n}
+                    invalid={this.newNextDateInvalid}
+                    onInvalidChanged={v => (this.newNextDateInvalid = v)}
+                    onChange={e => this.setNextTransactionDate(e)}
+                    onChangeRequest={e => {
+                      this.newNextDate = e;
+                      this._nextDateConfirm.opened = true;
                     }}
                   />
                 )}
