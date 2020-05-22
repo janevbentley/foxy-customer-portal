@@ -170,6 +170,7 @@ export class Profile
       this.paymentMethod.save_cc = false;
 
       await this.setState(this.state);
+      this.update.emit();
     } catch (e) {
       console.error(e);
       const localMessage = this.i18n?.error || this.i18nProvider.en.error;
