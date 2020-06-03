@@ -15,6 +15,12 @@
     />
 
     <script type="module" src="/build/foxy.esm.js"></script>
+
+    <style>
+      .bg-blue-500 {
+        background-color: var(--foxy-primary-color);
+      }
+    </style>
   </head>
 
   <body class="container mx-auto py-8 sm:px-8">
@@ -27,27 +33,37 @@
     <foxy-customer-portal
       tabs="[Home](https://foxy.io) [About](portal://about)"
       endpoint="http://localhost:5000"
-    ></foxy-customer-portal>
+      router
+    >
+      <div slot="about" class="text-white bg-blue-500 rounded p-4 m-4">
+        This content will be displayed only when the About link is clicked. If
+        the hash-based routing option is on, this content will also be displayed
+        when the URL hash matches "about" (e.g. https://example.com#about).
+      </div>
+    </foxy-customer-portal>
 
     <h2 class="text-lg text-gray-500 border-b py-2 mx-4 mt-12 mb-6">
       Example 2: using JS Array
     </h2>
 
-    <foxy-customer-portal
-      id="demo2"
-      endpoint="http://localhost:5000"
-    ></foxy-customer-portal>
+    <foxy-customer-portal id="demo2" endpoint="http://localhost:5000" router>
+      <div slot="about" class="text-white bg-blue-500 rounded p-4 m-4">
+        This content will be displayed only when the About link is clicked. If
+        the hash-based routing option is on, this content will also be displayed
+        when the URL hash matches "about" (e.g. https://example.com#about).
+      </div>
+    </foxy-customer-portal>
 
     <script>
       document.getElementById("demo2").addEventListener("ready", e => {
         e.target.tabs = [
           {
             href: "https://foxy.io",
-            caption: "Home"
+            text: "Home"
           },
           {
-            href: "https://admin.foxycart.com",
-            caption: "Admin"
+            href: "portal://about",
+            text: "About"
           }
         ];
       });

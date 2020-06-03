@@ -98,17 +98,18 @@ describe("HTMLFoxyCustomerPortalElement", () => {
 
     it("renders additional links with markdown syntax", async () => {
       await interceptAPIRequests(async ({ page, url, signIn }) => {
-        const links = "[Foo](http://example.com/0)[Bar](http://example.com/1)";
-        const content = `<${tag} endpoint="${url}" tabs="${links}"></${tag}>`;
+        const links = "[Foo](https://example.com/foo)[Bar](portal://bar)";
+        const content = `<${tag} endpoint="${url}" tabs="${links}" router></${tag}>`;
 
         await signIn();
         await page.setContent(content);
         await page.waitForEvent("ready");
 
-        const [foo, bar] = await page.findAll(`${tag} >>> vaadin-tab > a`);
+        const wrappers = await page.findAll(`${tag} >>> vaadin-tab > a`);
+        const [bar, foo] = wrappers.reverse();
 
-        expect(foo.getAttribute("href")).toEqual("http://example.com/0");
-        expect(bar.getAttribute("href")).toEqual("http://example.com/1");
+        expect(foo.getAttribute("href")).toEqual("https://example.com/foo");
+        expect(bar.getAttribute("href")).toEqual("#foxy-customer-portal--bar");
 
         expect(foo).toEqualText("Foo");
         expect(bar).toEqualText("Bar");
@@ -119,17 +120,17 @@ describe("HTMLFoxyCustomerPortalElement", () => {
       await interceptAPIRequests(async ({ page, url, signIn }) => {
         const tabs = [
           {
-            href: "https://foxy.io",
-            caption: "Home"
+            href: "https://example.com/foo",
+            text: "Foo"
           },
           {
-            href: "https://admin.foxycart.com",
-            caption: "Admin"
+            href: "portal://bar",
+            text: "Bar"
           }
         ];
 
         await signIn();
-        await page.setContent(`<${tag} endpoint="${url}"></${tag}>`);
+        await page.setContent(`<${tag} endpoint="${url}" router></${tag}>`);
         await page.waitForEvent("ready");
 
         const root = await page.find(tag);
@@ -137,11 +138,13 @@ describe("HTMLFoxyCustomerPortalElement", () => {
         await page.waitForChanges();
 
         const wrappers = await page.findAll(`${tag} >>> vaadin-tab > a`);
+        const [bar, foo] = wrappers.reverse();
 
-        for (let i = 0; i < wrappers.length - 1; ++i) {
-          expect(wrappers[i].getAttribute("href")).toEqual(tabs[i].href);
-          expect(wrappers[i]).toEqualText(tabs[i].caption);
-        }
+        expect(foo.getAttribute("href")).toEqual("https://example.com/foo");
+        expect(bar.getAttribute("href")).toEqual("#foxy-customer-portal--bar");
+
+        expect(foo).toEqualText("Foo");
+        expect(bar).toEqualText("Bar");
       });
     });
   });

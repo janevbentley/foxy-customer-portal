@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AddressType, } from "./components/address/types";
 import { FullGetResponse, GetRequest, GetResponse, } from "./api";
+import { Tab, } from "./components/customer-portal/types";
 export namespace Components {
     interface FoxyAddress {
         /**
@@ -81,12 +82,9 @@ export namespace Components {
             sso: true;
         }>>) => Promise<void>;
         /**
-          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `caption` for the display text (both string).
+          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `text` for the display text (both string).  To enable slot generation and routing, use the following URI scheme: `portal://tab-name`. This will create a slot for your tab content that will be displayed only when the appropriate tab link is clicked (works with hash-based routing too).
          */
-        "tabs": string | {
-            href: string;
-            caption: string;
-        }[];
+        "tabs": string | Tab[];
     }
     interface FoxyPluginWarning {
         /**
@@ -346,12 +344,9 @@ declare namespace LocalJSX {
          */
         "scope"?: string;
         /**
-          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `caption` for the display text (both string).
+          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `text` for the display text (both string).  To enable slot generation and routing, use the following URI scheme: `portal://tab-name`. This will create a slot for your tab content that will be displayed only when the appropriate tab link is clicked (works with hash-based routing too).
          */
-        "tabs"?: string | {
-            href: string;
-            caption: string;
-        }[];
+        "tabs"?: string | Tab[];
     }
     interface FoxyPluginWarning {
         /**
