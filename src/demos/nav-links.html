@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="bg-gray-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+
+    <title>Adding top nav links</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+    />
+
+    <script type="module" src="/build/foxy.esm.js"></script>
+  </head>
+
+  <body class="container mx-auto py-8 sm:px-8">
+    <h1 class="text-2xl mx-4 mb-12">Adding top nav links</h1>
+
+    <h2 class="text-lg text-gray-500 border-b py-2 mx-4 mb-6">
+      Example 1: using Markdown
+    </h2>
+
+    <foxy-customer-portal
+      nav-links="[Home](https://foxy.io) [Admin](https://admin.foxycart.com)"
+      endpoint="http://localhost:5000"
+    ></foxy-customer-portal>
+
+    <h2 class="text-lg text-gray-500 border-b py-2 mx-4 mt-12 mb-6">
+      Example 2: using JS Array
+    </h2>
+
+    <foxy-customer-portal
+      id="demo2"
+      endpoint="http://localhost:5000"
+    ></foxy-customer-portal>
+
+    <script>
+      document.getElementById("demo2").addEventListener("ready", e => {
+        e.target.navLinks = [
+          {
+            href: "https://foxy.io",
+            caption: "Home"
+          },
+          {
+            href: "https://admin.foxycart.com",
+            caption: "Admin"
+          }
+        ];
+      });
+    </script>
+  </body>
+</html>
