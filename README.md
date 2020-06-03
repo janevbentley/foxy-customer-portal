@@ -166,6 +166,26 @@ applyPolyfills().then(() => defineCustomElements(window));
 new Vue({ el: "#customer-portal" });
 ```
 
+## Theming
+
+We use [Vaadin](http://vaadin.com/) web components in our portal, and most styling is handled that way. You can use this [handy theme builder](https://demo.vaadin.com/lumo-editor/) to quickly customize your overall portal theme. Simply copy out the the generated CSS and paste it into your own page, but change the `--lumo` prefixes with `--foxy`. (We do this so the basic theme ideas work with the Material theme as well.) Take a look at the `demos/foxycart.html` file for an example.
+
+That theme builder doesn't include all possible options, however. To do drop shadows, you'd insert something like this in your HTML:
+
+```html
+<dom-module id="foxy-custom-theme" theme-for="vaadin-text-field">
+  <template>
+    <style>
+      [part="input-field"] {
+        box-shadow: var(--foxy-box-shadow-xs);
+      }
+    </style>
+  </template>
+</dom-module>
+```
+
+Additional details can be found in [the Vaadin styling docs](https://cdn.vaadin.com/vaadin-lumo-styles/1.0.0/demo/styles.html).
+
 ## Development
 
 Stencil docs are a good place to start if you're unsure because this package follows the standard structure. This project is also using [TSX/TypeScript](https://typescriptlang.org/) and [Rollup](https://rollupjs.org).
