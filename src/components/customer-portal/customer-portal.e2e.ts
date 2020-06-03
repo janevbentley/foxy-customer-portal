@@ -99,7 +99,7 @@ describe("HTMLFoxyCustomerPortalElement", () => {
     it("renders additional links with markdown syntax", async () => {
       await interceptAPIRequests(async ({ page, url, signIn }) => {
         const links = "[Foo](http://example.com/0)[Bar](http://example.com/1)";
-        const content = `<${tag} endpoint="${url}" nav-links="${links}"></${tag}>`;
+        const content = `<${tag} endpoint="${url}" tabs="${links}"></${tag}>`;
 
         await signIn();
         await page.setContent(content);
@@ -117,7 +117,7 @@ describe("HTMLFoxyCustomerPortalElement", () => {
 
     it("renders additional links when using js array", async () => {
       await interceptAPIRequests(async ({ page, url, signIn }) => {
-        const links = [
+        const tabs = [
           {
             href: "https://foxy.io",
             caption: "Home"
@@ -132,11 +132,15 @@ describe("HTMLFoxyCustomerPortalElement", () => {
         await page.setContent(`<${tag} endpoint="${url}"></${tag}>`);
         await page.waitForEvent("ready");
 
+        const root = await page.find(tag);
+        root.setProperty("tabs", tabs);
+        await page.waitForChanges();
+
         const wrappers = await page.findAll(`${tag} >>> vaadin-tab > a`);
 
         for (let i = 0; i < wrappers.length - 1; ++i) {
-          expect(wrappers[i].getAttribute("href")).toEqual(links[i].href);
-          expect(wrappers[i]).toEqualText(links[i].caption);
+          expect(wrappers[i].getAttribute("href")).toEqual(tabs[i].href);
+          expect(wrappers[i]).toEqualText(tabs[i].caption);
         }
       });
     });

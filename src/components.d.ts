@@ -66,13 +66,6 @@ export namespace Components {
          */
         "locale": any;
         /**
-          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `caption` for the display text (both string).
-         */
-        "navLinks": string | {
-            href: string;
-            caption: string;
-        }[];
-        /**
           * Enables hash-based routing.
          */
         "router": boolean;
@@ -87,6 +80,13 @@ export namespace Components {
             zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
             sso: true;
         }>>) => Promise<void>;
+        /**
+          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `caption` for the display text (both string).
+         */
+        "tabs": string | {
+            href: string;
+            caption: string;
+        }[];
     }
     interface FoxyPluginWarning {
         /**
@@ -322,13 +322,6 @@ declare namespace LocalJSX {
          */
         "locale"?: any;
         /**
-          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `caption` for the display text (both string).
-         */
-        "navLinks"?: string | {
-            href: string;
-            caption: string;
-        }[];
-        /**
           * Fired when component becomes ready to be interacted with.
          */
         "onReady"?: (event: CustomEvent<void>) => void;
@@ -352,6 +345,13 @@ declare namespace LocalJSX {
           * Prefix for routes and other top-level identifiers.
          */
         "scope"?: string;
+        /**
+          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `caption` for the display text (both string).
+         */
+        "tabs"?: string | {
+            href: string;
+            caption: string;
+        }[];
     }
     interface FoxyPluginWarning {
         /**

@@ -25,7 +25,7 @@
     </h2>
 
     <foxy-customer-portal
-      nav-links="[Home](https://foxy.io) [Admin](https://admin.foxycart.com)"
+      tabs="[Home](https://foxy.io) [About](portal://about)"
       endpoint="http://localhost:5000"
     ></foxy-customer-portal>
 
@@ -40,7 +40,7 @@
 
     <script>
       document.getElementById("demo2").addEventListener("ready", e => {
-        e.target.navLinks = [
+        e.target.tabs = [
           {
             href: "https://foxy.io",
             caption: "Home"

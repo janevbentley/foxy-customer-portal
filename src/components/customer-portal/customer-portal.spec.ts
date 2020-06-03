@@ -9,7 +9,7 @@ describe("HTMLFoxyCustomerPortalElement", () => {
   testStore("foxy-customer-portal");
   testI18N("foxy-customer-portal");
 
-  describe("navLinks property", () => {
+  describe("tabs property", () => {
     let page: SpecPage;
 
     beforeEach(async () => {
@@ -19,12 +19,12 @@ describe("HTMLFoxyCustomerPortalElement", () => {
       });
     });
 
-    it("has `navLinks` property", async () => {
-      expect(page.rootInstance).toHaveProperty("navLinks");
+    it("has `tabs` property", async () => {
+      expect(page.rootInstance).toHaveProperty("tabs");
     });
 
     it("uses an empty array as a default value", async () => {
-      expect(page.rootInstance.navLinks).toEqual([]);
+      expect(page.rootInstance.tabs).toEqual([]);
     });
   });
 });

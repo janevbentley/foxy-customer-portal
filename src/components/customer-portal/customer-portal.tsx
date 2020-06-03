@@ -65,7 +65,7 @@ export class CustomerPortal
    * to avoid writing extra JS or assign this property an array where each item
    * is an object with properties `href` for URL and `caption` for the display text (both string).
    */
-  @Prop() navLinks: string | { href: string; caption: string }[] = [];
+  @Prop() tabs: string | { href: string; caption: string }[] = [];
 
   @Watch("locale")
   onLocaleChange(newValue: string) {
@@ -225,20 +225,20 @@ export class CustomerPortal
     this.signout.emit();
   }
 
-  private get normalizedNavLinks() {
+  private get normalizedTabs() {
     const results: Record<"href" | "caption", string>[] = [];
 
-    if (typeof this.navLinks === "string") {
+    if (typeof this.tabs === "string") {
       const mdLink = /(?:__|[*#])|\[(.+?)]\((.+?)\)/gm;
       let match: RegExpMatchArray | null = null;
 
-      while ((match = mdLink.exec(this.navLinks)) !== null) {
+      while ((match = mdLink.exec(this.tabs)) !== null) {
         if (match.index === mdLink.lastIndex) mdLink.lastIndex++;
         const [, caption, href] = match;
         results.push({ href, caption });
       }
     } else {
-      results.push(...this.navLinks);
+      results.push(...this.tabs);
     }
 
     return results;
