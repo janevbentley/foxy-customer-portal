@@ -59,6 +59,14 @@ export class CustomerPortal
   /** Prefix for routes and other top-level identifiers. */
   @Prop() scope = "foxy-customer-portal";
 
+  /**
+   * List of links to add to the top nav. You can either use Markdown
+   * (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`)
+   * to avoid writing extra JS or assign this property an array where each item
+   * is an object with properties `href` for URL and `caption` for the display text (both string).
+   */
+  @Prop() navLinks: string | { href: string; caption: string }[] = [];
+
   @Watch("locale")
   onLocaleChange(newValue: string) {
     i18n.onLocaleChange.call(this, newValue);
@@ -159,7 +167,7 @@ export class CustomerPortal
           transactions: true
         }
       });
-    } catch (e) { }
+    } catch (e) {}
 
     return customer;
   }
@@ -217,6 +225,25 @@ export class CustomerPortal
     this.signout.emit();
   }
 
+  private get normalizedNavLinks() {
+    const results: Record<"href" | "caption", string>[] = [];
+
+    if (typeof this.navLinks === "string") {
+      const mdLink = /(?:__|[*#])|\[(.+?)]\((.+?)\)/gm;
+      let match: RegExpMatchArray | null = null;
+
+      while ((match = mdLink.exec(this.navLinks)) !== null) {
+        if (match.index === mdLink.lastIndex) mdLink.lastIndex++;
+        const [, caption, href] = match;
+        results.push({ href, caption });
+      }
+    } else {
+      results.push(...this.navLinks);
+    }
+
+    return results;
+  }
+
   render() {
     return (
       <article class="font-lumo">
@@ -242,6 +269,14 @@ export class CustomerPortal
                     loaded={Boolean(this.i18n)}
                     text={() => this.i18n[path]}
                   />
+                </vaadin-tab>
+              ))}
+
+              {this.normalizedNavLinks.map(({ href, caption }) => (
+                <vaadin-tab>
+                  <a href={href} tabIndex={-1} target="_blank" rel="noopener">
+                    {caption}
+                  </a>
                 </vaadin-tab>
               ))}
 
