@@ -95,5 +95,50 @@ describe("HTMLFoxyCustomerPortalElement", () => {
         expect(await root.callMethod("getState")).toMatchObject(customer());
       });
     });
+
+    it("renders additional links with markdown syntax", async () => {
+      await interceptAPIRequests(async ({ page, url, signIn }) => {
+        const links = "[Foo](http://example.com/0)[Bar](http://example.com/1)";
+        const content = `<${tag} endpoint="${url}" nav-links="${links}"></${tag}>`;
+
+        await signIn();
+        await page.setContent(content);
+        await page.waitForEvent("ready");
+
+        const [foo, bar] = await page.findAll(`${tag} >>> vaadin-tab > a`);
+
+        expect(foo.getAttribute("href")).toEqual("http://example.com/0");
+        expect(bar.getAttribute("href")).toEqual("http://example.com/1");
+
+        expect(foo).toEqualText("Foo");
+        expect(bar).toEqualText("Bar");
+      });
+    });
+
+    it("renders additional links when using js array", async () => {
+      await interceptAPIRequests(async ({ page, url, signIn }) => {
+        const links = [
+          {
+            href: "https://foxy.io",
+            caption: "Home"
+          },
+          {
+            href: "https://admin.foxycart.com",
+            caption: "Admin"
+          }
+        ];
+
+        await signIn();
+        await page.setContent(`<${tag} endpoint="${url}"></${tag}>`);
+        await page.waitForEvent("ready");
+
+        const wrappers = await page.findAll(`${tag} >>> vaadin-tab > a`);
+
+        for (let i = 0; i < wrappers.length - 1; ++i) {
+          expect(wrappers[i].getAttribute("href")).toEqual(links[i].href);
+          expect(wrappers[i]).toEqualText(links[i].caption);
+        }
+      });
+    });
   });
 });
