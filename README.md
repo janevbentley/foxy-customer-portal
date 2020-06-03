@@ -170,14 +170,28 @@ new Vue({ el: "#customer-portal" });
 
 We use [Vaadin](http://vaadin.com/) web components in our portal, and most styling is handled that way. You can use this [handy theme builder](https://demo.vaadin.com/lumo-editor/) to quickly customize your overall portal theme. Simply copy out the the generated CSS and paste it into your own page, but change the `--lumo` prefixes with `--foxy`. (We do this so the basic theme ideas work with the Material theme as well.) Take a look at the `demos/foxycart.html` file for an example.
 
-That theme builder doesn't include all possible options, however. To do drop shadows, you'd insert something like this in your HTML:
+That theme builder doesn't include all possible options, however. To do modify borders, for instance, you'd insert something like this in your HTML:
 
 ```html
 <dom-module id="foxy-custom-theme" theme-for="vaadin-text-field">
   <template>
     <style>
-      [part="input-field"] {
-        box-shadow: var(--foxy-box-shadow-xs);
+    	[part="input-field"] {
+      	border:2px solid var(--foxy-shade-70pct);
+      	box-shadow:inset 0 0 0 1px var(--foxy-shade-30pct);
+        background-color:var(--foxy-base-color);
+      }
+      :host([invalid]) [part="input-field"]{
+      	border:2px solid var(--foxy-error-color);
+      	box-shadow:inset 0 0 0 1px var(--foxy-error-color);
+      }
+      :host([readonly]) [part="input-field"]{
+      	border:none;
+        box-shadow:none;
+      }
+      :host([disabled]) [part="input-field"]{
+      	border:none;
+        box-shadow:none;
       }
     </style>
   </template>
