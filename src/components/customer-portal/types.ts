@@ -4,6 +4,11 @@ export type StateConsumer =
   | HTMLFoxySubscriptionsElement
   | HTMLFoxyTransactionsElement;
 
+export interface Tab {
+  href: string;
+  text: string;
+}
+
 export interface Messages {
   /** Salutation text. */
   greeting: (name: string) => string;

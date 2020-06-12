@@ -23,10 +23,8 @@ import {
 
 import { FullGetResponse, get as getCustomer } from "../../api";
 import { Details } from "../Details";
-import { Messages } from "./types";
+import { Messages, Tab } from "./types";
 import { Skeleton } from "../Skeleton";
-
-const paths = ["activity", "account"] as const;
 
 @Component({
   tag: "foxy-customer-portal",
@@ -58,6 +56,18 @@ export class CustomerPortal
 
   /** Prefix for routes and other top-level identifiers. */
   @Prop() scope = "foxy-customer-portal";
+
+  /**
+   * List of links to add to the top nav. You can either use Markdown
+   * (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`)
+   * to avoid writing extra JS or assign this property an array where each item
+   * is an object with properties `href` for URL and `text` for the display text (both string).
+   *
+   * To enable slot generation and routing, use the following URI scheme: `portal://tab-name`.
+   * This will create a slot for your tab content that will be displayed only when the
+   * appropriate tab link is clicked (works with hash-based routing too).
+   */
+  @Prop() tabs: string | Tab[] = [];
 
   @Watch("locale")
   onLocaleChange(newValue: string) {
@@ -137,7 +147,10 @@ export class CustomerPortal
         this.tabIndex = 0;
       } else {
         const path = this.parseHash(location.hash);
-        const index = paths.findIndex(hash => hash === path);
+        const index = this.extendedTabs.findIndex(tab => {
+          return tab.isPortalLink && tab.path === path;
+        });
+
         if (index !== -1) this.tabIndex = index;
       }
     }
@@ -159,7 +172,7 @@ export class CustomerPortal
           transactions: true
         }
       });
-    } catch (e) { }
+    } catch (e) {}
 
     return customer;
   }
@@ -179,10 +192,11 @@ export class CustomerPortal
   private initRouter() {
     if (this.router) {
       const path = this.parseHash(location.hash);
+      const index = this.extendedTabs.findIndex(tab => {
+        return tab.isPortalLink && tab.path === path;
+      });
 
-      if (paths.findIndex(v => v === path) === -1) {
-        this.defaultPathAlias = location.hash;
-      }
+      if (index === -1) this.defaultPathAlias = location.hash;
     }
   }
 
@@ -199,14 +213,6 @@ export class CustomerPortal
     return hash;
   }
 
-  private goTo(path: typeof paths[number]) {
-    if (this.router) {
-      location.hash = this.createHash(path);
-    } else {
-      this.tabIndex = paths.indexOf(path);
-    }
-  }
-
   private async signOut() {
     resetAuthCookie();
     this.isSignedIn = false;
@@ -215,6 +221,45 @@ export class CustomerPortal
 
     this.update.emit(this.state);
     this.signout.emit();
+  }
+
+  private get defaultTabs() {
+    return [
+      {
+        href: "portal://activity",
+        text: this.i18n?.activity ?? ""
+      },
+      {
+        href: "portal://account",
+        text: this.i18n?.account ?? ""
+      }
+    ];
+  }
+
+  private get extendedTabs() {
+    const tabs = this.defaultTabs;
+
+    if (typeof this.tabs === "string") {
+      const mdLink = /(?:__|[*#])|\[(.+?)]\((.+?)\)/gm;
+      let match: RegExpMatchArray | null = null;
+
+      while ((match = mdLink.exec(this.tabs)) !== null) {
+        if (match.index === mdLink.lastIndex) mdLink.lastIndex++;
+        const [, text, href] = match;
+        tabs.push({ href, text });
+      }
+    } else {
+      tabs.push(...this.tabs);
+    }
+
+    return tabs.map(v => {
+      const isPortalLink = v.href.startsWith("portal://");
+      const text = v.text;
+      const path = isPortalLink ? v.href.replace("portal://", "") : v.href;
+      const href = this.router && isPortalLink ? this.createHash(path) : v.href;
+
+      return { isPortalLink, text, path, href };
+    });
   }
 
   render() {
@@ -233,15 +278,19 @@ export class CustomerPortal
 
           <nav role="navigation" class="w-full sm:w-auto">
             <vaadin-tabs selected={this.tabIndex} data-theme="minimal centered">
-              {paths.map(path => (
+              {this.extendedTabs.map((tab, index) => (
                 <vaadin-tab
-                  data-e2e={`lnk-${path}`}
-                  onClick={() => this.goTo(path)}
+                  data-e2e={`lnk-${tab.path}`}
+                  onClick={() => !this.router && (this.tabIndex = index)}
                 >
-                  <Skeleton
-                    loaded={Boolean(this.i18n)}
-                    text={() => this.i18n[path]}
-                  />
+                  <a
+                    tabIndex={-1}
+                    target={!tab.isPortalLink && "_blank"}
+                    href={this.router && tab.href}
+                    rel="nofollow noopener noreferrer"
+                  >
+                    {tab.text}
+                  </a>
                 </vaadin-tab>
               ))}
 
@@ -266,100 +315,112 @@ export class CustomerPortal
           </slot>
         </section>
 
-        <section hidden={!this.isSignedIn || this.tabIndex !== 0}>
-          <div class="mb-s sm:mb-m">
-            <slot name="subscriptions-container">
-              <Details
-                open={this.areSubscriptionsOpen}
-                summary={() => this.i18n.subscriptions}
-                loaded={this.i18n && this.state.id !== -1}
-                onToggle={v => (this.areSubscriptionsOpen = v)}
-              >
-                <slot name="subscriptions">
-                  <foxy-subscriptions
-                    locale={this.locale}
-                    endpoint={this.endpoint}
-                  />
-                </slot>
-              </Details>
-            </slot>
-          </div>
+        {this.extendedTabs.map((tab, index) => {
+          if (!tab.isPortalLink) return;
 
-          <div class="mb-s sm:mb-m">
-            <slot name="transactions-container">
-              <Details
-                open={this.areTransactionsOpen}
-                summary={() => this.i18n.transactions}
-                loaded={this.i18n && this.state.id !== -1}
-                onToggle={v => (this.areTransactionsOpen = v)}
-              >
-                <slot name="transactions">
-                  <foxy-transactions
-                    locale={this.locale}
-                    endpoint={this.endpoint}
-                  />
-                </slot>
-              </Details>
-            </slot>
-          </div>
+          return (
+            <section hidden={!this.isSignedIn || this.tabIndex !== index}>
+              <slot name={tab.path}>
+                {index === 0 && [
+                  <div class="mb-s sm:mb-m">
+                    <slot name="subscriptions-container">
+                      <Details
+                        open={this.areSubscriptionsOpen}
+                        summary={() => this.i18n.subscriptions}
+                        loaded={this.i18n && this.state.id !== -1}
+                        onToggle={v => (this.areSubscriptionsOpen = v)}
+                      >
+                        <slot name="subscriptions">
+                          <foxy-subscriptions
+                            locale={this.locale}
+                            endpoint={this.endpoint}
+                          />
+                        </slot>
+                      </Details>
+                    </slot>
+                  </div>,
 
-          <div class="mb-s sm:mb-m">
-            <slot name="downloadables-container">
-              {/* <Details
-              open={this.areDownloadsOpen}
-              summary={() => this.i18n.downloads}
-              loaded={this.i18n && this.state.id !== -1}
-              onToggle={v => (this.areDownloadsOpen = v)}
-            >
-              <slot name="downloadables">
-                <div class="p-m text-body">
-                  <Skeleton
-                    loaded={Boolean(this.i18n)}
-                    text={() => this.i18n.comingSoon}
-                  />
-                </div>
+                  <div class="mb-s sm:mb-m">
+                    <slot name="transactions-container">
+                      <Details
+                        open={this.areTransactionsOpen}
+                        summary={() => this.i18n.transactions}
+                        loaded={this.i18n && this.state.id !== -1}
+                        onToggle={v => (this.areTransactionsOpen = v)}
+                      >
+                        <slot name="transactions">
+                          <foxy-transactions
+                            locale={this.locale}
+                            endpoint={this.endpoint}
+                          />
+                        </slot>
+                      </Details>
+                    </slot>
+                  </div>,
+
+                  <div class="mb-s sm:mb-m">
+                    <slot name="downloadables-container">
+                      {/* <Details
+                        open={this.areDownloadsOpen}
+                        summary={() => this.i18n.downloads}
+                        loaded={this.i18n && this.state.id !== -1}
+                        onToggle={v => (this.areDownloadsOpen = v)}
+                      >
+                        <slot name="downloadables">
+                          <div class="p-m text-body">
+                            <Skeleton
+                              loaded={Boolean(this.i18n)}
+                              text={() => this.i18n.comingSoon}
+                            />
+                          </div>
+                        </slot>
+                      </Details> */}
+                    </slot>
+                  </div>
+                ]}
+
+                {index === 1 && (
+                  <div class="flex flex-wrap sm:-m-s">
+                    <div class="w-full pb-s sm:w-1/2 sm:p-s">
+                      <div class="bg-base sm:rounded-m sm:shadow-xs">
+                        <slot name="billing-address">
+                          <foxy-address
+                            type="default_billing_address"
+                            endpoint={this.endpoint}
+                            locale={this.locale}
+                          />
+                        </slot>
+                      </div>
+                    </div>
+
+                    <div class="w-full pb-s sm:w-1/2 sm:p-s">
+                      <div class="bg-base sm:rounded-m sm:shadow-xs">
+                        <slot name="shipping-address">
+                          <foxy-address
+                            type="default_shipping_address"
+                            endpoint={this.endpoint}
+                            locale={this.locale}
+                          />
+                        </slot>
+                      </div>
+                    </div>
+
+                    <div class="w-full sm:w-1/2 sm:p-s">
+                      <div class="bg-base sm:rounded-m sm:shadow-xs">
+                        <slot name="profile">
+                          <foxy-profile
+                            endpoint={this.endpoint}
+                            locale={this.locale}
+                          />
+                        </slot>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </slot>
-            </Details> */}
-            </slot>
-          </div>
-        </section>
-
-        <section
-          hidden={!this.isSignedIn || this.tabIndex !== 1}
-          class="flex flex-wrap sm:-m-s"
-        >
-          <div class="w-full pb-s sm:w-1/2 sm:p-s">
-            <div class="bg-base sm:rounded-m sm:shadow-xs">
-              <slot name="billing-address">
-                <foxy-address
-                  type="default_billing_address"
-                  endpoint={this.endpoint}
-                  locale={this.locale}
-                />
-              </slot>
-            </div>
-          </div>
-
-          <div class="w-full pb-s sm:w-1/2 sm:p-s">
-            <div class="bg-base sm:rounded-m sm:shadow-xs">
-              <slot name="shipping-address">
-                <foxy-address
-                  type="default_shipping_address"
-                  endpoint={this.endpoint}
-                  locale={this.locale}
-                />
-              </slot>
-            </div>
-          </div>
-
-          <div class="w-full sm:w-1/2 sm:p-s">
-            <div class="bg-base sm:rounded-m sm:shadow-xs">
-              <slot name="profile">
-                <foxy-profile endpoint={this.endpoint} locale={this.locale} />
-              </slot>
-            </div>
-          </div>
-        </section>
+            </section>
+          );
+        })}
       </article>
     );
   }

@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AddressType, } from "./components/address/types";
 import { FullGetResponse, GetRequest, GetResponse, } from "./api";
+import { Tab, } from "./components/customer-portal/types";
 export namespace Components {
     interface FoxyAddress {
         /**
@@ -53,7 +54,7 @@ export namespace Components {
         /**
           * Resolves with a customer object (the state).
          */
-        "getRemoteState": () => Promise<import("/Users/dantothefuture/foxy-customer-portal/src/api/index").GetResponse<{
+        "getRemoteState": () => Promise<import("/Users/dantothefuture/Foxy/foxy-customer-portal/src/api/index").GetResponse<{
             zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
             sso: true;
         }>>;
@@ -76,10 +77,14 @@ export namespace Components {
         /**
           * Updates the customer object, or the state.
          */
-        "setState": (value: Partial<import("/Users/dantothefuture/foxy-customer-portal/src/api/index").GetResponse<{
+        "setState": (value: Partial<import("/Users/dantothefuture/Foxy/foxy-customer-portal/src/api/index").GetResponse<{
             zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
             sso: true;
         }>>) => Promise<void>;
+        /**
+          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `text` for the display text (both string).  To enable slot generation and routing, use the following URI scheme: `portal://tab-name`. This will create a slot for your tab content that will be displayed only when the appropriate tab link is clicked (works with hash-based routing too).
+         */
+        "tabs": string | Tab[];
     }
     interface FoxyPluginWarning {
         /**
@@ -338,6 +343,10 @@ declare namespace LocalJSX {
           * Prefix for routes and other top-level identifiers.
          */
         "scope"?: string;
+        /**
+          * List of links to add to the top nav. You can either use Markdown (`[Foo](https://example.com/foo) [Bar](https://example.com/bar)`) to avoid writing extra JS or assign this property an array where each item is an object with properties `href` for URL and `text` for the display text (both string).  To enable slot generation and routing, use the following URI scheme: `portal://tab-name`. This will create a slot for your tab content that will be displayed only when the appropriate tab link is clicked (works with hash-based routing too).
+         */
+        "tabs"?: string | Tab[];
     }
     interface FoxyPluginWarning {
         /**

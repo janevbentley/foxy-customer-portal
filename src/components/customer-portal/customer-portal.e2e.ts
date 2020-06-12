@@ -95,5 +95,57 @@ describe("HTMLFoxyCustomerPortalElement", () => {
         expect(await root.callMethod("getState")).toMatchObject(customer());
       });
     });
+
+    it("renders additional links with markdown syntax", async () => {
+      await interceptAPIRequests(async ({ page, url, signIn }) => {
+        const links = "[Foo](https://example.com/foo)[Bar](portal://bar)";
+        const content = `<${tag} endpoint="${url}" tabs="${links}" router></${tag}>`;
+
+        await signIn();
+        await page.setContent(content);
+        await page.waitForEvent("ready");
+
+        const wrappers = await page.findAll(`${tag} >>> vaadin-tab > a`);
+        const [bar, foo] = wrappers.reverse();
+
+        expect(foo.getAttribute("href")).toEqual("https://example.com/foo");
+        expect(bar.getAttribute("href")).toEqual("#foxy-customer-portal--bar");
+
+        expect(foo).toEqualText("Foo");
+        expect(bar).toEqualText("Bar");
+      });
+    });
+
+    it("renders additional links when using js array", async () => {
+      await interceptAPIRequests(async ({ page, url, signIn }) => {
+        const tabs = [
+          {
+            href: "https://example.com/foo",
+            text: "Foo"
+          },
+          {
+            href: "portal://bar",
+            text: "Bar"
+          }
+        ];
+
+        await signIn();
+        await page.setContent(`<${tag} endpoint="${url}" router></${tag}>`);
+        await page.waitForEvent("ready");
+
+        const root = await page.find(tag);
+        root.setProperty("tabs", tabs);
+        await page.waitForChanges();
+
+        const wrappers = await page.findAll(`${tag} >>> vaadin-tab > a`);
+        const [bar, foo] = wrappers.reverse();
+
+        expect(foo.getAttribute("href")).toEqual("https://example.com/foo");
+        expect(bar.getAttribute("href")).toEqual("#foxy-customer-portal--bar");
+
+        expect(foo).toEqualText("Foo");
+        expect(bar).toEqualText("Bar");
+      });
+    });
   });
 });
