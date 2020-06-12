@@ -10,7 +10,7 @@ export const messages: Messages = {
   password: "Mot de passe",
   oldPassword: "Mot de passe actuel ou temporaire",
   newPassword: "Nouveau mot de passe",
-  ccTitle: "Mode de paiement",
+  ccTitle: "Méthode de paiement enregistrée",
   ccNumber: "4 derniers chiffres du numéro de carte:",
   ccLogoAlt: card => `Logo ${card.cc_type}`,
   ccDescription: card => card.save_cc ? `${card.cc_type} se terminant à ${card.cc_number_masked.substr(card.cc_number_masked.length - 4)}` : "Aucune carte de crédit enregistrée",
