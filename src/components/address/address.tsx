@@ -270,6 +270,7 @@ export class Address
   render() {
     return (
       <EditableCard
+        i18n={{ save: this.i18n?.save(this.type) ?? "" }}
         saving={this.isSaving}
         editable={this.isEditable}
         summary={() => this.i18n.title(this.type)}

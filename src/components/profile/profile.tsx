@@ -194,6 +194,7 @@ export class Profile
   render() {
     return (
       <EditableCard
+        i18n={this.i18n}
         summary={() => this.i18n.title}
         loaded={this.isContentAvailable}
         saving={this.isSaving}

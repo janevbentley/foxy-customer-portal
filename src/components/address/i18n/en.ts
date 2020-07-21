@@ -15,7 +15,10 @@ export const messages: Messages = {
       postal_code: "Postal code",
       country: "Country"
     }[key]),
-  save: "Save",
+  save: type =>
+    `Save ${
+      type === "default_shipping_address" ? "shipping" : "billing"
+    } address`,
   close: "Close",
   error:
     "An unknown error has occurred. Please try again later or contact us for help.",
