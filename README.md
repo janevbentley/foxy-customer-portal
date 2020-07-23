@@ -132,14 +132,27 @@ If you aren't doing subscriptions or downloadables, you can override those eleme
 ```
 
 Overriding language strings is easy, but **note that this approach will change when this portal comes out of beta** (at which point the language strings will be configurable from the Foxy admin, like all other language strings):
+
 ```html
 <script>
+  // For the parent component
   document.querySelector('foxy-customer-portal').locale = {
+    "en": {
+      "receipt": "Purchase Order",
+      "receiptLink": "Purchase Order"
+    }
+  };
+  // For child components
+  const foxyPortal = document.querySelector("foxy-customer-portal");
+  foxyPortal.shadowRoot.querySelectorAll('foxy-address').forEach(e => {
+    e.locale = {
       "en": {
-        "receipt": "Purchase Order",
-        "receiptLink": "Purchase Order"
+        "postal_code": "ZIP Code",
+        "save": () => "Save Changes" // Note that some language strings must be functions
       }
-    };
+    }
+  })
+
 </script>
 ```
 
