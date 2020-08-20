@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AddressType, } from "./components/address/types";
-import { FullGetResponse, GetRequest, GetResponse, } from "./api";
+import { FullGetResponse, GetResponse, } from "./api";
 import { Tab, } from "./components/customer-portal/types";
 export namespace Components {
     interface FoxyAddress {
@@ -17,7 +17,10 @@ export namespace Components {
         /**
           * Resolves with a customer object containing address of the default or specified `HTMLFoxyAddressElement.type`.
          */
-        "getRemoteState": () => Promise<GetResponse<GetRequest>>;
+        "getRemoteState": () => Promise<GetResponse<{
+            zoom: Record<AddressType, true>;
+            sso: true;
+        }>>;
         /**
           * Resolves with a customer object containing address of the default or specified `HTMLFoxyAddressElement.type`.
          */
@@ -34,7 +37,17 @@ export namespace Components {
           * Sets customer object.
          */
         "setState": (value: Partial<GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>) => Promise<void>;
         /**
@@ -55,7 +68,17 @@ export namespace Components {
           * Resolves with a customer object (the state).
          */
         "getRemoteState": () => Promise<import("/Users/dantothefuture/Foxy/foxy-customer-portal/src/api/index").GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>;
         /**
@@ -78,7 +101,17 @@ export namespace Components {
           * Updates the customer object, or the state.
          */
         "setState": (value: Partial<import("/Users/dantothefuture/Foxy/foxy-customer-portal/src/api/index").GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>) => Promise<void>;
         /**
@@ -104,7 +137,7 @@ export namespace Components {
         /**
           * Resolves with a fresh customer object that's guaranteed to contain the essential user info such as email, name and id (non-embedded content).
          */
-        "getRemoteState": () => Promise<GetResponse<GetRequest>>;
+        "getRemoteState": () => Promise<GetResponse<{}>>;
         /**
           * Resolves with a customer object that's guaranteed to contain the essential user info such as email, name and id (non-embedded content).
          */
@@ -117,7 +150,17 @@ export namespace Components {
           * Sets customer object (the state).
          */
         "setState": (value: Partial<GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>) => Promise<void>;
     }
@@ -139,7 +182,14 @@ export namespace Components {
         /**
           * Resolves with a customer object that's guaranteed to contain the `_embedded["fx:subscriptions"]` array with downloaded subscriptions.
          */
-        "getRemoteState": () => Promise<GetResponse<GetRequest>>;
+        "getRemoteState": () => Promise<GetResponse<{
+            zoom: {
+                readonly subscriptions: {
+                    readonly transactions: true;
+                };
+                readonly default_payment_method: true;
+            };
+        }>>;
         /**
           * Resolves with a customer object that's guaranteed to contain the `_embedded["fx:subscriptions"]` array with downloaded subscriptions.
          */
@@ -164,7 +214,17 @@ export namespace Components {
           * Sets customer object.
          */
         "setState": (value: Partial<GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>) => Promise<void>;
         /**
@@ -180,7 +240,13 @@ export namespace Components {
         /**
           * Resolves with a customer object that's guaranteed to contain the `_embedded["fx:subscriptions"]` array with downloaded subscriptions.
          */
-        "getRemoteState": () => Promise<GetResponse<GetRequest>>;
+        "getRemoteState": () => Promise<GetResponse<{
+            zoom: {
+                subscriptions: {
+                    transactions: boolean;
+                };
+            };
+        }>>;
         /**
           * Resolves with a customer object that's guaranteed to contain the `_embedded["fx:subscriptions"]` array with downloaded subscriptions.
          */
@@ -193,7 +259,17 @@ export namespace Components {
           * Sets customer object.
          */
         "setState": (value: Partial<GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>) => Promise<void>;
     }
@@ -209,7 +285,13 @@ export namespace Components {
         /**
           * Resolves with a customer object that's guaranteed to contain the `_embedded["fx:transactions"]` array with downloaded transactions.
          */
-        "getRemoteState": () => Promise<GetResponse<GetRequest>>;
+        "getRemoteState": () => Promise<GetResponse<{
+            zoom: {
+                transactions: {
+                    items: boolean;
+                };
+            };
+        }>>;
         /**
           * Resolves with a customer object that's guaranteed to contain the `_embedded["fx:transactions"]` array with downloaded transactions.
          */
@@ -222,7 +304,17 @@ export namespace Components {
           * Sets customer object.
          */
         "setState": (value: Partial<GetResponse<{
-            zoom: Record<"default_billing_address" | "default_shipping_address" | "subscriptions" | "transactions" | "default_payment_method", true>;
+            zoom: {
+                default_billing_address: true;
+                default_shipping_address: true;
+                default_payment_method: true;
+                subscriptions: {
+                    transactions: true;
+                };
+                transactions: {
+                    items: true;
+                };
+            };
             sso: true;
         }>>) => Promise<void>;
     }

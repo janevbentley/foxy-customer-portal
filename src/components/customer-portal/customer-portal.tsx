@@ -32,7 +32,10 @@ import { Skeleton } from "../Skeleton";
   shadow: true
 })
 export class CustomerPortal
-  implements vaadin.Mixin, store.Mixin, i18n.Mixin<typeof i18nProvider> {
+  implements
+    vaadin.Mixin,
+    store.Mixin<FullGetResponse>,
+    i18n.Mixin<typeof i18nProvider> {
   private defaultPathAlias: string | null = null;
 
   @State() state = store.defaults.state.call(this);
@@ -124,7 +127,7 @@ export class CustomerPortal
   }
 
   @Listen("update")
-  handleUpdate(e: CustomEvent<store.Mixin["update"]>) {
+  handleUpdate(e: CustomEvent<store.Mixin<FullGetResponse>["update"]>) {
     store.setState.call(this, e.detail);
   }
 
@@ -168,8 +171,8 @@ export class CustomerPortal
           default_billing_address: true,
           default_shipping_address: true,
           default_payment_method: true,
-          subscriptions: true,
-          transactions: true
+          subscriptions: { transactions: true },
+          transactions: { items: true }
         }
       });
     } catch (e) {}

@@ -10,14 +10,12 @@ import {
   Watch
 } from "@stencil/core";
 
-import { EditableAddress } from "../../api";
-
 import {
   get,
   patch,
   FullGetResponse,
-  GetRequest,
-  GetResponse
+  GetResponse,
+  EditableAddress
 } from "../../api";
 
 import * as vaadin from "../../mixins/vaadin";
@@ -48,13 +46,20 @@ const fields: Partial<EditableAddress> = {
   postal_code: "postal-code"
 };
 
+type StoreMixin = store.Mixin<
+  GetResponse<{
+    zoom: Record<AddressType, true>;
+    sso: true;
+  }>
+>;
+
 @Component({
   tag: "foxy-address",
   styleUrl: "../../tailwind.css",
   shadow: true
 })
 export class Address
-  implements vaadin.Mixin, store.Mixin, i18n.Mixin<typeof i18nProvider> {
+  implements vaadin.Mixin, StoreMixin, i18n.Mixin<typeof i18nProvider> {
   @Element() readonly root: HTMLFoxyAddressElement;
 
   @State() state = store.defaults.state.call(this);
@@ -123,7 +128,7 @@ export class Address
    */
   @Method()
   async getRemoteState() {
-    const params: GetRequest = {
+    const params = {
       zoom: { [this.type]: true },
       sso: true
     };
@@ -139,7 +144,7 @@ export class Address
       this.isErrorDismissable = this.state.id !== -1;
     }
 
-    return customer;
+    return customer as StoreMixin["state"];
   }
 
   /**
