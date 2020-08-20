@@ -286,14 +286,18 @@ export class CustomerPortal
                   data-e2e={`lnk-${tab.path}`}
                   onClick={() => !this.router && (this.tabIndex = index)}
                 >
-                  <a
-                    tabIndex={-1}
-                    target={!tab.isPortalLink && "_blank"}
-                    href={this.router && tab.href}
-                    rel="nofollow noopener noreferrer"
-                  >
-                    {tab.text}
-                  </a>
+                  {this.router && Boolean(tab.href) ? (
+                    <a
+                      tabIndex={-1}
+                      target={!tab.isPortalLink && "_blank"}
+                      href={this.router && tab.href}
+                      rel="nofollow noopener noreferrer"
+                    >
+                      {tab.text}
+                    </a>
+                  ) : (
+                    tab.text
+                  )}
                 </vaadin-tab>
               ))}
 
