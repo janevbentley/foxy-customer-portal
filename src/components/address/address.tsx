@@ -235,7 +235,7 @@ export class Address
       return;
     }
 
-    const blacklist =
+    const disallowedLocations =
       window.FC.json.config[
         this.type === "default_billing_address"
           ? "locations_billing"
@@ -243,7 +243,7 @@ export class Address
       ];
 
     for (const country in window.FC.json.config.locations) {
-      if (blacklist[country] === "*") continue;
+      if (disallowedLocations[country] === "*") continue;
 
       const { cn, r } = window.FC.json.config.locations[country];
 
@@ -251,7 +251,7 @@ export class Address
       this.regions[country] = this.regions[country] || [];
 
       for (const region in r.options) {
-        const filter = blacklist[country];
+        const filter = disallowedLocations[country];
         if (Array.isArray(filter) && filter.includes(region)) continue;
 
         this.regions[country].push({
