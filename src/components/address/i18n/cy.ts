@@ -16,7 +16,7 @@ export const messages: Messages = {
       postal_code: "Cod Post",
       country: "Gwlad"
     }[key]),
-  save: "Arbed",
+  save: () => "Arbed",
   close: "Cau",
   error:
     "Mae gwall anhysbys wedi digwydd. Rhowch gynnig arall arni yn nes ymlaen neu cysylltwch â ni am help.",

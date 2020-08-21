@@ -40,20 +40,20 @@ export const messages: Messages = {
     "Mae gwall anhysbys wedi digwydd. Rhowch gynnig arall arni yn nes ymlaen neu cysylltwch â ni am help..",
 
   date: date => {
-    return new Date(date).toLocaleDateString("en", {
+    return new Date(date).toLocaleDateString("cy", {
       month: "long",
       day: "numeric"
     });
   },
 
   year: date => {
-    return new Date(date).toLocaleDateString("en", {
+    return new Date(date).toLocaleDateString("cy", {
       year: "numeric"
     });
   },
 
   price: (value, currency) => {
-    return value.toLocaleString("en", {
+    return value.toLocaleString("cy", {
       style: "currency",
       minimumFractionDigits: 0,
       currency
@@ -62,30 +62,32 @@ export const messages: Messages = {
 
   summary: items => {
     const { name } = [...items].sort((a, b) => a.price - b.price).pop();
-    return `${name}${items.length > 1 ? ` + ${items.length - 1} more` : ""}`;
+    return `${name}${items.length > 1 ? ` + ${items.length - 1} yn fwy` : ""}`;
   },
 
   productDescription: (total, currency, quantity) => {
     const formattedTotal = messages.price(total, currency);
-    return `${formattedTotal} (${quantity} item${quantity > 1 ? "s" : ""})`;
+    return `${formattedTotal} (${quantity} eitem)`;
   },
 
   statusDescription: item => {
     if (Boolean(item.first_failed_transaction_date)) {
-      return `Failed on ${messages.date(item.first_failed_transaction_date)}`;
+      const dateI18N = messages.date(item.first_failed_transaction_date);
+      return `Methodd y tanysgrifiad ar ${dateI18N}`;
     }
 
     if (Boolean(item.end_date)) {
       const date = new Date(item.end_date);
       const ended = date.getTime() <= Date.now();
-      return `End${ended ? "ed" : "s"} on ${messages.date(date)}`;
+      const dateI18N = messages.date(date);
+      return `Da${ended ? "eth y" : "aw'r"} tanysgrifiad i ben ar ${dateI18N}`;
     }
 
-    return `Next payment on ${messages.date(item.next_transaction_date)}`;
+    return `Taliad nesaf ar ${messages.date(item.next_transaction_date)}`;
   },
 
   frequencyDescription: frequency => {
-    if (frequency === ".5m") return `twice a month`;
+    if (frequency === ".5m") return `ddwywaith y mis`;
 
     const count = parseInt(frequency.substr(0, frequency.length - 1));
     const period = frequency[frequency.length - 1];
@@ -93,16 +95,16 @@ export const messages: Messages = {
     if (!["y", "m", "w", "d"].includes(period)) return frequency;
 
     return {
-      y: (n: number) => (n > 1 ? `${n} years` : "year"),
-      m: (n: number) => (n > 1 ? `${n} months` : "month"),
-      w: (n: number) => (n > 1 ? `${n} weeks` : "week"),
-      d: (n: number) => (n > 1 ? `${n} days` : "day")
+      y: (n: number) => `${n} (blynyddoedd)`,
+      m: (n: number) => `${n} (misoedd)`,
+      w: (n: number) => `${n} (wythnosau)`,
+      d: (n: number) => `${n} (dyddiau)`
     }[period](count);
   },
 
   nextDateConfirm: date =>
-    `Change your next billing date to ${messages.date(date)}?`,
+    `Newid eich dyddiad bilio nesaf i ${messages.date(date)}?`,
 
   frequencyConfirm: value =>
-    `Change frequency to ${messages.frequencyDescription(value)}?`
+    `Newid amlder i ${messages.frequencyDescription(value)}?`
 };

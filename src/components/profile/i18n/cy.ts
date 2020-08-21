@@ -1,6 +1,7 @@
 import { Messages } from "../types";
 
 export const messages: Messages = {
+  save: "Arbed",
   title: "Mewngofnodi",
   email: "Ebost",
   password: "Cyfrinair",
