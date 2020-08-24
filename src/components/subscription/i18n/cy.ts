@@ -1,5 +1,11 @@
 import { Messages } from "../types";
 
+type LabelList = {
+  1: String;
+  2: String;
+  n: String;
+};
+
 export const messages: Messages = {
   ok: "OK",
   close: "Cau",
@@ -94,11 +100,21 @@ export const messages: Messages = {
 
     if (!["y", "m", "w", "d"].includes(period)) return frequency;
 
+    const frequencyFactory = (labels: LabelList) => (n: number) => {
+      if (n === 1) {
+        return labels[1];
+      } else if (n === 2) {
+        return `${n} ${labels[2]}`;
+      } else {
+        return `${n} ${labels.n}`;
+      }
+    };
+
     return {
-      y: (n: number) => `${n} (blynyddoedd)`,
-      m: (n: number) => `${n} (misoedd)`,
-      w: (n: number) => `${n} (wythnosau)`,
-      d: (n: number) => `${n} (dyddiau)`
+      y: frequencyFactory({ 1: "flwyddyn", 2: "flynedd", n: "mlynedd" }),
+      m: frequencyFactory({ 1: "mis", 2: "fis", n: "mis" }),
+      w: frequencyFactory({ 1: "wythnos", 2: "wythnos", n: "wythnos" }),
+      d: frequencyFactory({ 1: "diwrnod", 2: "ddiwrnod", n: "diwrnod" })
     }[period](count);
   },
 
